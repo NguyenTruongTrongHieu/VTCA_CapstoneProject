@@ -11,16 +11,16 @@ public enum NodeState
     failure
 }
 
-public abstract class Node
+public abstract class NodeBehaviourTree
 {
     protected NodeState state;//Trang thai hien tai cua node
-    public Node parent;//Node cha cua node hien tai
-    protected List<Node> children = new List<Node>();//Danh sach cac node con cua node hien tai
+    public NodeBehaviourTree parent;//Node cha cua node hien tai
+    protected List<NodeBehaviourTree> children = new List<NodeBehaviourTree>();//Danh sach cac node con cua node hien tai
 
-    public Node()
+    public NodeBehaviourTree()
     { }
 
-    public Node(List<Node> children)
+    public NodeBehaviourTree(List<NodeBehaviourTree> children)
     {
         foreach (var node in children)
         {
@@ -28,7 +28,7 @@ public abstract class Node
         }
     }
 
-    private void Attach(Node child)
+    private void Attach(NodeBehaviourTree child)
     {
         child.parent = this;
         children.Add(child);

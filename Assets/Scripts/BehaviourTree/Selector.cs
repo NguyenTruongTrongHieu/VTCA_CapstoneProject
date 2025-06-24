@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Selector : Node
+public class Selector : NodeBehaviourTree
 {
     public Selector() : base()
     {
     }
 
-    public Selector(List<Node> children) : base(children)
+    public Selector(List<NodeBehaviourTree> children) : base(children)
     {
     }
 

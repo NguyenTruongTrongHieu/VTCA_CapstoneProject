@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sequence : Node
+public class Sequence : NodeBehaviourTree
 {
     public Sequence() : base()
     {
     }
 
-    public Sequence(List<Node> children) : base(children)
+    public Sequence(List<NodeBehaviourTree> children) : base(children)
     {
     }
 
