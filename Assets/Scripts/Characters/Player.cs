@@ -60,6 +60,8 @@ public class Player : MonoBehaviour
         //Setup Hash
         isMovingHash = Animator.StringToHash("isMoving");
 
+        //Set up camera target
+        CameraManager.instance.SetTargetForCam(this.transform);//call when change player
         SetUpBehaviourTree();
     }
 

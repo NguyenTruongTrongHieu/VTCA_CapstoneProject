@@ -38,5 +38,7 @@ public class UIManager : MonoBehaviour
     {
         GameManager.instance.currentGameState = GameState.Playing;
         mainMenuPanel.SetActive(false);
+        StartCoroutine(
+        CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
     }
 }
