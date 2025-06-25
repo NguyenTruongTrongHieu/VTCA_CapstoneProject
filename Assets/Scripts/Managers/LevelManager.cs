@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public static UIManager instance;
+    public static LevelManager instance;
 
-    [Header("Main menu")]
-    public Button playButton;
-    public GameObject mainMenuPanel;
+    public Level currentLevel;
+    public Level[] levels;
 
     private void Awake()
     {
@@ -32,11 +30,5 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void OnclickStartButton()
-    {
-        GameManager.instance.currentGameState = GameState.Playing;
-        mainMenuPanel.SetActive(false);
     }
 }
