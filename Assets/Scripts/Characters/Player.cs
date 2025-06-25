@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
 
     [Header("Animation")]
     public Animator animator;
+    public int isMovingHash;
 
     [Header("Behaviour Tree")]
     private NodeBehaviourTree rootNode;
@@ -56,6 +57,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        //Setup Hash
+        isMovingHash = Animator.StringToHash("isMoving");
+
         SetUpBehaviourTree();
     }
 
@@ -94,6 +98,7 @@ public class PlayerMoveToTarget : NodeBehaviourTree
         if (Vector3.Distance(playerSelf.transform.position, target.position) > stopDistance)
         {
             playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
+            playerSelf.animator.SetBool(playerSelf.isMovingHash, true);
             state = NodeState.running;
         }
         else
@@ -116,8 +121,8 @@ public class PlayerIdle : NodeBehaviourTree
     public override NodeState Evaluate()
     {
         // Idle logic, e.g., waiting for input or other conditions
-        state = NodeState.success; // For now, just return success
-        Debug.Log("Idle");
+        playerSelf.animator.SetBool(playerSelf.isMovingHash, false);
+        state = NodeState.success;
         return state;
     }
 }
