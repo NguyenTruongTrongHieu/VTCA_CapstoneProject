@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -37,7 +36,7 @@ public abstract class NodeBehaviourTree
     public abstract NodeState Evaluate();
 }
 
-public class RotateToTarget : NodeBehaviourTree
+public class RotateToTarget : NodeBehaviourTree//success neu quay ve huong cua target, failure neu da quay ve huong cua target roi, running neu van chua quay ve huong cua target
 {
     private Transform target;
     private Transform self;
@@ -55,8 +54,16 @@ public class RotateToTarget : NodeBehaviourTree
         state = NodeState.running;
         Vector3 direction = target.position - self.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+        if (self.rotation == lookRotation)
+        { 
+            state = NodeState.failure;
+            return state;
+        }
+
         Vector3 rotation = Quaternion.Lerp(self.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
         self.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        Debug.Log($"Rotating {self.name} towards {target.name} with rotation: {self.rotation.eulerAngles}");
 
         if (self.rotation == lookRotation)
         {
@@ -102,7 +109,7 @@ public class CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck : No
 
     public override NodeState Evaluate()
     {
-        state = Vector3.Distance(self.position, target.position) >= distanceToCheck ? NodeState.success : NodeState.failure;// Neu khoang cach giua self va target lon hon hoac bang distanceToCheck, tra ve success, nguoc lai tra ve failure
+        state = Vector3.Distance(self.position, target.position) > distanceToCheck ? NodeState.success : NodeState.failure;// Neu khoang cach giua self va target lon hon hoac bang distanceToCheck, tra ve success, nguoc lai tra ve failure
         return state;
     }
 }
@@ -113,6 +120,10 @@ public class CheckIfGameStateIsPlaying : NodeBehaviourTree
     public override NodeState Evaluate()
     {
         state = GameManager.instance.currentGameState == GameState.Playing ? NodeState.success : NodeState.failure;// Neu trang thai game la playing, tra ve success, nguoc lai tra ve failure
+        if (state == NodeState.success)
+        {
+            Debug.Log("Current game state is playing");
+        }
         return state;
     }
 }

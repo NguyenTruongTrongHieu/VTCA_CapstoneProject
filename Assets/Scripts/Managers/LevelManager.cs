@@ -4,8 +4,8 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
 
-    public Level currentLevel;
-    public Level[] levels;
+    public Level currentLevel;//Level hien tai va cac enemy cua level do, duoc tham chieu tu scene
+    public Level[] levels;// Danh sach cac level trong game, cac enemy duoc tham chieu tu asset
 
     private void Awake()
     {
