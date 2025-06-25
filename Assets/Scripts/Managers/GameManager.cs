@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public GameState currentGameState = GameState.MainMenu;
     public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn
+    public int currentEnemyIndex = 0; // Index of the current enemy in the level
 
     private void Awake()
     {
