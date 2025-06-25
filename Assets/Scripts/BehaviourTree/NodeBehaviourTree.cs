@@ -63,7 +63,6 @@ public class RotateToTarget : NodeBehaviourTree//success neu quay ve huong cua t
 
         Vector3 rotation = Quaternion.Lerp(self.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
         self.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-        Debug.Log($"Rotating {self.name} towards {target.name} with rotation: {self.rotation.eulerAngles}");
 
         if (self.rotation == lookRotation)
         {
