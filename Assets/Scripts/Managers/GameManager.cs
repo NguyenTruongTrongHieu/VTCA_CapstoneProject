@@ -1,17 +1,19 @@
 using UnityEngine;
 
+public enum GameState
+{
+    MainMenu,
+    Playing,
+    Paused,
+    GameOver
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public enum GameState
-    {
-        MainMenu,
-        Playing,
-        Paused,
-        GameOver
-    }
 
     public GameState currentGameState = GameState.MainMenu;
+    public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn
 
     private void Awake()
     {
