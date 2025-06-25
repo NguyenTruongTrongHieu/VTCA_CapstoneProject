@@ -94,10 +94,12 @@ public class PlayerMoveToTarget : NodeBehaviourTree
     public override NodeState Evaluate()
     {
         //Move player towards target
-        Vector3 direction = (target.position - playerSelf.transform.position).normalized;
+        //Vector3 direction = (target.position - playerSelf.transform.position).normalized;
         if (Vector3.Distance(playerSelf.transform.position, target.position) > stopDistance)
         {
-            playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
+            //playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
+            playerSelf.transform.position = Vector3.MoveTowards(playerSelf.transform.position, target.position, playerSelf.speed * Time.deltaTime);
+
             playerSelf.animator.SetBool(playerSelf.isMovingHash, true);
             state = NodeState.running;
         }

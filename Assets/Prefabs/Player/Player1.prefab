@@ -73,10 +73,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f01938003f816479e7fa6ece9453f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 7
   rb: {fileID: 2950294056955308877}
   startPos: {x: 0, y: 0, z: 10}
   startQuaternion: {x: 0, y: 180, z: 0}
+  stopDistanceWithEnemy: 1.5
+  stopDistanceWithBoss: 2
+  animator: {fileID: 4865034370249892278}
+  isMovingHash: 0
 --- !u!1001 &4534523367635459968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149,6 +153,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9036980633323257398, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 38c1c0c9fe433434ab179d8f3b6d17e9, type: 2}
+    - target: {fileID: 9036980633323257398, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -157,6 +169,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8859028356589758255}
   m_SourcePrefab: {fileID: 100100000, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
+--- !u!95 &4865034370249892278 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9036980633323257398, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
+  m_PrefabInstance: {fileID: 4534523367635459968}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4904045640345031916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8855052669661678444, guid: 2dfbb63c9cdf7504faf4ff26b0581598, type: 3}
