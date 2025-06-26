@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4601931302043253770}
   - component: {fileID: 2950294056955308877}
   - component: {fileID: 7677846636461062177}
+  - component: {fileID: -4051504416825153475}
+  - component: {fileID: 2669768800509826746}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -81,6 +83,41 @@ MonoBehaviour:
   stopDistanceWithBoss: 2
   animator: {fileID: 4865034370249892278}
   isMovingHash: 0
+--- !u!114 &-4051504416825153475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5354534231964174547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e95f6b37724b445a705191a73b15b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStat: {fileID: 2669768800509826746}
+  animator: {fileID: 4865034370249892278}
+  attackAnimations:
+  - Attack1
+  - Attack2
+  - Attack3
+--- !u!114 &2669768800509826746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5354534231964174547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415db13bb16c65546953c4e30ea01078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  health: 0
+  damage: 0
+  healthPercentBonus: 0
+  damagePercentBonus: 0
 --- !u!1001 &4534523367635459968
 PrefabInstance:
   m_ObjectHideFlags: 0
