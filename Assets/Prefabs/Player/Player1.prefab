@@ -114,8 +114,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
-  health: 0
+  currentHealth: 0
   damage: 0
+  hpSlider: {fileID: 0}
+  mana: 0
+  maxMana: 0
+  name: 
+  playerClass: 1
   healthPercentBonus: 0
   damagePercentBonus: 0
 --- !u!1001 &4534523367635459968
