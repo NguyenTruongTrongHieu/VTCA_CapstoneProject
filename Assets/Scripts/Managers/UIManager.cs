@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     public void OnclickStartButton()
     {
         GameManager.instance.currentGameState = GameState.Playing;
+        GameManager.instance.currentTurn = "None"; // Set the current turn to None
         mainMenuPanel.SetActive(false);
         StartCoroutine(
         CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));

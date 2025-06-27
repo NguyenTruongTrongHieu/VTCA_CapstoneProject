@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
 
                 new Selector(new List<NodeBehaviourTree>
                 {
-                    new Sequence(new List<NodeBehaviourTree>
+                    new Sequence(new List<NodeBehaviourTree>//Move to enemy
                     {
                         new CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck(this.transform,
                             LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
@@ -44,6 +44,11 @@ public class Player : MonoBehaviour
                             LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
                             (true ? stopDistanceWithEnemy : stopDistanceWithBoss))
                     }),
+
+                    //new Sequence(new List<NodeBehaviourTree>//Attack
+                    //{ 
+                    //    new CheckIfCurrentTurnIsPlayer(),
+                    //}),
 
                     new PlayerIdle(this),
                 }),
@@ -68,6 +73,13 @@ public class Player : MonoBehaviour
     private void Update()
     {
         rootNode.Evaluate();
+
+        //if (Vector3.Distance(this.transform.position,
+        //                    LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position) 
+        //    <= (true ? stopDistanceWithEnemy : stopDistanceWithBoss) && GameManager.instance.currentTurn != "Player")
+        //{ 
+        //    GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
+        //}
     }
 }
 
@@ -79,6 +91,8 @@ public class  CheckIfCurrentTurnIsPlayer : NodeBehaviourTree
         return state;
     }
 }
+
+
 
 public class PlayerMoveToTarget : NodeBehaviourTree
 {
@@ -125,7 +139,15 @@ public class PlayerIdle : NodeBehaviourTree
     public override NodeState Evaluate()
     {
         // Idle logic, e.g., waiting for input or other conditions
+
+        if (playerSelf.animator.GetBool(playerSelf.isMovingHash))
+        {
+            GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
+            Debug.Log(" Player Idle");
+        }
+
         playerSelf.animator.SetBool(playerSelf.isMovingHash, false);
+
         state = NodeState.success;
         return state;
     }

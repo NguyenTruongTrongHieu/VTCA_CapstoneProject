@@ -1,11 +1,24 @@
 using UnityEngine;
 
-public class PlayerStat : MonoBehaviour
+public enum PlayerClass
 {
-    [Header("Player's stat")]
-    public float maxHealth; // Player's maximum health
-    public float health; // Player's health
-    public float damage;
+    adc,
+    tank,
+    support,
+    mage,
+    assassin,
+    warrior,
+}
+
+public class PlayerStat : Stats
+{
+    [Header("Ulti")]
+    public float mana;
+    public float maxMana;
+
+    [Header("Information")]
+    public string name; // Player's name
+    public PlayerClass playerClass; // Player's class
 
     [Header("Percent bonus")]
     public float healthPercentBonus; // Bonus health percentage
@@ -21,15 +34,5 @@ public class PlayerStat : MonoBehaviour
     void Update()
     {
 
-    }
-
-    public void TakeDamage(float dam)
-    {
-        health = Mathf.Max(0, health - dam);
-    }
-
-    public void Healing(float heal)
-    { 
-        health = Mathf.Min(health + heal, maxHealth);
     }
 }

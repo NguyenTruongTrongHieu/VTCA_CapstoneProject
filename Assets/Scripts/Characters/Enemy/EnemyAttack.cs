@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class EnemyAttack : MonoBehaviour
 {
-    public PlayerStat playerStat;
+    public EnemyStat enemyStat;
+
+    private bool isAttacking = false;
 
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
     private List<int> attackHashes = new List<int>();//Trigger
-    private int specialAttackHash;//Trigger
     private int doneAttackHash; // Trigger for done attack
+
+    private int specialAttackHash;//Trigger, maybe use in the future
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        specialAttackHash = Animator.StringToHash("specialAttack");
+        isAttacking = false;
         doneAttackHash = Animator.StringToHash("DoneAttack");
         for (int i = 0; i < attackAnimations.Count; i++)
         {
@@ -26,24 +29,15 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.currentTurn == "Player")
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                animator.SetTrigger(specialAttackHash);
-                StartCoroutine(DoneAttack(false, false));
-            }
-
-            if (Input.GetKeyDown(KeyCode.End))
-            {
-                StartCoroutine(PlayAttackSequence(4, true));
-            }
+        if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" && !isAttacking)
+        { 
+            isAttacking = true;
+            StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));
         }
     }
 
     public IEnumerator PlayAttackSequence(int totalHits, bool isHavingSpecialAttack)
     {
-        GameManager.instance.currentTurn = "None"; // Set turn to None while attacking
         for (int i = 0; i < totalHits; i++)
         {
             int index = i % attackHashes.Count;
@@ -67,27 +61,24 @@ public class PlayerAttack : MonoBehaviour
         }
 
         // Gọi hàm DoneAttack sau khi kết thúc chuỗi tấn công
-        StartCoroutine(DoneAttack(false, false));
+        StartCoroutine(DoneAttack(false));
     }
 
-    public IEnumerator DoneAttack(bool isEnemyDie, bool isAllEnemiesDie)
+    public IEnumerator DoneAttack(bool isPlayerDie)
     {
         yield return new WaitForSeconds(0.5f); // Thời gian nghỉ sau khi ra hết đòn
         animator.SetTrigger(doneAttackHash); // Kết thúc chuỗi tấn công
 
-        //Check if all enemies die
-        if (isAllEnemiesDie)
-        {
-            GameManager.instance.currentTurn = "Win";
-        }
         //Check if current enemy die
-        else if (isEnemyDie)
+        if (isPlayerDie)
         {
-            GameManager.instance.currentTurn = "None";
+            GameManager.instance.currentTurn = "Lose";
         }
         else
         {
-            GameManager.instance.currentTurn = "Enemy";
+            GameManager.instance.currentTurn = "Player";
         }
+
+        isAttacking = false; // Đặt lại trạng thái tấn công
     }
 }
