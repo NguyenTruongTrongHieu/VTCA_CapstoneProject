@@ -17,6 +17,7 @@ public class PlayerStat : Stats
     public float maxMana;
 
     [Header("Information")]
+    public int id;
     public string name; // Player's name
     public PlayerClass playerClass; // Player's class
 
@@ -27,7 +28,9 @@ public class PlayerStat : Stats
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        damage = GameManager.instance.basicDamage + damage*damagePercentBonus;
+        maxHealth = GameManager.instance.basicHealth + maxHealth*healthPercentBonus;
+        SetupHPSlider();
     }
 
     // Update is called once per frame

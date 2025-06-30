@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -140,7 +140,7 @@ public class PlayerIdle : NodeBehaviourTree
     {
         // Idle logic, e.g., waiting for input or other conditions
 
-        if (playerSelf.animator.GetBool(playerSelf.isMovingHash))
+        if (playerSelf.animator.GetBool(playerSelf.isMovingHash))//Gọi ngay khi player vừa di chuyển đến enemy
         {
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
             Debug.Log(" Player Idle");

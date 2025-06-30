@@ -6,20 +6,24 @@ public class EnemyAttack : MonoBehaviour
 {
     public EnemyStat enemyStat;
 
-    private bool isAttacking = false;
+    public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
     private List<int> attackHashes = new List<int>();//Trigger
     private int doneAttackHash; // Trigger for done attack
+    private int getHitHash; // Trigger for getting hit
+    private int isDeadHash; // Trigger for dead animation
 
     private int specialAttackHash;//Trigger, maybe use in the future
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        isAttacking = false;
+        attackState = "";
         doneAttackHash = Animator.StringToHash("DoneAttack");
+        getHitHash = Animator.StringToHash("GetHit");
+        isDeadHash = Animator.StringToHash("isDead");
         for (int i = 0; i < attackAnimations.Count; i++)
         {
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
@@ -29,9 +33,9 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" && !isAttacking)
+        if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
         { 
-            isAttacking = true;
+            attackState = "Attacking";
             StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));
         }
     }
@@ -45,6 +49,11 @@ public class EnemyAttack : MonoBehaviour
 
             animator.SetTrigger(hash);
 
+            if (!isHavingSpecialAttack && i == totalHits - 1)
+            {
+                attackState = "DoneAttack"; // Set attack state to DoneAttack if not having special attack
+            }
+
             // Chờ đến khi animator qua state khác hoặc anim kết thúc
             //yield return new WaitUntil(() =>
             //{
@@ -57,11 +66,12 @@ public class EnemyAttack : MonoBehaviour
         if (isHavingSpecialAttack)
         {
             animator.SetTrigger(specialAttackHash);
+            attackState = "DoneAttack"; // Đặt lại trạng thái tấn công
             yield return new WaitForSeconds(1f); // Thời gian cho đòn tấn công đặc biệt
         }
 
         // Gọi hàm DoneAttack sau khi kết thúc chuỗi tấn công
-        StartCoroutine(DoneAttack(false));
+        StartCoroutine(DoneAttack(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>().CheckIfObjectDead()));
     }
 
     public IEnumerator DoneAttack(bool isPlayerDie)
@@ -79,6 +89,65 @@ public class EnemyAttack : MonoBehaviour
             GameManager.instance.currentTurn = "Player";
         }
 
-        isAttacking = false; // Đặt lại trạng thái tấn công
+        attackState = "DoneCircleAttack"; // Đặt lại trạng thái tấn công
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerHit"))
+        {
+            PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
+            if (playerStat != null)
+            {
+                Debug.Log("Player hit");
+                enemyStat.TakeDamage(playerStat.damage);
+                if (enemyStat.CheckIfObjectDead())
+                {
+                    var playerAttack = other.GetComponentInParent<PlayerAttack>();
+                    if (playerAttack != null)
+                    {
+                        if (playerAttack.attackState == "DoneAttack")
+                        {
+                            Debug.Log("Player is dead");
+                            animator.SetBool(isDeadHash, true); // Trigger dead animation
+                        }
+                    }
+                }
+                if (!animator.GetBool(isDeadHash))
+                {
+                    animator.SetTrigger(getHitHash); // Trigger the get hit animation
+                }
+            }
+            else
+            { 
+                Debug.LogWarning("PlayerStat component not found on the player object.");
+            }
+        }
+
+        if (other.CompareTag("PlayerSpecialHit"))
+        {
+            PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
+            if (playerStat != null)
+            {
+                Debug.Log("Player special hit");
+                enemyStat.TakeDamage(playerStat.damage * 3);
+                if (enemyStat.CheckIfObjectDead())
+                {
+                    var playerAttack = other.GetComponentInParent<PlayerAttack>();
+                    if (playerAttack != null)
+                    {
+                        if (playerAttack.attackState == "DoneAttack")
+                        {
+                            Debug.Log("Enemy is dead");
+                            animator.SetBool(isDeadHash, true); // Trigger dead animation
+                        }
+                    }
+                }
+                if (!animator.GetBool(isDeadHash))
+                {
+                    animator.SetTrigger(getHitHash); // Trigger the get hit animation
+                }
+            }
+        }
     }
 }

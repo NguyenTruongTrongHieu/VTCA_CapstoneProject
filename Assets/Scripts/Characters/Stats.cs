@@ -11,18 +11,6 @@ public class Stats : MonoBehaviour
     [Header("Slider HP")]
     public Slider hpSlider; // Slider to display health
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TakeDamage(float dam)
     {
         currentHealth = Mathf.Max(0, currentHealth - dam);
@@ -41,5 +29,17 @@ public class Stats : MonoBehaviour
             hpSlider.maxValue = maxHealth;
             hpSlider.value = currentHealth;
         }
+    }
+
+    public virtual bool CheckIfObjectDead()
+    {
+        bool result = false;
+        if (currentHealth <= 0)
+        {
+            result = true; // Object is dead
+            currentHealth = 0; // Ensure health does not go below zero
+        }
+
+        return result;
     }
 }

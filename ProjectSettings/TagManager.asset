@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - Food
+  - ListWeapon
+  - PlayerHit
+  - PlayerSpecialHit
+  - EnemyHit
+  - Enemy
   layers:
   - Default
   - TransparentFX
