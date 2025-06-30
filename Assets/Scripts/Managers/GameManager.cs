@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState
@@ -22,6 +24,9 @@ public class GameManager : MonoBehaviour
     public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn; "None": not do attack; "Win": all enemies die; "Lose": player die
     private bool isPlayerTurn = false; // True if it's player's turn, false if it's enemy's turn
     public int currentEnemyIndex = 0; // Index of the current enemy in the level
+    public List<Vector3> enemiesStartPosition = new List<Vector3>(); // List to store the start positions of enemies
+    public Vector3 enemiesStartRotation;
+    public Vector3 enemiesEndRotation;
 
     private void Awake()
     {
@@ -58,12 +63,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GoToNextEnemy()
+    { 
+        currentEnemyIndex++;
+    }
+
     public bool CheckIfAllEnemiesDead()
     { 
         bool result = true;
 
         foreach (var enemy in LevelManager.instance.currentLevel.enemiesAtLevel)
         {
+            if (enemy == null) continue; // Skip if enemy is null
+
             var enemyStat = enemy.GetComponent<EnemyStat>();
             if (enemyStat != null && !enemyStat.CheckIfObjectDead())
             {

@@ -14,6 +14,7 @@ public class EnemyAttack : MonoBehaviour
     private int doneAttackHash; // Trigger for done attack
     private int getHitHash; // Trigger for getting hit
     private int isDeadHash; // Trigger for dead animation
+    private int isVictoryHash;
 
     private int specialAttackHash;//Trigger, maybe use in the future
 
@@ -24,6 +25,7 @@ public class EnemyAttack : MonoBehaviour
         doneAttackHash = Animator.StringToHash("DoneAttack");
         getHitHash = Animator.StringToHash("GetHit");
         isDeadHash = Animator.StringToHash("isDead");
+        isVictoryHash = Animator.StringToHash("isVictory");
         for (int i = 0; i < attackAnimations.Count; i++)
         {
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
@@ -36,7 +38,7 @@ public class EnemyAttack : MonoBehaviour
         if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
         { 
             attackState = "Attacking";
-            StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));
+            StartCoroutine(PlayAttackSequence(5, false));
         }
     }
 
@@ -83,6 +85,7 @@ public class EnemyAttack : MonoBehaviour
         if (isPlayerDie)
         {
             GameManager.instance.currentTurn = "Lose";
+            Victory();
         }
         else
         {
@@ -90,6 +93,31 @@ public class EnemyAttack : MonoBehaviour
         }
 
         attackState = "DoneCircleAttack"; // Đặt lại trạng thái tấn công
+    }
+
+    public void Victory()
+    {
+        animator.SetBool(isVictoryHash, true);
+        StartCoroutine(RotateToTarget(GameManager.instance.enemiesEndRotation));
+    }
+
+    public IEnumerator RotateToTarget(Vector3 targetRot)
+    {
+        float duration = 0.5f; // Duration of the rotation
+        float elapsedTime = 0f;
+        Quaternion targetRotation = Quaternion.Euler(targetRot);
+        Debug.Log("Rotate to target: " + targetRotation.eulerAngles);
+
+        Quaternion initialRotation = transform.rotation;
+
+        while (elapsedTime < duration)
+        {
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation; // Ensure final rotation is set
     }
 
     private void OnTriggerEnter(Collider other)
@@ -110,6 +138,7 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+                            Destroy(gameObject, 0.8f);
                         }
                     }
                 }
@@ -140,6 +169,7 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Enemy is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+                            Destroy(gameObject, 0.8f);
                         }
                     }
                 }

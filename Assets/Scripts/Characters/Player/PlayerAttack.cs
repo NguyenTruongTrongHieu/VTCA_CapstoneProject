@@ -14,6 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private int doneAttackHash; // Trigger for done attack
     private int getHitHash; // Trigger for getting hit
     private int isDeadHash; // Trigger for dead animation
+    private int isVictoryHash; // Trigger for victory animation
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,6 +23,7 @@ public class PlayerAttack : MonoBehaviour
         doneAttackHash = Animator.StringToHash("DoneAttack");
         getHitHash = Animator.StringToHash("GetHit");
         isDeadHash = Animator.StringToHash("isDead");
+        isVictoryHash = Animator.StringToHash("isVictory");
         for (int i = 0; i < attackAnimations.Count; i++)
         {
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
@@ -91,16 +93,43 @@ public class PlayerAttack : MonoBehaviour
         if (isAllEnemiesDie)
         {
             GameManager.instance.currentTurn = "Win";
+            Victory();
         }
         //Check if current enemy die
         else if (isEnemyDie)
         {
             GameManager.instance.currentTurn = "None";
+            GameManager.instance.GoToNextEnemy(); // Go to next enemy
+            GetComponent<Player>().SetUpBehaviourTree();
         }
         else
         {
             GameManager.instance.currentTurn = "Enemy";
         }
+    }
+
+    public void Victory()
+    {
+        animator.SetBool(isVictoryHash, true);
+        StartCoroutine(RotateToTarget(GetComponent<Player>().startQuaternion));
+    }
+
+    public IEnumerator RotateToTarget(Vector3 targetRot)
+    {
+        float duration = 0.5f; // Duration of the rotation
+        float elapsedTime = 0f;
+        Quaternion targetRotation = Quaternion.Euler(targetRot);
+
+        Quaternion initialRotation = transform.rotation;
+
+        while (elapsedTime < duration)
+        {
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation; // Ensure final rotation is set
     }
 
     private void OnTriggerEnter(Collider other)
