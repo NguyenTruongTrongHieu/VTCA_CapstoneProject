@@ -61,6 +61,12 @@ public class RotateToTarget : NodeBehaviourTree//success neu quay ve huong cua t
             return state;
         }
 
+        Player player = self.GetComponent<Player>();
+        if (player != null)
+        {
+            player.animator.SetBool(player.isMovingHash, true);
+        }
+
         Vector3 rotation = Quaternion.Lerp(self.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
         self.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
@@ -88,6 +94,12 @@ public class CheckDistanceReturnSuccessIfDistanceLessThanDistanceToCheck : NodeB
 
     public override NodeState Evaluate()
     {
+        if (target == null)
+        {
+            state = NodeState.failure;
+            return state;
+        }
+
         state = Vector3.Distance(self.position, target.position) <= distanceToCheck ? NodeState.success : NodeState.failure;// Neu khoang cach giua self va target nho hon hoac bang distanceToCheck, tra ve success, nguoc lai tra ve failure
         return state;
     }
@@ -108,6 +120,12 @@ public class CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck : No
 
     public override NodeState Evaluate()
     {
+        if (target == null)
+        { 
+            state = NodeState.failure;
+            return state;
+        }
+
         state = Vector3.Distance(self.position, target.position) > distanceToCheck ? NodeState.success : NodeState.failure;// Neu khoang cach giua self va target lon hon hoac bang distanceToCheck, tra ve success, nguoc lai tra ve failure
         return state;
     }

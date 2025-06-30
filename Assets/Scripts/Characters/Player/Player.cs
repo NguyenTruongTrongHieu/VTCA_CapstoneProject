@@ -28,30 +28,35 @@ public class Player : MonoBehaviour
             {
                 new CheckIfGameStateIsPlaying(),
 
-                new Selector(new List<NodeBehaviourTree>
+                new Sequence(new List<NodeBehaviourTree>//Move to enemy
                 {
-                    new Sequence(new List<NodeBehaviourTree>//Move to enemy
+                    new CheckIfCurrentTurnIsNone(),
+
+                    new Selector(new List<NodeBehaviourTree>
                     {
-                        new CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck(this.transform,
-                            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
-                            (true ? stopDistanceWithEnemy : stopDistanceWithBoss)),
+                        new Sequence(new List<NodeBehaviourTree>
+                        {
+                            new CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck(this.transform,
+                                LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
+                                (true ? stopDistanceWithEnemy : stopDistanceWithBoss)),
 
 
-                        new RotateToTarget(this.transform,
-                        LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 3f),
+                            new RotateToTarget(this.transform,
+                            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 3f),
 
-                        new PlayerMoveToTarget(this,
-                            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
-                            (true ? stopDistanceWithEnemy : stopDistanceWithBoss))
+                            new PlayerMoveToTarget(this,
+                                LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
+                                (true ? stopDistanceWithEnemy : stopDistanceWithBoss))
+                        }),
+
+                        //new Sequence(new List<NodeBehaviourTree>//Attack
+                        //{ 
+                        //    new CheckIfCurrentTurnIsPlayer(),
+                        //}),
+
+                        new PlayerIdle(this),
                     }),
-
-                    //new Sequence(new List<NodeBehaviourTree>//Attack
-                    //{ 
-                    //    new CheckIfCurrentTurnIsPlayer(),
-                    //}),
-
-                    new PlayerIdle(this),
-                }),
+                })
             }),
 
             new PlayerIdle(this),
@@ -92,7 +97,14 @@ public class  CheckIfCurrentTurnIsPlayer : NodeBehaviourTree
     }
 }
 
-
+public class CheckIfCurrentTurnIsNone : NodeBehaviourTree
+{
+    public override NodeState Evaluate()
+    {
+        state = GameManager.instance.currentTurn == "None" ? NodeState.success : NodeState.failure;
+        return state;
+    }
+}
 
 public class PlayerMoveToTarget : NodeBehaviourTree
 {
@@ -116,7 +128,6 @@ public class PlayerMoveToTarget : NodeBehaviourTree
             //playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
             playerSelf.transform.position = Vector3.MoveTowards(playerSelf.transform.position, target.position, playerSelf.speed * Time.deltaTime);
 
-            playerSelf.animator.SetBool(playerSelf.isMovingHash, true);
             state = NodeState.running;
         }
         else
