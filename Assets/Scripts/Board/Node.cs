@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-   public bool isOccupied; // biến kiểm tra xem ô có bị chiếm hay không
+   public string cellState; //"Empty": ô trống; "Occupied": ô chứa food; ""
 
     public GameObject food; // biến chứa prefab của ô
 
-    //public int xIndex; // biến chứa chỉ số hàng của ô
-    //public int yIndex; // biến chứa chỉ số cột của ô
+    public int xIndex; // biến chứa chỉ số hàng của ô
+    public int yIndex; // biến chứa chỉ số cột của ô
 
-    public Node (bool _isOcupied, GameObject _food)
+    public Node (string cellState, GameObject _food)
     {
-        isOccupied = _isOcupied;
-        food = _food;   
+        this.cellState = cellState;
+        this.food = _food;   
     }
 
-    //public void SetIndex(int _xIndex, int _yIndex)
-    //{
-    //    xIndex = _xIndex;
-    //    yIndex = _yIndex;
-    //}
+    public void SetIndex(int _xIndex, int _yIndex)
+    {
+        xIndex = _xIndex;
+        yIndex = _yIndex;
+    }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour
 {
     // define the size of the board
+    [Header("Size Board")]
     public int boardWidth = 6; // chiều rộng của bàn cờ
     public int boardHeight = 8; // chiều cao của bàn cờ
 
@@ -13,13 +14,20 @@ public class GameBoard : MonoBehaviour
     public float spacingY; // khoảng cách giữa các ô theo chiều dọc
 
     // get a prafernce  to the cells prefabs
+    [Header("Prefabs")]
     public GameObject[] foodPrefab; // prefabs của đồ ăn
 
     public GameObject cellPrefab; // prefab của ô mặc định
+
+    [Header("Transform")]
     public Transform foodParent; // đối tượng cha chứa các ô thức ăn
+    public Transform cellParent;
 
     // get a reference to the collection nodes gameBoard + GO
-    private Node[,] gameBoard; // mảng hai chiều chứa các ô của bàn cờ
+    [Header("Game Board")]
+    public Node[,] cells; // mảng hai chiều chứa các ô của bàn cờ
+    public Food[,] foods;
+    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; 
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
     //public int boardSize; // kích thước của bàn cờ (số lượng ô)
     //public Node[,] nodes; // danh sách các ô của bàn cờ
@@ -42,13 +50,14 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         InitializeBoard();
-        //InitializeFood();
+        InitializeFood();
     }
 
-    void InitializeBoard()
+    public void InitializeBoard()
     {
-        gameBoard = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
-        //nodes = new Node[boardSize, boardSize]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
@@ -58,45 +67,49 @@ public class GameBoard : MonoBehaviour
         {
             for (int x = 0; x < boardWidth; x++)
             {
-                Vector2 position = new Vector2(0, 0);
                 Vector2 backgroundPosition = new Vector2(0, 0); // vị trí của ô mặc định
 
 
                 int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
                 // tính toán vị trí của ô dựa trên chỉ số hàng và cột
-                RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
-                RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định
+                RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định\
+
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
                 backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
                 backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
-                position.x += (float)((float)rectTransform.rect.x * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
-                position.y += (float)((float)rectTransform.rect.y * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
+
                 // tạo một ô mới từ prefab đã chọn
-                GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, transform.GetChild(1)); // tạo một ô mới từ prefab đã chọn
-                GameObject backGround = Instantiate(cellPrefab, backgroundPosition, Quaternion.identity, transform.GetChild(0)); // tạo một ô mặc định từ prefab đã chọn
-                food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
-                gameBoard[x, y] = new Node(true, food); // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
-                //nodes[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
+                GameObject cell = Instantiate(cellPrefab, backgroundPosition, Quaternion.identity, cellParent); // tạo một ô mặc định từ prefab đã chọn
+                cell.GetComponent<Node>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
+                gameBoard[x, y] = "EmptyCell"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
+                cells[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
             }
         }
     }
 
-    //void InitializeFood()
-    //{
+    public void InitializeFood()
+    {
+        for (int y = 0; y < boardHeight; y++)
+        {
+            for (int x = 0; x < boardWidth; x++)
+            {
+                Vector2 position = new Vector2(0, 0);
 
-    //    for (int y = 0; y < boardSize; y++)
-    //    {
-    //        for (int x = 0; x < boardSize; x++)
-    //        {
-    //            Vector2 position = nodes[x, y].transform.position;
 
-    //            int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                // tính toán vị trí của ô dựa trên chỉ số hàng và cột
+                RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
 
-    //            GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
-    //            food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
-    //            gameBoard[x, y] = "Occupied"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
-    //            foodList.Add(food); // thêm thức ăn vào danh sách thức ăn
-    //        }
-    //    }
-    //}
+                // điều chỉnh vị trí của ô dựa trên kích thước của prefab
+                position = cells[x,y].transform.position; // lấy vị trí của ô hiện tại
+
+                // tạo một ô mới từ prefab đã chọn
+                GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+                
+                food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
+                gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
+                foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
+            }
+        }
+    }
 }
