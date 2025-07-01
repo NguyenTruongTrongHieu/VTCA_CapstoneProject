@@ -67,10 +67,10 @@ public class GameBoard : MonoBehaviour
                 RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
                 RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
-                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * (x - 10.1)); // điều chỉnh vị trí theo chiều ngang
-                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * (y - 7.7)); // điều chỉnh vị trí theo chiều dọc
-                position.x += (float)((float)rectTransform.rect.x * (x - 10.1)); // điều chỉnh vị trí theo chiều ngang
-                position.y += (float)((float)rectTransform.rect.y * (y - 7.7)); // điều chỉnh vị trí theo chiều dọc
+                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
+                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
+                position.x += (float)((float)rectTransform.rect.x * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
+                position.y += (float)((float)rectTransform.rect.y * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
                 // tạo một ô mới từ prefab đã chọn
                 GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, transform.GetChild(1)); // tạo một ô mới từ prefab đã chọn
                 GameObject backGround = Instantiate(cellPrefab, backgroundPosition, Quaternion.identity, transform.GetChild(0)); // tạo một ô mặc định từ prefab đã chọn
