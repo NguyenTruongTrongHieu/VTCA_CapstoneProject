@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameBoard : MonoBehaviour
 {
@@ -12,6 +12,10 @@ public class GameBoard : MonoBehaviour
     // defien some spacing between the cells
     public float spacingX; // khoảng cách giữa các ô theo chiều ngang
     public float spacingY; // khoảng cách giữa các ô theo chiều dọc
+
+    [Header("Matching manager")]
+    public int numberOfFoodMatching;
+    public int multipleScore;
 
     // get a prafernce  to the cells prefabs
     [Header("Prefabs")]
@@ -29,6 +33,9 @@ public class GameBoard : MonoBehaviour
     public Food[,] foods;
     public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; 
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
+    private bool interleavedCell = false;
+    public Color cellColor1;
+    public Color cellColor2;
     //public int boardSize; // kích thước của bàn cờ (số lượng ô)
     //public Node[,] nodes; // danh sách các ô của bàn cờ
     //public List<GameObject> foodList = new List<GameObject>(); // danh sách các ô chứa thức ăn
@@ -73,16 +80,43 @@ public class GameBoard : MonoBehaviour
                 int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
                 // tính toán vị trí của ô dựa trên chỉ số hàng và cột
                 RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định\
-
+                
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
-                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
-                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
+                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * 1.2f * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
+                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * 1.2f * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
 
                 // tạo một ô mới từ prefab đã chọn
                 GameObject cell = Instantiate(cellPrefab, backgroundPosition, Quaternion.identity, cellParent); // tạo một ô mặc định từ prefab đã chọn
                 cell.GetComponent<Node>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "EmptyCell"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 cells[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
+
+                if (y % 2 != 0)
+                {
+                    if (interleavedCell)
+                    {
+                        cell.GetComponent<Image>().color = cellColor1;
+                        interleavedCell = false; // đặt lại biến interleavedCell về false
+                    }
+                    else
+                    {
+                        cell.GetComponent<Image>().color = cellColor2;
+                        interleavedCell = true;
+                    }
+                }
+                else
+                {
+                    if (interleavedCell)
+                    {
+                        cell.GetComponent<Image>().color = cellColor2;
+                        interleavedCell = false; // đặt lại biến interleavedCell về false
+                    }
+                    else
+                    {
+                        cell.GetComponent<Image>().color = cellColor1;
+                        interleavedCell = true;
+                    }
+                }
             }
         }
     }
@@ -109,6 +143,7 @@ public class GameBoard : MonoBehaviour
                 food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
+                cells[x, y].food = food; // lưu food vao node
             }
         }
     }
