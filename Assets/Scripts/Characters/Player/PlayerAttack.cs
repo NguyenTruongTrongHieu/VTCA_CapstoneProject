@@ -35,13 +35,12 @@ public class PlayerAttack : MonoBehaviour
     {
         if (GameManager.instance.currentTurn == "Player")
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                animator.SetTrigger(specialAttackHash);
-                StartCoroutine(DoneAttack(false, false));
+                StartCoroutine(PlayAttackSequence(1, false));
             }
 
-            if (Input.GetKeyDown(KeyCode.End))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 StartCoroutine(PlayAttackSequence(4, true));
             }
