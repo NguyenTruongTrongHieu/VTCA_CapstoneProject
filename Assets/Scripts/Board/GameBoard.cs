@@ -82,8 +82,8 @@ public class GameBoard : MonoBehaviour
                 RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định\
                 
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
-                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * 1.2f * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
-                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * 1.2f * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
+                backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * 1.15f * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
+                backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * 1.15f * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
 
                 // tạo một ô mới từ prefab đã chọn
                 GameObject cell = Instantiate(cellPrefab, backgroundPosition, Quaternion.identity, cellParent); // tạo một ô mặc định từ prefab đã chọn
