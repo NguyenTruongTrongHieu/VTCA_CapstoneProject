@@ -9,6 +9,11 @@ public class UIManager : MonoBehaviour
     public Button playButton;
     public GameObject mainMenuPanel;
 
+    [Header("In Game")]
+    public GameObject inGamePanel;
+    public GameObject gameBoard;
+    public GameObject disableMatching;
+
     private void Awake()
     {
         if (instance == null)
@@ -25,7 +30,8 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        mainMenuPanel.SetActive(true);
+        inGamePanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,7 +44,10 @@ public class UIManager : MonoBehaviour
     {
         GameManager.instance.currentGameState = GameState.Playing;
         GameManager.instance.currentTurn = "None"; // Set the current turn to None
+
         mainMenuPanel.SetActive(false);
+        inGamePanel.SetActive(true);
+
         StartCoroutine(
         CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
     }

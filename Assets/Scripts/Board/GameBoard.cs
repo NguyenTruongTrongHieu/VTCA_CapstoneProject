@@ -56,7 +56,7 @@ public class GameBoard : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InitializeBoard();
+        InitializeBoard2();
         InitializeFood();
     }
 
@@ -144,6 +144,56 @@ public class GameBoard : MonoBehaviour
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
                 cells[x, y].food = food; // lưu food vao node
+            }
+        }
+    }
+
+    public void InitializeBoard2()
+    {
+        gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
+
+        //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
+        //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
+
+
+        for (int y = 0; y < boardHeight; y++)
+        {
+            for (int x = 0; x < boardWidth; x++)
+            {
+                // tạo một ô mới từ prefab đã chọn
+                Transform cell = cellParent.GetChild(6 * x + y); // tạo một ô mặc định từ prefab đã chọn
+                cell.GetComponent<Node>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
+                gameBoard[x, y] = "EmptyCell"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
+                cells[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
+
+                if (y % 2 != 0)
+                {
+                    if (interleavedCell)
+                    {
+                        cell.GetComponent<Image>().color = cellColor1;
+                        interleavedCell = false; // đặt lại biến interleavedCell về false
+                    }
+                    else
+                    {
+                        cell.GetComponent<Image>().color = cellColor2;
+                        interleavedCell = true;
+                    }
+                }
+                else
+                {
+                    if (interleavedCell)
+                    {
+                        cell.GetComponent<Image>().color = cellColor2;
+                        interleavedCell = false; // đặt lại biến interleavedCell về false
+                    }
+                    else
+                    {
+                        cell.GetComponent<Image>().color = cellColor1;
+                        interleavedCell = true;
+                    }
+                }
             }
         }
     }
