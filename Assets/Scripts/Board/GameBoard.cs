@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class GameBoard : MonoBehaviour
     public float spacingY; // khoảng cách giữa các ô theo chiều dọc
 
     [Header("Matching manager")]
+    public List<Food> ChoosenFoods = new List<Food>(); // danh sách các ô thức ăn đã chọn để so khớp
     public int numberOfFoodMatching;
     public int multipleScore;
 
@@ -26,6 +28,15 @@ public class GameBoard : MonoBehaviour
     [Header("Transform")]
     public Transform foodParent; // đối tượng cha chứa các ô thức ăn
     public Transform cellParent;
+
+    [Header("Falling Food")]
+    public float duration = 100f; // tốc độ rơi của thức ăn
+    private float countDurationTime = 0;
+    public Food firstFallingFood;
+    public bool isFirstFallingFood;
+    public bool isDoneOneFallingRound;
+
+    public bool startFalling = false;//Test
 
     // get a reference to the collection nodes gameBoard + GO
     [Header("Game Board")]
@@ -60,6 +71,40 @@ public class GameBoard : MonoBehaviour
         InitializeFood();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        { 
+            startFalling = true; // Test: bắt đầu rơi thức ăn khi nhấn phím Space
+            isDoneOneFallingRound = true;
+        }
+
+        if (startFalling)
+        {
+            if (isDoneOneFallingRound)
+            {
+                isDoneOneFallingRound = false; // reset isDoneOneFallingRound 
+                bool checkIfDoneFallingAllFood = FoodFallDown();// Kiểm tra xem có ô trống để rơi thức ăn hay không
+
+                if (!checkIfDoneFallingAllFood) // nếu không còn ô trống để rơi thức ăn
+                {
+                    startFalling = false; // dừng rơi thức ăn
+                    isDoneOneFallingRound = false;
+                    Debug.Log("No more food to fall down.");
+                }
+            }
+            //else
+            //{ 
+            //    countDurationTime += Time.deltaTime; // tăng thời gian đã trôi qua
+            //    if (countDurationTime >= duration)
+            //    {
+            //        countDurationTime = 0; // reset thời gian đã trôi qua
+            //        isDoneOneFallingRound = true; // đặt isDoneOneFallingRound về true để tiếp tục rơi thức ăn
+            //    }
+            //}
+        }
+    }
+
     public void InitializeBoard()
     {
         gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
@@ -90,6 +135,7 @@ public class GameBoard : MonoBehaviour
                 cell.GetComponent<Node>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "EmptyCell"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 cells[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
+                cells[x, y].cellState = "Empty";
 
                 if (y % 2 != 0)
                 {
@@ -144,6 +190,7 @@ public class GameBoard : MonoBehaviour
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
                 cells[x, y].food = food; // lưu food vao node
+                cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
             }
         }
     }
@@ -196,5 +243,124 @@ public class GameBoard : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool FoodFallDown()//return true nếu có ô trống để rơi thức ăn, return false nếu không còn gì để rơi
+    {
+        bool result = false; // biến để kiểm tra xem có ô trống để rơi thức ăn hay không
+
+        isFirstFallingFood = true;
+        firstFallingFood = null; // reset the first falling food
+
+        for (int x = boardWidth - 1; x >= 0; x--)
+        {
+            for (int y = boardHeight - 1; y >= 0; y--)
+            {
+                if (foods[x, y] != null)//Đổi điều kiện dựa trên tình hình game sau này
+                    continue;
+
+                // Nếu ô hiện tại không có thức ăn, tìm ô phía trên để rơi xuống
+                if (x == 0)
+                { 
+                    Debug.Log("Spawn food to fall down above position: " + x + ", " + y);
+                    //result = true; // có ô trống để rơi thức ăn
+                    continue;
+                }
+
+                if (foods[x - 1, y] != null)
+                {
+                    result = true; // có ô trống để rơi thức ăn
+                    Food foodToMove = DeleteFoodAtPos(x-1, y);
+
+                    if (isFirstFallingFood)
+                    { 
+                        isFirstFallingFood = false; // Đặt isFirstFallingFood về false sau khi đã lấy thức ăn đầu tiên
+                        firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
+                    }
+
+                    StartCoroutine(MoveFoodToNode(x - 1, y , x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                }
+                else if (y < 5 && foods[x - 1, y + 1] != null)
+                {
+                    result = true; // có ô trống để rơi thức ăn
+                    Food foodToMove = DeleteFoodAtPos(x - 1, y + 1);
+
+                    if (isFirstFallingFood)
+                    {
+                        isFirstFallingFood = false; // Đặt isFirstFallingFood về false sau khi đã lấy thức ăn đầu tiên
+                        firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
+                    }
+
+                    StartCoroutine(MoveFoodToNode(x - 1, y + 1, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                }
+                else if (y > 0 && foods[x - 1, y - 1] != null)
+                {
+                    result = true; // có ô trống để rơi thức ăn
+                    Food foodToMove = DeleteFoodAtPos(x - 1, y - 1);
+
+                    if (isFirstFallingFood)
+                    {
+                        isFirstFallingFood = false; // Đặt isFirstFallingFood về false sau khi đã lấy thức ăn đầu tiên
+                        firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
+                    }
+
+                    StartCoroutine(MoveFoodToNode(x - 1, y - 1, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                }
+                else
+                    continue;
+            }
+        }
+
+        return result;
+    }
+
+    public IEnumerator MoveFoodToNode(int startX, int startY, int targetX, int targetY, Food foodToMove)
+    {
+        foodToMove.isFalling = true;
+        AddFoodAtPos(targetX, targetY, foodToMove); // thêm thức ăn vào ô đích
+
+        Transform targetCell = cells[targetX, targetY].transform; // lấy ô đích
+        Transform startCell = cells[startX, startY].transform; // lấy ô bắt đầu
+        float elapsedTime = 0f; // thời gian đã trôi qua
+        //Di chuyển food đến targetCell
+        while (elapsedTime < duration)
+        {
+            //Dùng Vector2.Lerp để di chuyển food đến ô đích
+            float t = elapsedTime / duration;
+            foodToMove.transform.position = Vector2.Lerp(startCell.transform.position, targetCell.position, t);
+            elapsedTime += Time.deltaTime; // tăng thời gian đã trôi qua
+
+            yield return null;
+        }
+        foodToMove.transform.position = targetCell.position; // đảm bảo thức ăn dừng đúng vị trí ô đích
+
+        //Xử lý anim cho food khi ô dưới có food khác
+
+        if (firstFallingFood == foodToMove)
+        { 
+            Debug.Log("First falling food: " + foodToMove.gameObject.name);
+            isDoneOneFallingRound = true; // Đặt isDoneOneFallingRound về true khi đã xử lý thức ăn đầu tiên
+        }
+        foodToMove.isFalling = false;
+    }
+
+    public Food DeleteFoodAtPos(int x, int y)
+    {
+        gameBoard[x, y] = "EmptyCell"; // cập nhật trạng thái ô thành rỗng
+        cells[x, y].cellState = "Empty"; // cập nhật trạng thái ô thành rỗng
+        cells[x, y].food = null; // xóa thức ăn khỏi ô
+        Food result = foods[x, y]; // lưu thức ăn đã xóa vào biến result
+        foods[x, y] = null; // xóa thức ăn khỏi mảng foods
+
+        return result;
+    }
+
+    public void AddFoodAtPos(int x, int y, Food food)
+    { 
+        food.SetIndex(x, y); // thiết lập chỉ số hàng và cột của thức ăn
+        gameBoard[x, y] = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
+        cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
+        cells[x, y].food = food.gameObject; // lưu thức ăn vào ô
+        foods[x, y] = food; // lưu thức ăn vào mảng foods
     }
 }

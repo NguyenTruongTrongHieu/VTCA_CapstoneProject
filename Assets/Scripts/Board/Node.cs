@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-   public string cellState; //"Empty": ô trống; "Occupied": ô chứa food; ""
+   public string cellState; //"Empty": ô trống; "HavingFood": ô chứa food; ""
 
     public GameObject food; // biến chứa prefab của ô
 

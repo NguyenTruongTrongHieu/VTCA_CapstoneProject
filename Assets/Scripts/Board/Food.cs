@@ -7,6 +7,7 @@ public class Food : MonoBehaviour
     public int xIndex; // chỉ số hàng của ô chứa thức ăn
     public int yIndex; // chỉ số cột của ô chứa thức ăn
 
+    public bool isFalling;
     public bool isMatched; // biến kiểm tra xem thức ăn có được ăn hay không
     private Vector2 currentPos;
     private Vector2 targetPos;
@@ -23,6 +24,10 @@ public class Food : MonoBehaviour
         yIndex = _yIndex;
     }
 
+    //private void OnDestroy()
+    //{
+    //    GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
+    //}
 }
 
 public enum FoodType
