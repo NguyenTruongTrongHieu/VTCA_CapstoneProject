@@ -38,7 +38,7 @@ public class EnemyAttack : MonoBehaviour
         if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
         { 
             attackState = "Attacking";
-            StartCoroutine(PlayAttackSequence(5, false));
+            StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));
         }
     }
 
