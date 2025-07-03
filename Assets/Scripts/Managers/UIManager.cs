@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject inGamePanel;
     public GameObject gameBoard;
     public GameObject disableMatching;
+    public GameObject targetPos;//Test
 
     private void Awake()
     {
