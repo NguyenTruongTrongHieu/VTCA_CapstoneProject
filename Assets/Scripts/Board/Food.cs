@@ -114,6 +114,13 @@ public class Food : MonoBehaviour
         transform.localEulerAngles = targetRotation; // Đảm bảo góc cuối cùng chính xác
     }
 
+    public IEnumerator ScaleInAndScaleOut()
+    { 
+        yield return StartCoroutine(ZoomIn(0.15f, 3f)); // Tăng kích thước lên 20%
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(ReturnOriginalScale(0.15f)); // Giảm kích thước xuống 80%
+    }
+
     public IEnumerator TurnOver(float duration)
     { 
         Vector3 originalRotation = transform.localEulerAngles;
@@ -149,9 +156,11 @@ public class Food : MonoBehaviour
     {
         this.transform.parent = UIManager.instance.targetPos.transform;
 
-        StartCoroutine(ZoomIn(0.2f, 3f));
+        //StartCoroutine(ZoomIn(0.2f, 3f));
+        //StartCoroutine(ZoomOut(0.15f, 0.5f));
+        StartCoroutine(ScaleInAndScaleOut());
         yield return StartCoroutine(TurnOver(0.3f));
-        StartCoroutine(ReturnOriginalScale(0.1f));
+        //StartCoroutine(ReturnOriginalScale(0.2f));
 
         yield return StartCoroutine(MoveTo(UIManager.instance.targetPos.transform, duration));
     }
