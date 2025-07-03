@@ -265,7 +265,18 @@ public class GameBoard : MonoBehaviour
                 if (x == 0)
                 { 
                     Debug.Log("Spawn food to fall down above position: " + x + ", " + y);
-                    //result = true; // có ô trống để rơi thức ăn
+                    result = true; // có ô trống để rơi thức ăn
+                    Food foodToMove = AddNewFoodAbove(x, y); // Thêm thức ăn mới vào ô trên cùng
+                    Vector2 currentFoodPos = foodToMove.transform.position;
+
+                    if (isFirstFallingFood)
+                    {
+                        isFirstFallingFood = false; // Đặt isFirstFallingFood về false sau khi đã lấy thức ăn đầu tiên
+                        firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
+                    }
+
+                    StartCoroutine(MoveFoodToNode(currentFoodPos, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+
                     continue;
                 }
 
@@ -280,7 +291,7 @@ public class GameBoard : MonoBehaviour
                         firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
                     }
 
-                    StartCoroutine(MoveFoodToNode(x - 1, y , x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                    StartCoroutine(MoveFoodToNode(cells[x - 1, y].transform.position, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
                 }
                 else if (y < 5 && foods[x - 1, y + 1] != null)
                 {
@@ -293,7 +304,7 @@ public class GameBoard : MonoBehaviour
                         firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
                     }
 
-                    StartCoroutine(MoveFoodToNode(x - 1, y + 1, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                    StartCoroutine(MoveFoodToNode(cells[x - 1, y + 1].transform.position, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
                 }
                 else if (y > 0 && foods[x - 1, y - 1] != null)
                 {
@@ -306,7 +317,7 @@ public class GameBoard : MonoBehaviour
                         firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
                     }
 
-                    StartCoroutine(MoveFoodToNode(x - 1, y - 1, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
+                    StartCoroutine(MoveFoodToNode(cells[x - 1, y - 1].transform.position, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
                 }
                 else
                     continue;
@@ -316,28 +327,28 @@ public class GameBoard : MonoBehaviour
         return result;
     }
 
-    public void AddNewFoodAbove(int x, int y)
+    public Food AddNewFoodAbove(int x, int y)
     { 
         int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
         Vector2 position = new Vector2(cells[x, y].transform.position.x, cells[x, y].transform.position.y + deltaYBetweenTwoCell); // vị trí của ô mới
 
         GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+        return food.GetComponent<Food>();
     }
 
-    public IEnumerator MoveFoodToNode(int startX, int startY, int targetX, int targetY, Food foodToMove)
+    public IEnumerator MoveFoodToNode(Vector2 startPos, int targetX, int targetY, Food foodToMove)
     {
         foodToMove.isFalling = true;
         AddFoodAtPos(targetX, targetY, foodToMove); // thêm thức ăn vào ô đích
 
         Transform targetCell = cells[targetX, targetY].transform; // lấy ô đích
-        Transform startCell = cells[startX, startY].transform; // lấy ô bắt đầu
         float elapsedTime = 0f; // thời gian đã trôi qua
         //Di chuyển food đến targetCell
         while (elapsedTime < duration)
         {
             //Dùng Vector2.Lerp để di chuyển food đến ô đích
             float t = elapsedTime / duration;
-            foodToMove.transform.position = Vector2.Lerp(startCell.transform.position, targetCell.position, t);
+            foodToMove.transform.position = Vector2.Lerp(startPos, targetCell.position, t);
             elapsedTime += Time.deltaTime; // tăng thời gian đã trôi qua
 
             yield return null;
