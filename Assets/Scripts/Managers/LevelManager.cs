@@ -23,12 +23,27 @@ public class LevelManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        currentLevel = new Level(1);
+        SpawnEnemiesAtCurrentLevel(); // Spawn enemies for the current level at the start
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SpawnEnemiesAtCurrentLevel()
+    { 
+        currentLevel.enemiesAtLevel.Clear(); // Clear the current level's enemies list before spawning new ones
+        Level level = levels[currentLevel.index - 1]; // Get the current level from the levels array
+        for (int i = 0; i < level.enemiesAtLevel.Count; i++)
+        { 
+            var enemy = Instantiate(level.enemiesAtLevel[i], 
+                GameManager.instance.enemiesStartPosition[i], 
+                Quaternion.Euler(GameManager.instance.enemiesStartRotation));
+
+            currentLevel.enemiesAtLevel.Add(enemy); // Add the enemy to the current level's enemies list
+        }
     }
 }

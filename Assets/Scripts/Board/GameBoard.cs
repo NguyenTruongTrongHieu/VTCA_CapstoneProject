@@ -167,6 +167,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    //List<Vector2Int>
     public void InitializeFood()
     {
         for (int y = 0; y < boardHeight; y++)
