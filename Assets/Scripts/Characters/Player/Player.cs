@@ -78,13 +78,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         rootNode.Evaluate();
-
-        //if (Vector3.Distance(this.transform.position,
-        //                    LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position) 
-        //    <= (true ? stopDistanceWithEnemy : stopDistanceWithBoss) && GameManager.instance.currentTurn != "Player")
-        //{ 
-        //    GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
-        //}
     }
 }
 

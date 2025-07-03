@@ -12,6 +12,8 @@ public class LevelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            currentLevel = new Level(1);
+            SpawnEnemiesAtCurrentLevel(); // Spawn enemies for the current level at the start
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -23,8 +25,6 @@ public class LevelManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentLevel = new Level(1);
-        SpawnEnemiesAtCurrentLevel(); // Spawn enemies for the current level at the start
     }
 
     // Update is called once per frame

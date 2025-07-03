@@ -32,6 +32,7 @@ public class GameBoard : MonoBehaviour
     [Header("Falling Food")]
     public float duration = 100f; // tốc độ rơi của thức ăn
     private float countDurationTime = 0;
+    public float deltaYBetweenTwoCell = 182f;
     public Food firstFallingFood;
     public bool isFirstFallingFood;
     public bool isDoneOneFallingRound;
@@ -313,6 +314,14 @@ public class GameBoard : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void AddNewFoodAbove(int x, int y)
+    { 
+        int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+        Vector2 position = new Vector2(cells[x, y].transform.position.x, cells[x, y].transform.position.y + deltaYBetweenTwoCell); // vị trí của ô mới
+
+        GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
     }
 
     public IEnumerator MoveFoodToNode(int startX, int startY, int targetX, int targetY, Food foodToMove)
