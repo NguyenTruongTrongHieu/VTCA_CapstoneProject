@@ -34,16 +34,84 @@ public class Food : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            StartCoroutine(ZoomOut(0.1f, 0.8f));
+            StartCoroutine(FallAnim());
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            StartCoroutine(ZoomIn(0.1f, 1.2f));
+            StartCoroutine(ChoosenAnim());
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             StartCoroutine(MoveToPlayerHpSlider(0.5f));
         }
+    }
+
+    public IEnumerator ChoosenAnim()
+    {
+        StartCoroutine(ZoomIn(0.15f, 1.2f)); // Tăng kích thước lên 20%
+        while (isMatched)
+        {
+            yield return StartCoroutine(RotateTheFood(0.15f, 20f));
+            yield return new WaitForSeconds(0.1f);
+            yield return StartCoroutine(ReturnOriginalRotation(0.15f));
+            yield return new WaitForSeconds(0.1f);
+        }
+        StartCoroutine(ReturnOriginalScale(0.15f)); // Trả về góc ban đầu
+    }
+
+    public IEnumerator RotateTheFood(float duration, float rotation)
+    {
+        Vector3 originalRotation = transform.localEulerAngles;
+        Vector3 targetRotation = originalRotation + new Vector3(0, 0, rotation); // Xoay 180 độ
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.localEulerAngles = Vector3.Lerp(originalRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.localEulerAngles = targetRotation; // Đảm bảo góc cuối cùng chính xác
+        yield return null;
+    }
+
+    public IEnumerator ReturnOriginalRotation(float duration)
+    {
+        Vector3 startRotation = transform.localEulerAngles;
+        Vector3 targetRotation = new Vector3(0, 0, 0); // Xoay 180 độ
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.localEulerAngles = Vector3.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.localEulerAngles = targetRotation; // Đảm bảo góc cuối cùng chính xác
+    }
+
+    public IEnumerator FallAnim()
+    {
+        yield return StartCoroutine(ReduceScaleY(0.08f, 0.5f)); // Giảm kích thước Y xuống 50%
+        yield return new WaitForSeconds(0.04f);
+        yield return StartCoroutine(ReturnOriginalScale(0.08f));
+    }
+
+    private IEnumerator ReduceScaleY(float duration, float targetScaleY)
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = new Vector3(originalScale.x, targetScaleY, originalScale.z);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = targetScale; // Đảm bảo kích thước cuối cùng chính xác
     }
 
     public IEnumerator ZoomIn(float duration, float increasePercent)//Lý tưởng nhất: 1.2f
@@ -116,7 +184,7 @@ public class Food : MonoBehaviour
 
     public IEnumerator ScaleInAndScaleOut()
     { 
-        yield return StartCoroutine(ZoomIn(0.15f, 3f)); // Tăng kích thước lên 20%
+        yield return StartCoroutine(ZoomIn(0.1f, 5f)); // Tăng kích thước lên 20%
         yield return new WaitForSeconds(0.1f);
         StartCoroutine(ReturnOriginalScale(0.15f)); // Giảm kích thước xuống 80%
     }

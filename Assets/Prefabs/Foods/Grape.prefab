@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8598679443345941274}
   - component: {fileID: 8313425533780038647}
   - component: {fileID: 5080372199592139672}
+  - component: {fileID: 796444986947240834}
   m_Layer: 5
   m_Name: Grape
   m_TagString: Untagged
@@ -91,4 +92,27 @@ MonoBehaviour:
   foodType: 3
   xIndex: 0
   yIndex: 0
+  isFalling: 0
   isMatched: 0
+--- !u!95 &796444986947240834
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466460763944440822}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1c1de24b8ccd677419bfe5a09fcd4ea6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
