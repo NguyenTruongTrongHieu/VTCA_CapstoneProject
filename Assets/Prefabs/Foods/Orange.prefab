@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5239046815525826432}
   - component: {fileID: 620150867571472014}
   - component: {fileID: -5791560507005368582}
+  - component: {fileID: 1651553752746473984}
   m_Layer: 5
   m_Name: Orange
   m_TagString: Untagged
@@ -91,4 +92,27 @@ MonoBehaviour:
   foodType: 4
   xIndex: 0
   yIndex: 0
+  isFalling: 0
   isMatched: 0
+--- !u!95 &1651553752746473984
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5494939586629353636}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1c1de24b8ccd677419bfe5a09fcd4ea6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

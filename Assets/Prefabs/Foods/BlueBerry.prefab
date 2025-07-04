@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6063647259164082893}
   - component: {fileID: 3848547440791373227}
   - component: {fileID: -2958018461331350908}
+  - component: {fileID: 3711054197627137693}
   m_Layer: 5
   m_Name: BlueBerry
   m_TagString: Untagged
@@ -91,4 +92,27 @@ MonoBehaviour:
   foodType: 2
   xIndex: 0
   yIndex: 0
+  isFalling: 0
   isMatched: 0
+--- !u!95 &3711054197627137693
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4214447038979002184}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1c1de24b8ccd677419bfe5a09fcd4ea6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
