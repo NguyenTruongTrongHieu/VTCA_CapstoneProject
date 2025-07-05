@@ -92,9 +92,9 @@ public class Food : MonoBehaviour
 
     public IEnumerator FallAnim()
     {
-        yield return StartCoroutine(ReduceScaleY(0.08f, 0.5f)); // Giảm kích thước Y xuống 50%
-        yield return new WaitForSeconds(0.04f);
-        yield return StartCoroutine(ReturnOriginalScale(0.08f));
+        yield return StartCoroutine(ReduceScaleY(0.05f, 0.5f)); // Giảm kích thước Y xuống 50%
+        yield return new WaitForSeconds(0.02f);
+        yield return StartCoroutine(ReturnOriginalScale(0.05f));
     }
 
     private IEnumerator ReduceScaleY(float duration, float targetScaleY)
