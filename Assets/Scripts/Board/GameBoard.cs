@@ -356,6 +356,10 @@ public class GameBoard : MonoBehaviour
         foodToMove.transform.position = targetCell.position; // đảm bảo thức ăn dừng đúng vị trí ô đích
 
         //Xử lý anim cho food khi ô dưới có food khác
+        if (targetX == boardHeight - 1 || cells[targetX + 1, targetY].cellState == "HavingFood")
+        {
+            foodToMove.StartCoroutine(foodToMove.FallAnim());
+        }
 
         if (firstFallingFood == foodToMove)
         { 
