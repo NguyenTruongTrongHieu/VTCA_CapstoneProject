@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
             instance = this;
             currentLevel = new Level(1);
             SpawnEnemiesAtCurrentLevel(); // Spawn enemies for the current level at the start
+            AddStateAndLockCellToCurrentLevel(); // Add states and locked cells for the current level at the start
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -45,5 +46,11 @@ public class LevelManager : MonoBehaviour
 
             currentLevel.enemiesAtLevel.Add(enemy); // Add the enemy to the current level's enemies list
         }
+    }
+
+    public void AddStateAndLockCellToCurrentLevel()
+    { 
+        currentLevel.lockCellInBoard = levels[currentLevel.index - 1].lockCellInBoard;
+        currentLevel.statesInBoard = levels[currentLevel.index - 1].statesInBoard;
     }
 }

@@ -7,31 +7,42 @@ public class Level
 {
     public int index;
     public List<GameObject> enemiesAtLevel;
-    public bool isChangingScene;
+    public string sceneName;
+
+    public List<Vector2Int> statesInBoard; // List to store the states in the board
+    public List<Vector2Int> lockCellInBoard; // List to store the locked cells in the board
 
     public Level(int index, List<GameObject> enemiesAtLevel)
     {
         this.index = index;
         this.enemiesAtLevel = enemiesAtLevel;
-        isChangingScene = false;
+        sceneName = "Scene1";
+        statesInBoard = new List<Vector2Int>();
+        lockCellInBoard = new List<Vector2Int>();
     }
 
-    public Level(int index, List<GameObject> enemiesAtLevel, bool isChangingScene) : this(index, enemiesAtLevel)
+    public Level(int index, List<GameObject> enemiesAtLevel, string sceneName) : this(index, enemiesAtLevel)
     {
-        this.isChangingScene = isChangingScene;
+        this.sceneName = sceneName;
+        statesInBoard = new List<Vector2Int>();
+        lockCellInBoard = new List<Vector2Int>();
     }
 
     public Level(int index)
     {
         this.index = index;
         this.enemiesAtLevel = new List<GameObject>();
-        isChangingScene = false;
+        sceneName = "Scene1";
+        statesInBoard = new List<Vector2Int>();
+        lockCellInBoard = new List<Vector2Int>();
     }
 
-    public Level(int index, bool isChangingScene)
+    public Level(int index, string sceneName)
     {
         this.index = index;
         this.enemiesAtLevel = new List<GameObject>();
-        this.isChangingScene = isChangingScene;
+        this.sceneName = sceneName;
+        statesInBoard = new List<Vector2Int>();
+        lockCellInBoard = new List<Vector2Int>();
     }
 }
