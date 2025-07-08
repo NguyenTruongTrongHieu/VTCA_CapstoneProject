@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +24,7 @@ public class GameBoard : MonoBehaviour
     // get a prafernce  to the cells prefabs
     [Header("Prefabs")]
     public GameObject[] foodPrefab; // prefabs của đồ ăn
-
+    public GameObject statePrefab; // prefab của khối gỗ
     public GameObject cellPrefab; // prefab của ô mặc định
 
     [Header("Transform")]
@@ -43,7 +45,7 @@ public class GameBoard : MonoBehaviour
     [Header("Game Board")]
     public Node[,] cells; // mảng hai chiều chứa các ô của bàn cờ
     public Food[,] foods;
-    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; 
+    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá;
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
     private bool interleavedCell = false;
     public Color cellColor1;
@@ -69,7 +71,7 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         InitializeBoard2();
-        InitializeFood();
+        InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
     }
 
     private void Update()
@@ -123,7 +125,7 @@ public class GameBoard : MonoBehaviour
                 Vector2 backgroundPosition = new Vector2(0, 0); // vị trí của ô mặc định
 
 
-                int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
                 // tính toán vị trí của ô dựa trên chỉ số hàng và cột
                 RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định\
                 
@@ -169,16 +171,40 @@ public class GameBoard : MonoBehaviour
     }
 
     //List<Vector2Int>
-    public void InitializeFood()
+    public void InitializeFood(List<Vector2Int> states, List<Vector2Int> lockCell)
     {
         for (int y = 0; y < boardHeight; y++)
         {
             for (int x = 0; x < boardWidth; x++)
             {
+                var findLockCell = lockCell.FindIndex(xy => xy.x == x && xy.y == y); // tìm trạng thái của ô hiện tại trong danh sách lockCell
+                if (findLockCell >= 0)
+                {
+                    // nếu ô hiện tại là ô bị khóa, không tạo thức ăn
+                    gameBoard[x, y] = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
+                    cells[x, y].cellState = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
+                    foods[x, y] = null; // không có thức ăn trong ô bị khóa
+                    continue; // bỏ qua việc tạo thức ăn cho ô này
+                }
+
+                var findCell = states.FindIndex(xy => xy.x == x && xy.y == y); // tìm trạng thái của ô hiện tại trong danh sách states
+                if (findCell >= 0)
+                {
+                    Vector2 pos = new Vector2(0, 0);
+                    pos = cells[x, y].transform.position;
+
+                    GameObject state = Instantiate(statePrefab, pos, Quaternion.identity, foodParent); // tạo một khối gỗ mới từ prefab đã chọn
+                    state.GetComponent<State>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của khối gỗ
+                    gameBoard[x, y] = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
+                    cells[x, y].cellState = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
+                    foods[x, y] = null; // không có thức ăn trong ô có khối gỗ
+                    continue; // bỏ qua việc tạo thức ăn cho ô này
+                }
+
                 Vector2 position = new Vector2(0, 0);
 
 
-                int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
                 // tính toán vị trí của ô dựa trên chỉ số hàng và cột
                 RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
 
@@ -258,7 +284,7 @@ public class GameBoard : MonoBehaviour
         {
             for (int y = boardHeight - 1; y >= 0; y--)
             {
-                if (foods[x, y] != null)//Đổi điều kiện dựa trên tình hình game sau này
+                if (gameBoard[x, y] != "EmptyCell")//Đổi điều kiện dựa trên tình hình game sau này
                     continue;
 
                 // Nếu ô hiện tại không có thức ăn, tìm ô phía trên để rơi xuống
@@ -329,7 +355,7 @@ public class GameBoard : MonoBehaviour
 
     public Food AddNewFoodAbove(int x, int y)
     { 
-        int randomIndex = Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+        int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
         Vector2 position = new Vector2(cells[x, y].transform.position.x, cells[x, y].transform.position.y + deltaYBetweenTwoCell); // vị trí của ô mới
 
         GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn

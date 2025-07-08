@@ -25,10 +25,10 @@ public class Food : MonoBehaviour
         yIndex = _yIndex;
     }
 
-    //private void OnDestroy()
-    //{
-    //    GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
-    //}
+    private void OnDestroy()
+    {
+        GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
+    }
 
     private void Update()
     {
