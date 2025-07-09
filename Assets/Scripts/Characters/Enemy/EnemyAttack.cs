@@ -85,6 +85,7 @@ public class EnemyAttack : MonoBehaviour
         if (isPlayerDie)
         {
             GameManager.instance.currentTurn = "Lose";
+            GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
         }
         else

@@ -54,13 +54,15 @@ public class GameManager : MonoBehaviour
                     isPlayerTurn = true; // Player's turn
                     //Enable input
                     UIManager.instance.disableMatching.SetActive(false); // Disable matching UI during player's turn
+                    UIManager.instance.ultimateButton.interactable = true; // Disable ultimate button during player's turn
                 }
             }
-            else if (isPlayerTurn)
+            else //if (isPlayerTurn)
             {
                 isPlayerTurn = false; // Enemy's turn
                 //Disable input
                 UIManager.instance.disableMatching.SetActive(true); // Enable matching UI during enemy's turn
+                UIManager.instance.ultimateButton.interactable = false;
             }
         }
     }

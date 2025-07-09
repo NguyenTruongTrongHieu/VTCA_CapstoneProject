@@ -10,6 +10,7 @@ TagManager:
   - PlayerSpecialHit
   - EnemyHit
   - Enemy
+  - ListPlayer
   layers:
   - Default
   - TransparentFX

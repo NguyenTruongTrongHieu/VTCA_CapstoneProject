@@ -12,9 +12,7 @@ public class LevelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            currentLevel = new Level(1);
-            SpawnEnemiesAtCurrentLevel(); // Spawn enemies for the current level at the start
-            AddStateAndLockCellToCurrentLevel(); // Add states and locked cells for the current level at the start
+            //currentLevel = levels[0];
             DontDestroyOnLoad(gameObject);
         }
         else

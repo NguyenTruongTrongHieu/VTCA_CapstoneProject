@@ -28,14 +28,24 @@ public class PlayerStat : Stats
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        damage = GameManager.instance.basicDamage + damage*damagePercentBonus;
-        maxHealth = GameManager.instance.basicHealth + maxHealth*healthPercentBonus;
-        SetupHPSlider();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void SetUpDamAndHealth()
+    {
+        damage = GameManager.instance.basicDamage + GameManager.instance.basicDamage * damagePercentBonus;
+        maxHealth = GameManager.instance.basicHealth + GameManager.instance.basicHealth * healthPercentBonus;
+    }
+
+    public void SetUpStatAndSlider()
+    { 
+        SetUpDamAndHealth();
+        SetupHPSlider();
     }
 }

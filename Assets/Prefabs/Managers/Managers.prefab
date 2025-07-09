@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5994340189612559448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2292455274536811336}
+  - component: {fileID: 5493231729452757620}
+  - component: {fileID: 5934639590290818235}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2292455274536811336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994340189612559448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8726587, y: 1.3875765, z: 27.193167}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5493231729452757620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994340189612559448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea146124aa9029146be7a2e9b9342f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentGameState: 0
+  basicDamage: 10
+  basicHealth: 100
+  currentTurn: 
+  currentEnemyIndex: 0
+  enemiesStartPosition:
+  - {x: 15, y: 0, z: 10}
+  - {x: 30, y: 0, z: 10}
+  - {x: 45, y: 0, z: 10}
+  - {x: 60, y: 0, z: 10}
+  enemiesStartRotation: {x: 0, y: -90, z: 0}
+  enemiesEndRotation: {x: 0, y: 180, z: 0}
+--- !u!114 &5934639590290818235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994340189612559448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5deccece2b2ea0c488b3aef306a51b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevel:
+    index: 0
+    enemiesAtLevel:
+    - {fileID: 0}
+    - {fileID: 0}
+    sceneName: 
+    statesInBoard: []
+    lockCellInBoard: []
+  levels:
+  - index: 1
+    enemiesAtLevel:
+    - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
+    - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
+    sceneName: Scene1
+    statesInBoard:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 2}
+    - {x: 3, y: 3}
+    - {x: 4, y: 4}
+    - {x: 5, y: 5}
+    lockCellInBoard:
+    - {x: 0, y: 5}
+    - {x: 0, y: 4}
+    - {x: 0, y: 3}

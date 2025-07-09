@@ -92,6 +92,7 @@ public class PlayerAttack : MonoBehaviour
         if (isAllEnemiesDie)
         {
             GameManager.instance.currentTurn = "Win";
+            GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
         }
         //Check if current enemy die
@@ -112,7 +113,8 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool(isVictoryHash, true);
         StartCoroutine(RotateToTarget(GetComponent<Player>().startQuaternion));
         StartCoroutine(
-        CameraManager.instance.SetScreenPosComposition(1f, true, 0f));
+        //CameraManager.instance.SetScreenPosComposition(1f, true, 0f));
+        CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
     }
 
     public IEnumerator RotateToTarget(Vector3 targetRot)

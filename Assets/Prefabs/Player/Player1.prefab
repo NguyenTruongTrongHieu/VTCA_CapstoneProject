@@ -174,7 +174,7 @@ MonoBehaviour:
   mana: 0
   maxMana: 0
   id: 0
-  name: 
+  name: Player1
   playerClass: 1
   healthPercentBonus: 0
   damagePercentBonus: 0
