@@ -73,15 +73,19 @@ public class Player : MonoBehaviour
     {
         //Setup Hash
         isMovingHash = Animator.StringToHash("isMoving");
-
-        //Set up camera target
-        CameraManager.instance.SetTargetForCam(this.transform);//call when change player
-        SetUpBehaviourTree();
     }
 
     private void Update()
     {
         rootNode.Evaluate();
+    }
+
+    public void ReturnStartPos()
+    { 
+        rb.isKinematic = true; // Disable physics interactions
+        this.transform.position = startPos + new Vector3(0, 0.25f, 0);
+        this.transform.rotation = Quaternion.Euler(startQuaternion);
+        rb.isKinematic = false; // Re-enable physics interactions
     }
 }
 

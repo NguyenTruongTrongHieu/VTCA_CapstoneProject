@@ -18,6 +18,9 @@ public class PlayerUltimate : MonoBehaviour
         if (instance == null)
         {
             instance = this; // Assign the instance to this script
+
+            LevelManager.instance.SpawnEnemiesAtCurrentLevel();
+
             DontDestroyOnLoad(gameObject); // Keep this object alive across scenes
         }
         else
@@ -29,7 +32,7 @@ public class PlayerUltimate : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        GetPlayerTransform(SaveLoadManager.instance.currentPlayerName); // Get the player transform for Player1
         ultimateHash = Animator.StringToHash("Ultimate"); // Get the hash for the ultimate animation
     }
 
@@ -37,6 +40,33 @@ public class PlayerUltimate : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void GetPlayerTransform(string playerName)
+    { 
+        int childCount = transform.childCount; // Get the number of child objects
+        for (int i = 0; i < childCount; i++)
+        { 
+            var player = transform.GetChild(i).gameObject; // Get each child object
+            PlayerStat playerStat;
+
+            if (!player.TryGetComponent<PlayerStat>(out playerStat))
+            {
+                continue;
+            }
+
+            if (player.GetComponent<PlayerStat>().name == playerName)
+            {
+                player.SetActive(true);
+                playerTransform = player.transform;
+                playerStat.SetUpStatAndSlider(); 
+                basicDamagePlayer = playerStat.damage; // Get the player's damage
+                basicMaxHealthPlayer = playerStat.maxHealth; // Get the player's max health
+                player.GetComponent<Player>().ReturnStartPos();
+                CameraManager.instance.SetTargetForCam(player.transform);//call when change player
+                player.GetComponent<Player>().SetUpBehaviourTree();
+            }
+        }
     }
 
     public void FindPlayerTransform()

@@ -92,6 +92,7 @@ public class PlayerAttack : MonoBehaviour
         if (isAllEnemiesDie)
         {
             GameManager.instance.currentTurn = "Win";
+            GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
         }
         //Check if current enemy die
