@@ -55,5 +55,6 @@ public class UIManager : MonoBehaviour
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
         StartCoroutine(
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
+        PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
     }
 }
