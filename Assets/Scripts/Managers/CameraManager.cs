@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    //Vertical FOV: 35 - 45
+    //Hard Look At Offset Z: 0, 0.7, 1
     public static CameraManager instance;
     public CinemachineCamera cineCam;
 
@@ -80,6 +82,86 @@ public class CameraManager : MonoBehaviour
             }
             else
                 yield return null; // No change needed, exit coroutine
+        }
+    }
+
+    public IEnumerator SetHardLookAt(float speed, char offsetPos, float target)
+    {
+        if (offsetPos == 'X' || offsetPos == 'x')
+        { 
+            float currentLookAtX = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x;
+            if (currentLookAtX < target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x < target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x += speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else if (currentLookAtX > target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x > target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x -= speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else
+            {
+                yield return null; // Invalid offset position, exit coroutine
+            }
+        }
+        else if(offsetPos == 'Y' || offsetPos == 'y')
+        {
+            float currentLookAtY = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y;
+            if (currentLookAtY < target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y < target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y += speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else if (currentLookAtY > target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y > target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y -= speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else
+            {
+                yield return null; // Invalid offset position, exit coroutine
+            }
+        }
+        else if (offsetPos == 'Z' || offsetPos == 'z')
+        {
+            float currentLookAtZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
+            if (currentLookAtZ < target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z < target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z += speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else if (currentLookAtZ > target)
+            {
+                while (cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z > target)
+                {
+                    cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z -= speed * Time.deltaTime;
+                    yield return null; // Wait for the next frame
+                }
+            }
+            else
+            {
+                yield return null; // Invalid offset position, exit coroutine
+            }
+        }
+        else
+        {
+            yield return null; // Invalid offset position, exit coroutine
         }
     }
 }

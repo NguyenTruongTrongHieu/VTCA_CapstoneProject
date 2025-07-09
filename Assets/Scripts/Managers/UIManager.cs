@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     public GameObject inGamePanel;
     public GameObject gameBoard;
     public GameObject disableMatching;
+    public Button ultimateButton;
+    public Slider manaSlider;
     public GameObject targetPos;//Test
 
     private void Awake()
@@ -20,12 +22,12 @@ public class UIManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +51,9 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
         inGamePanel.SetActive(true);
 
+        //StartCoroutine(
+        //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
         StartCoroutine(
-        CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
+        CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
     }
 }

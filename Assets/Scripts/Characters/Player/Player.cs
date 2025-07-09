@@ -38,7 +38,9 @@ public class Player : MonoBehaviour
                         {
                             new CheckDistanceReturnSuccessIfDistanceGreaterThanDistanceToCheck(this.transform,
                                 LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
-                                (true ? stopDistanceWithEnemy : stopDistanceWithBoss)),
+                                (LevelManager.instance.currentLevel.
+                                enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().
+                                enemyType != EnemyType.boss ? stopDistanceWithEnemy : stopDistanceWithBoss)),
 
 
                             new RotateToTarget(this.transform,
@@ -46,7 +48,9 @@ public class Player : MonoBehaviour
 
                             new PlayerMoveToTarget(this,
                                 LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform,
-                                (true ? stopDistanceWithEnemy : stopDistanceWithBoss))
+                                (LevelManager.instance.currentLevel.
+                                enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().
+                                enemyType != EnemyType.boss ? stopDistanceWithEnemy : stopDistanceWithBoss))
                         }),
 
                         //new Sequence(new List<NodeBehaviourTree>//Attack
