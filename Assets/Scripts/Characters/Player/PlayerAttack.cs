@@ -59,7 +59,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger(hash);
 
             if (!isHavingSpecialAttack && i == totalHits - 1)
-            { 
+            {
                 attackState = "DoneAttack"; // Set attack state to DoneAttack if not having special attack
             }
 
@@ -77,6 +77,11 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger(specialAttackHash);
             attackState = "DoneAttack";
             yield return new WaitForSeconds(1f); // Thời gian cho đòn tấn công đặc biệt
+        }
+
+        if (PlayerUltimate.instance.isUltimateValid)
+        {
+            PlayerUltimate.instance.totalRound--;
         }
 
         // Gọi hàm DoneAttack sau khi kết thúc chuỗi tấn công

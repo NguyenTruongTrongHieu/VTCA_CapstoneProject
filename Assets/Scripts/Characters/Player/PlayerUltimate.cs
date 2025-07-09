@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerUltimate : MonoBehaviour
@@ -12,6 +13,10 @@ public class PlayerUltimate : MonoBehaviour
     public float basicMaxHealthPlayer;
     public float basicCurrentHealthPlayer; // Current health of the player
     public float ultimateDamage; // Damage dealt by the ultimate ability
+
+    [Header("Check if ultimate is valid")]
+    public int totalRound;
+    public bool isUltimateValid = false;
 
     private void Awake()
     {
@@ -39,14 +44,13 @@ public class PlayerUltimate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void GetPlayerTransform(string playerName)
-    { 
+    {
         int childCount = transform.childCount; // Get the number of child objects
         for (int i = 0; i < childCount; i++)
-        { 
+        {
             var player = transform.GetChild(i).gameObject; // Get each child object
             PlayerStat playerStat;
 
@@ -59,37 +63,62 @@ public class PlayerUltimate : MonoBehaviour
             {
                 player.SetActive(true);
                 playerTransform = player.transform;
-                playerStat.SetUpStatAndSlider(); 
+                playerStat.SetUpStatAndSlider();
                 basicDamagePlayer = playerStat.damage; // Get the player's damage
                 basicMaxHealthPlayer = playerStat.maxHealth; // Get the player's max health
                 player.GetComponent<Player>().ReturnStartPos();
                 CameraManager.instance.SetTargetForCam(player.transform);//call when change player
                 player.GetComponent<Player>().SetUpBehaviourTree();
+                //AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
             }
         }
     }
 
     public void FindPlayerTransform()
-    { 
+    {
         playerTransform = GameObject.FindWithTag("Player").transform;
         basicDamagePlayer = playerTransform.GetComponent<PlayerStat>().damage;
         basicMaxHealthPlayer = playerTransform.GetComponent<PlayerStat>().maxHealth;
-        AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
+        //AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
     }
 
     public void AddUltimateToUltiButton(int idPlayer)
-    { 
-        UIManager.instance.ultimateButton.onClick.RemoveAllListeners();
+    {
+        UIManager.instance.ultimateButton.onClick.RemoveAllListeners() ;
 
         if (idPlayer == 0)
         {
-            UIManager.instance.ultimateButton.onClick.AddListener(() => Player1Ultimate());
+            UIManager.instance.ultimateButton.onClick.AddListener(()=>Player2Ultimate());
         }
     }
 
     public void Player1Ultimate()
-    { 
+    {
+        Debug.Log("Player 1 Ultimate Button Added");
+        isUltimateValid = true; // Set ultimate as valid
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
         playerTransform.GetComponent<PlayerAttack>().playerStat.Healing(basicMaxHealthPlayer * 30 / 100);
+        isUltimateValid = false; // Reset ultimate validity after use
+    }
+
+    public void Player2Ultimate()
+    {
+        UnityEngine.Debug.Log("Player 1 Ultimate Button Added");
+        isUltimateValid = true; // Set ultimate as valid
+        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
+        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 10 / 100); 
+        playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
+        totalRound = 3; // Set the total rounds for the ultimate ability
+        StartCoroutine(Player2UltimateCoroutine()); // Start the coroutine for Player 2's ultimate
+    }
+
+    public IEnumerator Player2UltimateCoroutine()
+    {
+        while (totalRound > 0)
+        {
+            yield return null;
+        }
+        playerTransform.GetComponent<PlayerAttack>().playerStat.damage = basicDamagePlayer;
+        isUltimateValid = false; // Reset ultimate validity after use
     }
 }
