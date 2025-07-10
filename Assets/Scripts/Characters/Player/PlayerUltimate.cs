@@ -90,7 +90,11 @@ public class PlayerUltimate : MonoBehaviour
 
         if (idPlayer == 0)
         {
-            UIManager.instance.ultimateButton.onClick.AddListener(()=>Player3Ultimate());
+            UIManager.instance.ultimateButton.onClick.AddListener(() => Player1Ultimate());
+        }
+        else if (idPlayer == 1)
+        {
+            UIManager.instance.ultimateButton.onClick.AddListener(() => Player2Ultimate());
         }
     }
 

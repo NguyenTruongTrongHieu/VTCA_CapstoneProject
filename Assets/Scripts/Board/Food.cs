@@ -251,7 +251,7 @@ public class Food : MonoBehaviour
 
     public IEnumerator MoveToPlayerHpSlider(float duration)
     {
-        this.transform.parent = UIManager.instance.targetPos.transform;
+        this.transform.parent = UIManager.instance.inGamePanel.transform;
 
         //StartCoroutine(ZoomIn(0.2f, 3f));
         //StartCoroutine(ZoomOut(0.15f, 0.5f));

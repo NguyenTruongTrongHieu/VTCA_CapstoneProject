@@ -74,6 +74,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (isHavingSpecialAttack)
         {
+            yield return new WaitForSeconds(0.3f);
             animator.SetTrigger(specialAttackHash);
             attackState = "DoneAttack";
             yield return new WaitForSeconds(1f); // Thời gian cho đòn tấn công đặc biệt
