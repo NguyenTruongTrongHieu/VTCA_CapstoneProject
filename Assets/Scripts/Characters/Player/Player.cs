@@ -127,6 +127,7 @@ public class PlayerMoveToTarget : NodeBehaviourTree
         if (Vector3.Distance(playerSelf.transform.position, target.position) > stopDistance)
         {
             //playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
+            playerSelf.rb.isKinematic = true; // Disable physics interactions for smooth movement
             playerSelf.transform.position = Vector3.MoveTowards(playerSelf.transform.position, target.position, playerSelf.speed * Time.deltaTime);
 
             state = NodeState.running;
@@ -156,6 +157,7 @@ public class PlayerIdle : NodeBehaviourTree
         {
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
             Debug.Log(" Player Idle");
+            playerSelf.rb.isKinematic = false; // Disable physics interactions for smooth movement
         }
 
         playerSelf.animator.SetBool(playerSelf.isMovingHash, false);

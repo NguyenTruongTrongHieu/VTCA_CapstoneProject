@@ -69,7 +69,7 @@ public class PlayerAttack : MonoBehaviour
             //    AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
             //    return  info.normalizedTime >= 1f;
             //});
-            yield return new WaitForSeconds(0.5f); // Thời gian giữa các đòn tấn công
+            yield return new WaitForSeconds(0.6f); // Thời gian giữa các đòn tấn công
         }
 
         if (isHavingSpecialAttack)
