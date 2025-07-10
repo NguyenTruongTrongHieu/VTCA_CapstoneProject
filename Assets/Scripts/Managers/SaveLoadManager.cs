@@ -53,7 +53,7 @@ public class SaveLoadManager : MonoBehaviour
     public void LoadDataWithPlayerPref()
     {
         currentLevelIndex = 1;
-        currentPlayerName = "Player1";
+        currentPlayerName = "Player2";
     }
 
     public IEnumerator LoadingSceneAsync()

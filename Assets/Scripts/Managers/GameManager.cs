@@ -95,6 +95,9 @@ public class GameManager : MonoBehaviour
     {
         bool result = false;
         // Check if the current enemy is dead
+        var enemy = LevelManager.instance.currentLevel.enemiesAtLevel[currentEnemyIndex];
+        if (enemy == null) return true; // If the enemy is null, return true
+
         var enemyStat = LevelManager.instance.currentLevel.enemiesAtLevel[currentEnemyIndex].GetComponent<EnemyStat>();
         if (enemyStat != null)
         {
