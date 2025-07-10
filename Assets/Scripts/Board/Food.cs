@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Food : MonoBehaviour
 {
@@ -13,10 +14,21 @@ public class Food : MonoBehaviour
     private Vector2 currentPos;
     private Vector2 targetPos;
 
+    [Header("Specical food")]
+    public int multipleScore;
+    public Text multipleText;
+
     public Food(int _xIndex, int _yIndex)
     {
         xIndex = _xIndex;
         yIndex = _yIndex;
+    }
+
+    public Food(int _xIndex, int _yIndex, int multipleScore)
+    { 
+        xIndex = _xIndex;
+        yIndex = _yIndex;
+        this.multipleScore = multipleScore;
     }
 
     public void SetIndex(int _xIndex, int _yIndex)
@@ -28,6 +40,14 @@ public class Food : MonoBehaviour
     private void OnDestroy()
     {
         GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
+    }
+
+    private void Start()
+    {
+        if (foodType == FoodType.Special)
+        { 
+            multipleText.text = $"X{multipleScore}"; // Hiển thị số điểm nhân
+        }
     }
 
     private void Update()
@@ -43,6 +63,15 @@ public class Food : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             StartCoroutine(MoveToPlayerHpSlider(0.5f));
+        }
+    }
+
+    public void SetMultipleScore(int multipleScore)
+    { 
+        this.multipleScore = multipleScore;
+        if (multipleText != null)
+        {
+            multipleText.text = $"X{multipleScore}"; // Cập nhật số điểm nhân
         }
     }
 
@@ -236,6 +265,7 @@ public class Food : MonoBehaviour
 
 public enum FoodType
 {
+    Special,
     Apple_Pie,
     Apple_Strudel,
     Avocado_Salad,

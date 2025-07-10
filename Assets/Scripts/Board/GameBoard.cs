@@ -24,6 +24,7 @@ public class GameBoard : MonoBehaviour
     // get a prafernce  to the cells prefabs
     [Header("Prefabs")]
     public GameObject[] foodPrefab; // prefabs của đồ ăn
+    public GameObject specialFoodPrefab;
     public GameObject statePrefab; // prefab của khối gỗ
     public GameObject cellPrefab; // prefab của ô mặc định
 
@@ -44,7 +45,10 @@ public class GameBoard : MonoBehaviour
     // get a reference to the collection nodes gameBoard + GO
     [Header("Game Board")]
     public Node[,] cells; // mảng hai chiều chứa các ô của bàn cờ
+
     public Food[,] foods;
+    public List<Food> foodList = new List<Food>();
+
     public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá;
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
     private bool interleavedCell = false;
@@ -187,8 +191,8 @@ public class GameBoard : MonoBehaviour
                     continue; // bỏ qua việc tạo thức ăn cho ô này
                 }
 
-                var findCell = states.FindIndex(xy => xy.x == x && xy.y == y); // tìm trạng thái của ô hiện tại trong danh sách states
-                if (findCell >= 0)
+                var findStateCell = states.FindIndex(xy => xy.x == x && xy.y == y); // tìm trạng thái của ô hiện tại trong danh sách states
+                if (findStateCell >= 0)
                 {
                     Vector2 pos = new Vector2(0, 0);
                     pos = cells[x, y].transform.position;
@@ -218,6 +222,7 @@ public class GameBoard : MonoBehaviour
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
                 cells[x, y].food = food; // lưu food vao node
+                foodList.Add(food.GetComponent<Food>());
                 cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
             }
         }
@@ -402,6 +407,7 @@ public class GameBoard : MonoBehaviour
         cells[x, y].food = null; // xóa thức ăn khỏi ô
         Food result = foods[x, y]; // lưu thức ăn đã xóa vào biến result
         foods[x, y] = null; // xóa thức ăn khỏi mảng foods
+        foodList.Remove(result); // xóa thức ăn khỏi danh sách thức ăn
 
         return result;
     }
@@ -413,5 +419,6 @@ public class GameBoard : MonoBehaviour
         cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
         cells[x, y].food = food.gameObject; // lưu thức ăn vào ô
         foods[x, y] = food; // lưu thức ăn vào mảng foods
+        foodList.Add(food); // thêm thức ăn vào danh sách thức ăn
     }
 }

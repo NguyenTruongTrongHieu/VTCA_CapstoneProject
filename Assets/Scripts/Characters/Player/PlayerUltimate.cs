@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUltimate : MonoBehaviour
@@ -88,13 +90,12 @@ public class PlayerUltimate : MonoBehaviour
 
         if (idPlayer == 0)
         {
-            UIManager.instance.ultimateButton.onClick.AddListener(()=>Player2Ultimate());
+            UIManager.instance.ultimateButton.onClick.AddListener(()=>Player3Ultimate());
         }
     }
 
     public void Player1Ultimate()
     {
-        Debug.Log("Player 1 Ultimate Button Added");
         isUltimateValid = true; // Set ultimate as valid
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
         playerTransform.GetComponent<PlayerAttack>().playerStat.Healing(basicMaxHealthPlayer * 30 / 100);
@@ -103,10 +104,9 @@ public class PlayerUltimate : MonoBehaviour
 
     public void Player2Ultimate()
     {
-        UnityEngine.Debug.Log("Player 1 Ultimate Button Added");
         isUltimateValid = true; // Set ultimate as valid
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
-        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 10 / 100); 
+        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 15 / 100); 
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
         totalRound = 3; // Set the total rounds for the ultimate ability
         StartCoroutine(Player2UltimateCoroutine()); // Start the coroutine for Player 2's ultimate
@@ -120,5 +120,44 @@ public class PlayerUltimate : MonoBehaviour
         }
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = basicDamagePlayer;
         isUltimateValid = false; // Reset ultimate validity after use
+    }
+
+    public void Player3Ultimate()
+    { 
+        isUltimateValid = true;
+        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
+        StartCoroutine(Spawn3MultipleX3());
+        isUltimateValid = false; // Reset ultimate validity after use
+    }
+
+    public IEnumerator Spawn3MultipleX3()
+    {
+        List<int> usedCell = new List<int>();
+
+        for (int i = 0; i < 3; i++)
+        {
+            int foodIndex;
+            do
+            {
+                foodIndex = Random.Range(0, GameBoard.Instance.foodList.Count);
+                yield return null;
+            }
+            while (usedCell.Contains(foodIndex) || GameBoard.Instance.foodList[foodIndex].foodType == FoodType.Special);
+            
+            usedCell.Add(foodIndex);
+            Food oldFood = GameBoard.Instance.DeleteFoodAtPos(GameBoard.Instance.foodList[foodIndex].xIndex, 
+                GameBoard.Instance.foodList[foodIndex].yIndex);
+             yield return oldFood.StartCoroutine(oldFood.ZoomOut(0.25f, 0));
+
+            GameObject foodObject = Instantiate(GameBoard.Instance.specialFoodPrefab, 
+               oldFood.transform.position, Quaternion.identity, GameBoard.Instance.foodParent);
+            foodObject.transform.localScale = Vector3.zero;
+            Food food = foodObject.GetComponent<Food>();
+            food.SetMultipleScore(3); // Set the multiple score to 3
+            yield return food.StartCoroutine(food.ReturnOriginalScale(0.25f));
+
+            GameBoard.Instance.AddFoodAtPos(oldFood.xIndex, oldFood.yIndex, food);
+            //Destroy(oldFood.gameObject); // Destroy the old food object
+        }
     }
 }
