@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    //Vertical FOV: 35 - 45
-    //Hard Look At Offset Z: 0, 0.7, 1
+    //Vertical FOV: 30, 40: Đòn đánh special; 35, 45: cam khi gặp enemy và boss
+    //Hard Look At Offset Z: 0: cam bình thường; 0.7: cam khi gặp enemy; 1:  Đòn đánh special, cam khi gặp boss
     public static CameraManager instance;
     public CinemachineCamera cineCam;
 
