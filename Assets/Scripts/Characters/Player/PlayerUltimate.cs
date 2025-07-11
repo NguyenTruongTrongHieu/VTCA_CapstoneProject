@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -74,6 +75,23 @@ public class PlayerUltimate : MonoBehaviour
                 //AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
             }
         }
+    }
+
+    public void ResetPlayer()
+    {
+        if (playerTransform == null)
+        { 
+            Debug.LogWarning("Player transform is not set. Cannot reset player.");
+            return;
+        }
+
+        var playerStat = playerTransform.GetComponent<PlayerStat>();
+        playerStat.SetUpStatAndSlider();
+        playerTransform.GetComponent<PlayerAttack>().ResetAnimState();
+        //CameraManager.instance.SetTargetForCam(playerTransform);
+        playerTransform.GetComponent<Player>().ReturnStartPos();
+        playerTransform.GetComponent<Player>().SetUpBehaviourTree();
+
     }
 
     public void FindPlayerTransform()
@@ -165,7 +183,7 @@ public class PlayerUltimate : MonoBehaviour
             yield return food.StartCoroutine(food.ReturnOriginalScale(0.25f));
 
             GameBoard.Instance.AddFoodAtPos(oldFood.xIndex, oldFood.yIndex, food);
-            //Destroy(oldFood.gameObject); // Destroy the old food object
+            Destroy(oldFood.gameObject); // Destroy the old food object
         }
     }
 }

@@ -121,6 +121,8 @@ public class PlayerAttack : MonoBehaviour
         StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, 0f));
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
+
+        UIManager.instance.ShowGameOverPanel(true);
     }
 
     public IEnumerator RotateToTarget(Vector3 targetRot)
@@ -139,6 +141,13 @@ public class PlayerAttack : MonoBehaviour
         }
 
         transform.rotation = targetRotation; // Ensure final rotation is set
+    }
+
+    public void ResetAnimState()
+    { 
+        animator.SetBool(isDeadHash, false); // Reset dead animation state
+        animator.SetBool(isVictoryHash, false); // Reset victory animation state
+        animator.SetTrigger(doneAttackHash); // Reset done attack state
     }
 
     private void OnTriggerEnter(Collider other)

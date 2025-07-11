@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -46,9 +47,38 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void DeleteAllEnemy()
+    {
+        foreach (var enemy in currentLevel.enemiesAtLevel)
+        {
+            if (enemy == null || !enemy.activeSelf)
+            {
+                continue;
+            }
+            
+            Destroy(enemy); // Destroy the enemy GameObject
+        }
+    }
+
     public void AddStateAndLockCellToCurrentLevel()
     { 
         currentLevel.lockCellInBoard = levels[currentLevel.index - 1].lockCellInBoard;
         currentLevel.statesInBoard = levels[currentLevel.index - 1].statesInBoard;
+    }
+
+    public void SetNextLevel()
+    { 
+        int currentLevelIndex = currentLevel.index;
+        if (currentLevelIndex < levels.Length)
+        {
+            currentLevel = new Level(currentLevelIndex + 1, levels[currentLevelIndex].sceneName); // Set the next level
+            AddStateAndLockCellToCurrentLevel(); // Add states and lock cells to the new level
+        }
+        else
+        {
+            Debug.Log("No more levels available.");
+            //currentLevel = new Level(currentLevelIndex, levels[currentLevelIndex - 1].sceneName);
+            //AddStateAndLockCellToCurrentLevel();
+        }
     }
 }

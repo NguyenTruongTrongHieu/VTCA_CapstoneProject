@@ -100,6 +100,8 @@ public class EnemyAttack : MonoBehaviour
     {
         animator.SetBool(isVictoryHash, true);
         StartCoroutine(RotateToTarget(GameManager.instance.enemiesEndRotation));
+
+        UIManager.instance.ShowGameOverPanel(false);
     }
 
     public IEnumerator RotateToTarget(Vector3 targetRot)
