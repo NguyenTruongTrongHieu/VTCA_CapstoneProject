@@ -1,4 +1,6 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -17,6 +19,10 @@ public class UIManager : MonoBehaviour
     public Slider manaSlider;
     public GameObject targetPos;//Test
 
+    [Header("Game Over")]
+    public GameObject gameOverPanel;
+    public Button returnMenuButton;
+
     private void Awake()
     {
         if (instance == null)
@@ -33,14 +39,13 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        mainMenuPanel.SetActive(true);
-        inGamePanel.SetActive(false);
+        ShowMainMenuPanel();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnclickStartButton()
@@ -56,5 +61,79 @@ public class UIManager : MonoBehaviour
         StartCoroutine(
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
+    }
+
+    public void OnCLickReturnMenuButton()
+    { 
+        SaveLoadManager.instance.loadingPanel.SetActive(true);
+
+        GameManager.instance.currentGameState = GameState.MainMenu;
+        GameManager.instance.currentTurn = ""; // Reset the current turn
+        GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
+        GameBoard.Instance.ResetBoard();
+        GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
+
+        LevelManager.instance.DeleteAllEnemy();
+        LevelManager.instance.SpawnEnemiesAtCurrentLevel();
+        PlayerUltimate.instance.ResetPlayer();
+
+        SaveLoadManager.instance.loadingPanel.SetActive(false);
+    }
+
+    public void ShowGameOverPanel(bool isPlayerWin)
+    {
+        gameOverPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+        inGamePanel.SetActive(false);
+
+
+    }
+
+    public void ShowMainMenuPanel()
+    {
+        mainMenuPanel.SetActive(true);
+        inGamePanel.SetActive(false);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void OnClickOverGameButton()
+    {
+        SaveLoadManager.instance.loadingPanel.SetActive(true);
+
+        //Reset level or get new level
+        if (GameManager.instance.currentTurn == "Win")
+        {
+            LevelManager.instance.SetNextLevel(); // Set the next level
+        }
+        else if (GameManager.instance.currentTurn == "Lose")
+        {
+        }
+
+        //Basic reset
+        GameManager.instance.currentGameState = GameState.MainMenu;
+        GameManager.instance.currentTurn = ""; // Reset the current turn
+        GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
+
+        //LoadScene
+        if (LevelManager.instance.currentLevel.sceneName != SceneManager.GetActiveScene().name)
+        {
+            SceneManager.LoadScene(LevelManager.instance.currentLevel.sceneName); // Load the scene for the current level
+        }
+        else
+        {
+            //Reset game board
+            GameBoard.Instance.ResetBoard();
+            GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
+        }
+
+        //Reset enemies and player
+        LevelManager.instance.DeleteAllEnemy();
+        LevelManager.instance.SpawnEnemiesAtCurrentLevel();
+        ultimateButton.onClick.RemoveAllListeners(); // Remove all listeners from the ultimate button
+        PlayerUltimate.instance.ResetPlayer();
+
+        ShowMainMenuPanel();
+
+        SaveLoadManager.instance.loadingPanel.SetActive(false);
     }
 }

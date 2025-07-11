@@ -49,7 +49,7 @@ public class GameBoard : MonoBehaviour
     public Food[,] foods;
     public List<Food> foodList = new List<Food>();
 
-    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá;
+    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
     private bool interleavedCell = false;
     public Color cellColor1;
@@ -275,6 +275,41 @@ public class GameBoard : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public void ResetBoard()
+    {
+        for (int y = 0; y < boardWidth; y++)
+        {
+            for (int x = 0; x < boardHeight; x++)
+            {
+                if (gameBoard[x, y] == "EmptyCell")
+                    continue;
+
+                if (gameBoard[x, y] == "LockedCell")
+                {
+                    gameBoard[x, y] = "EmptyCell"; 
+                    cells[x, y].cellState = "Empty";
+                }
+                else if(gameBoard[x, y] == "HavingState")
+                {
+                    gameBoard[x, y] = "EmptyCell"; 
+                    cells[x, y].cellState = "Empty";
+                    //cells[x, y].food = null; // xóa khối gỗ khỏi ô
+                }
+                else if (gameBoard[x, y] == "HavingFood")
+                {
+                    Food food = DeleteFoodAtPos(x, y); // xóa thức ăn khỏi ô
+                    Destroy(food.gameObject); // hủy đối tượng thức ăn
+                }
+            }
+        }
+
+        //Delete all child in foodParent
+        foreach (Transform child in foodParent)
+        {
+            Destroy(child.gameObject); // hủy tất cả các đối tượng con trong foodParent
         }
     }
 
