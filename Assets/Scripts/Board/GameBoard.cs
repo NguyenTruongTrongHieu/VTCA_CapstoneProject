@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GameBoard : MonoBehaviour
+public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     // define the size of the board
     [Header("Size Board")]
@@ -20,6 +21,8 @@ public class GameBoard : MonoBehaviour
     public List<Food> ChoosenFoods = new List<Food>(); // danh sách các ô thức ăn đã chọn để so khớp
     public int numberOfFoodMatching;
     public int multipleScore;
+    public int numberToCheckSpecialFood; //  dùng để kiểm tra món đặt biệt
+    public bool isCheckSpecialFood; // biến kiểm tra xem có cần kiểm tra món đặc biệt hay không
 
     // get a prafernce  to the cells prefabs
     [Header("Prefabs")]
@@ -48,8 +51,9 @@ public class GameBoard : MonoBehaviour
 
     public Food[,] foods;
     public List<Food> foodList = new List<Food>();
+    public List<Food> hasMatchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
 
-    public string [,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
+    public string[,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
     private bool interleavedCell = false;
     public Color cellColor1;
@@ -63,6 +67,11 @@ public class GameBoard : MonoBehaviour
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
     // public static of gameBoard
     public static GameBoard Instance; // singleton instance of GameBoard
+
+    public Canvas canvas;
+    public GraphicRaycaster raycaster;
+    private PointerEventData pointerEventData;
+    private List<GameObject> selectedObjects = new List<GameObject>();
 
 
     // Awake is called when the script instance is being loaded
@@ -81,7 +90,7 @@ public class GameBoard : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-        { 
+        {
             startFalling = true; // Test: bắt đầu rơi thức ăn khi nhấn phím Space
             isDoneOneFallingRound = true;
         }
@@ -132,7 +141,7 @@ public class GameBoard : MonoBehaviour
                 int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
                 // tính toán vị trí của ô dựa trên chỉ số hàng và cột
                 RectTransform backgroundRectTransform = cellPrefab.GetComponent<RectTransform>(); // lấy RectTransform của prefab ô mặc định\
-                
+
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
                 backgroundPosition.x += (float)((float)backgroundRectTransform.rect.x * 1.15f * (x - spacingX)); // điều chỉnh vị trí theo chiều ngang
                 backgroundPosition.y += (float)((float)backgroundRectTransform.rect.y * 1.15f * (y - spacingY)); // điều chỉnh vị trí theo chiều dọc
@@ -213,11 +222,11 @@ public class GameBoard : MonoBehaviour
                 RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
 
                 // điều chỉnh vị trí của ô dựa trên kích thước của prefab
-                position = cells[x,y].transform.position; // lấy vị trí của ô hiện tại
+                position = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
 
                 // tạo một ô mới từ prefab đã chọn
                 GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
-                
+
                 food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 foods[x, y] = food.GetComponent<Food>(); // lưu ô vào mảng nodes
@@ -289,12 +298,12 @@ public class GameBoard : MonoBehaviour
 
                 if (gameBoard[x, y] == "LockedCell")
                 {
-                    gameBoard[x, y] = "EmptyCell"; 
+                    gameBoard[x, y] = "EmptyCell";
                     cells[x, y].cellState = "Empty";
                 }
-                else if(gameBoard[x, y] == "HavingState")
+                else if (gameBoard[x, y] == "HavingState")
                 {
-                    gameBoard[x, y] = "EmptyCell"; 
+                    gameBoard[x, y] = "EmptyCell";
                     cells[x, y].cellState = "Empty";
                     //cells[x, y].food = null; // xóa khối gỗ khỏi ô
                 }
@@ -329,7 +338,7 @@ public class GameBoard : MonoBehaviour
 
                 // Nếu ô hiện tại không có thức ăn, tìm ô phía trên để rơi xuống
                 if (x == 0)
-                { 
+                {
                     Debug.Log("Spawn food to fall down above position: " + x + ", " + y);
                     result = true; // có ô trống để rơi thức ăn
                     Food foodToMove = AddNewFoodAbove(x, y); // Thêm thức ăn mới vào ô trên cùng
@@ -349,10 +358,10 @@ public class GameBoard : MonoBehaviour
                 if (foods[x - 1, y] != null)
                 {
                     result = true; // có ô trống để rơi thức ăn
-                    Food foodToMove = DeleteFoodAtPos(x-1, y);
+                    Food foodToMove = DeleteFoodAtPos(x - 1, y);
 
                     if (isFirstFallingFood)
-                    { 
+                    {
                         isFirstFallingFood = false; // Đặt isFirstFallingFood về false sau khi đã lấy thức ăn đầu tiên
                         firstFallingFood = foodToMove; // Lưu thức ăn đầu tiên để xử lý sau
                     }
@@ -394,7 +403,7 @@ public class GameBoard : MonoBehaviour
     }
 
     public Food AddNewFoodAbove(int x, int y)
-    { 
+    {
         int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
         Vector2 position = new Vector2(cells[x, y].transform.position.x, cells[x, y].transform.position.y + deltaYBetweenTwoCell); // vị trí của ô mới
 
@@ -428,7 +437,7 @@ public class GameBoard : MonoBehaviour
         }
 
         if (firstFallingFood == foodToMove)
-        { 
+        {
             Debug.Log("First falling food: " + foodToMove.gameObject.name);
             isDoneOneFallingRound = true; // Đặt isDoneOneFallingRound về true khi đã xử lý thức ăn đầu tiên
         }
@@ -448,7 +457,7 @@ public class GameBoard : MonoBehaviour
     }
 
     public void AddFoodAtPos(int x, int y, Food food)
-    { 
+    {
         food.SetIndex(x, y); // thiết lập chỉ số hàng và cột của thức ăn
         gameBoard[x, y] = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
         cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
@@ -456,4 +465,264 @@ public class GameBoard : MonoBehaviour
         foods[x, y] = food; // lưu thức ăn vào mảng foods
         foodList.Add(food); // thêm thức ăn vào danh sách thức ăn
     }
+
+    public bool CheckBoard()
+    {
+        Debug.Log("Checking board");
+        bool hasMatched = false; // biến để kiểm tra xem có ô nào đã được so khớp hay không
+
+        // Kiểm tra tất cả các ô trên bàn cờ
+        //List<Food> matchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
+
+        for (int x = 0; x <= boardWidth; x++)
+        {
+            for (int y = 0; y <= boardHeight; y++)
+            {
+                // checking if food is matched
+                if (foods[x, y] != null && !foods[x, y].isMatched)
+                {
+                    // Kiểm tra theo chiều ngang
+                    if (CheckHorizontalMatch(x, y))
+                    {
+                        hasMatched = true;
+
+                        foreach (var hasMatchFoods in hasMatchedFoods)
+                        {
+                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
+                        }
+                        startFalling = true; // bắt đầu rơi thức ăn
+                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+                    }
+                    // Kiểm tra theo chiều dọc
+                    if (CheckVerticalMatch(x, y))
+                    {
+                        hasMatched = true;
+
+                        foreach (var hasMatchFoods in hasMatchedFoods)
+                        {
+                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
+                        }
+                        startFalling = true; // bắt đầu rơi thức ăn
+                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+                    }
+                    // Kiểm tra theo đường chéo dài
+                    if (CheckLongDiagonalMatch(x, y))
+                    {
+                        hasMatched = true;
+
+                        foreach (var hasMatchFoods in hasMatchedFoods)
+                        {
+                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
+                        }
+                        startFalling = true; // bắt đầu rơi thức ăn
+                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+                    }
+                }
+
+                else
+                    hasMatched = false; // nếu ô thức ăn đã được so khớp thì không cần kiểm tra nữa
+            }
+        }
+
+        return false; // kiểm tra bàn cờ có hợp lệ hay không
+    }
+
+    // Is Connected
+
+    // Check Direction
+
+    //public bool CheckConnected(int x, int y)
+    //{
+    //    // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang, dọc hoặc đường chéo
+    //   if (foods[x, y].foodType == foods)
+    //}
+
+    public bool CheckHorizontalMatch(int x, int y)
+    {
+        for (int i = 0; i <= boardWidth; i++)
+        {
+            if (x + i >= boardWidth || foods[x + i, y] == null)
+            {
+                return false; // không đủ ô thức ăn để so khớp
+            }
+
+            // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
+            if (x + i <= boardWidth
+                && foods[x, y] != null && foods[x + i, y] != null
+                && foods[x, y].foodType == foods[x + i, y].foodType)
+            {
+                //matchedFoods.Add(foods[x, y]);
+                //matchedFoods.Add(foods[x + i, y]);
+
+                hasMatchedFoods.Add(foods[x, y]); // thêm ô thức ăn vào danh sách đã so khớp
+                hasMatchedFoods.Add(foods[x + i, y]); // thêm ô thức ăn vào danh sách đã so khớp
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public bool CheckVerticalMatch(int x, int y)
+    {
+        for (int i = 0; i <= boardWidth; i++)
+        {
+            if (y + i >= boardHeight || foods[x, y + i] == null)
+            {
+                return false; // không đủ ô thức ăn để so khớp
+            }
+
+            // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
+            if (y + i <= boardHeight
+                && foods[x, y] != null && foods[x, y + i] != null
+                && foods[x, y].foodType == foods[x, y + i].foodType)
+            {
+                hasMatchedFoods.Add(foods[x, y]);
+                hasMatchedFoods.Add(foods[x, y + i]);
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public bool CheckLongDiagonalMatch(int x, int y)
+    {
+        // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo đường chéo dài
+        for (int i = 0; i <= boardWidth; i++)
+        {
+            for (int j = 0; j <= boardHeight; j++)
+            {
+                if (x + i > boardWidth || y + j > boardHeight || foods[x + i, y + j] == null)
+                {
+                    return false; // không đủ ô thức ăn để so khớp
+                }
+
+                // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
+                if (x + i <= boardWidth && y + j <= boardHeight
+                    && foods[x, y] != null && foods[x + i, y + j] != null
+                    && foods[x, y].foodType == foods[x + i, y + j].foodType)
+                {
+                    hasMatchedFoods.Add(foods[x, y]);
+                    hasMatchedFoods.Add(foods[x + i, y + j]);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    //public bool CheckSuperDiagonalMatch(int x, int y, List<Food> matchedFoods)
+    //{
+    //    // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo đường chéo siêu dài
+    //    if (x + 2 < boardWidth && y - 2 >= 0 && foods[x, y] != null && foods[x + 1, y - 1] != null && foods[x + 2, y - 2] != null &&
+    //        foods[x, y].foodType == foods[x + 1, y - 1].foodType && foods[x, y].foodType == foods[x + 2, y - 2].foodType)
+    //    {
+    //        matchedFoods.Add(foods[x, y]);
+    //        matchedFoods.Add(foods[x + 1, y - 1]);
+    //        matchedFoods.Add(foods[x + 2, y - 2]);
+    //        return true;
+    //    }
+    //    return false;
+    //}
+
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        GameObject underPointer = eventData.pointerEnter;
+
+        if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
+        {
+            if (hasMatchedFoods.Count == 0)
+            {
+                Debug.Log("Add food: " + underPointer.name);
+                hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+
+                if (hasMatchedFoods[0].foodType == FoodType.Special)
+                {
+                    numberToCheckSpecialFood = 1;
+                    multipleScore = hasMatchedFoods[0].multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
+                    isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
+                }
+                else
+                {
+                    numberToCheckSpecialFood = 0;
+                    multipleScore = 1; // đặt số điểm nhân mặc định là 1
+                }
+            }
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        GameObject underPointer = eventData.pointerEnter;
+
+        if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
+        {
+            if (hasMatchedFoods.Count > 0)
+            {
+                if (numberToCheckSpecialFood == 1)
+                {
+                    if (hasMatchedFoods.Count == 1)
+                    {
+                        Debug.Log("Add food: " + underPointer.name);
+
+                        hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                    }
+                    else
+                    {
+                        if (hasMatchedFoods[1].foodType == underPointer.GetComponentInParent<Food>().foodType)
+                        {
+                            Debug.Log("Add food: " + underPointer.name);
+
+                            hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (hasMatchedFoods[0].foodType == underPointer.GetComponentInParent<Food>().foodType)
+                    {
+                        Debug.Log("Add food: " + underPointer.name);
+
+                        hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                    }
+
+                    else if (underPointer.GetComponentInParent<Food>().foodType == FoodType.Special && isCheckSpecialFood == false)
+                    {
+                        Debug.Log("Add food: " + underPointer.name);
+
+                        hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                        multipleScore = underPointer.GetComponentInParent<Food>().multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
+                        isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
+                        Debug.Log("Multiple score: " + multipleScore);
+                    }
+                }
+            }
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+    }
+}
+
+public class MatchResult
+{
+    List<Food> matchedFoods; // danh sách các ô thức ăn đã được so khớp
+    MatchDirection direction; // hướng của các ô thức ăn đã được so khớp
+}
+
+public enum MatchDirection
+{
+    Horizontal, // so khớp theo chiều ngang
+    Vertical, // so khớp theo chiều dọc
+    LongDiagonal, // so khớp theo đường chéo dài
+    Super, // so khớp theo đường chéo siêu dài
+    None // không có hướng so khớp
 }

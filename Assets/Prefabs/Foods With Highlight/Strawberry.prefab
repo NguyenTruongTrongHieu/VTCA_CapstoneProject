@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4639135143558236483}
   m_Layer: 5
   m_Name: Strawberry
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,6 +55,8 @@ MonoBehaviour:
   yIndex: 0
   isFalling: 0
   isMatched: 0
+  multipleScore: 0
+  multipleText: {fileID: 0}
 --- !u!1 &7233904930170757723
 GameObject:
   m_ObjectHideFlags: 0

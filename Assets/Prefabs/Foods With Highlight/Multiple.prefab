@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1050035193900255742}
   m_Layer: 5
   m_Name: Food
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 1518664448589732577}
   m_Layer: 5
   m_Name: MultipleText
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 7781294225545719425}
   m_Layer: 5
   m_Name: Highlight
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 6643635793295514810}
   m_Layer: 5
   m_Name: Multiple
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -285,5 +285,5 @@ MonoBehaviour:
   yIndex: 0
   isFalling: 0
   isMatched: 0
-  multipleScore: 0
+  multipleScore: 1
   multipleText: {fileID: 1518664448589732577}

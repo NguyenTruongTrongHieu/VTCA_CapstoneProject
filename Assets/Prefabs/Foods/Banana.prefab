@@ -94,6 +94,8 @@ MonoBehaviour:
   yIndex: 0
   isFalling: 0
   isMatched: 0
+  multipleScore: 0
+  multipleText: {fileID: 0}
 --- !u!95 &2403161669993185723
 Animator:
   serializedVersion: 7

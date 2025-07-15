@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2665972690423158971}
   m_Layer: 5
   m_Name: Food
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5661713803725233268}
   m_Layer: 5
   m_Name: Highlight
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 285776504995215164}
   m_Layer: 5
   m_Name: Blueberry
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,8 +200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433f9309160a9b144bf83ae52b8cc315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodType: 1
+  foodType: 4
   xIndex: 0
   yIndex: 0
   isFalling: 0
   isMatched: 0
+  multipleScore: 1
+  multipleText: {fileID: 0}

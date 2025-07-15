@@ -266,9 +266,9 @@ public class Food : MonoBehaviour
 public enum FoodType
 {
     Special,
-    Apple_Pie,
-    Apple_Strudel,
-    Avocado_Salad,
-    Bacon,
-    Bagel
+    Apple,
+    Banana,
+    Orange,
+    Blueberry,
+    Grape
 }
