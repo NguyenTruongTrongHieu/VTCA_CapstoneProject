@@ -660,8 +660,23 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     {
         GameObject underPointer = eventData.pointerEnter;
 
+
+
+        if (hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
+        {
+            if (hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.Special)
+            {
+                isCheckSpecialFood = false; // đặt biến kiểm tra món đặc biệt là false
+                multipleScore = 1; // đặt số điểm nhân mặc định là 1
+            }
+
+            hasMatchedFoods.RemoveAt(hasMatchedFoods.Count - 1); // nếu ô thức ăn đã so khớp là ô cuối cùng thì xóa nó khỏi danh sách
+            return;
+        }
+
         if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
         {
+
             if (hasMatchedFoods.Count > 0)
             {
                 if (numberToCheckSpecialFood == 1)
