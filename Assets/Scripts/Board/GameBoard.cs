@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public float spacingY; // khoảng cách giữa các ô theo chiều dọc
 
     [Header("Matching manager")]
-    public List<Food> ChoosenFoods = new List<Food>(); // danh sách các ô thức ăn đã chọn để so khớp
+    public List<Food> hasMatchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
     public int numberOfFoodMatching;
     public int multipleScore;
     public int numberToCheckSpecialFood; //  dùng để kiểm tra món đặt biệt
@@ -51,7 +52,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public Food[,] foods;
     public List<Food> foodList = new List<Food>();
-    public List<Food> hasMatchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
 
     public string[,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
@@ -67,11 +67,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
     // public static of gameBoard
     public static GameBoard Instance; // singleton instance of GameBoard
-
-    public Canvas canvas;
-    public GraphicRaycaster raycaster;
-    private PointerEventData pointerEventData;
-    private List<GameObject> selectedObjects = new List<GameObject>();
 
 
     // Awake is called when the script instance is being loaded
@@ -106,7 +101,17 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 {
                     startFalling = false; // dừng rơi thức ăn
                     isDoneOneFallingRound = false;
-                    Debug.Log("No more food to fall down.");
+
+                    if (CheckIfNoFoodCanMatch())
+                    {
+                        Debug.Log("No food can match, reset board.");
+                    }
+                    else
+                    { 
+                        Debug.Log("There are still food can match, continue game.");
+                    }
+
+                    //Debug.Log("No more food to fall down.");
                 }
             }
             //else
@@ -121,6 +126,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
     }
 
+    #region INITIALIZE BOARD AND FOOD
     public void InitializeBoard()
     {
         gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
@@ -322,6 +328,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
     }
 
+    #endregion
+
+
+    #region FALLING FOOD
     public bool FoodFallDown()//return true nếu có ô trống để rơi thức ăn, return false nếu không còn gì để rơi
     {
         bool result = false; // biến để kiểm tra xem có ô trống để rơi thức ăn hay không
@@ -465,6 +475,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         foods[x, y] = food; // lưu thức ăn vào mảng foods
         foodList.Add(food); // thêm thức ăn vào danh sách thức ăn
     }
+
+    #endregion
 
     public bool CheckBoard()
     {
@@ -629,7 +641,129 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     //    return false;
     //}
 
+    #region CREATE THE WAY FOR PLAYER
 
+    public bool CheckIfNoFoodCanMatch()//True: không còn thức ăn nào có thể so khớp, False: còn thức ăn có thể so khớp
+    {
+        bool result = true;
+
+        for (int y = 0; y < boardWidth; y++)
+        {
+            for (int x = 0; x < boardHeight; x++)
+            {
+                if (gameBoard[x, y] != "HavingFood")
+                    continue;
+
+                if (y > 0 && gameBoard[x, y - 1] == "HavingFood" && foods[x, y - 1].foodType == foods[x, y].foodType)
+                {
+                    result = false;
+                    break;
+                }
+
+                if (y < 5 && gameBoard[x, y + 1] == "HavingFood" && foods[x, y + 1].foodType == foods[x, y].foodType)
+                {
+                    result = false;
+                    break;
+                }
+
+                if (x > 0)
+                {
+                    if (gameBoard[x - 1, y] == "HavingFood" && foods[x - 1, y].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                    else if (y > 0 && gameBoard[x - 1, y - 1] == "HavingFood" && foods[x - 1, y - 1].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                    else if (y < 5 && gameBoard[x - 1, y + 1] == "HavingFood" && foods[x - 1, y + 1].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+
+                if (x < 5)
+                {
+                    if (gameBoard[x + 1, y] == "HavingFood" && foods[x + 1, y].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                    else if (y > 0 && gameBoard[x + 1, y - 1] == "HavingFood" && foods[x + 1, y - 1].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                    else if (y < 5 && gameBoard[x + 1, y + 1] == "HavingFood" && foods[x + 1, y + 1].foodType == foods[x, y].foodType)
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public List<Vector2Int> CheckEnableUsedFood(Vector2Int center, List<Vector2Int> disableFoods)
+    {
+        List<Vector2Int> enableFoods = new List<Vector2Int>();
+
+        if (gameBoard[center.x, center.y] != "HavingFood")
+            return enableFoods;
+
+        if (center.y > 0 && gameBoard[center.x, center.y - 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x, center.y - 1)))
+        {
+            enableFoods.Add(new Vector2Int(center.x, center.y - 1)); // thêm ô thức ăn phía trên vào danh sách có thể sử dụng
+        }
+
+        if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x, center.y + 1)))
+        {
+            enableFoods.Add(new Vector2Int(center.x, center.y + 1)); // thêm ô thức ăn phía dưới vào danh sách có thể sử dụng
+        }
+
+        if (center.x > 0)
+        {
+            if (gameBoard[center.x - 1, center.y] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y)); 
+            }
+            if (center.y > 0 && gameBoard[center.x - 1, center.y - 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y - 1)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y - 1));
+            }
+            if (center.y < 5 && gameBoard[center.x - 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y + 1)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y + 1));
+            }
+        }
+
+        if (center.x < 5)
+        {
+            if (gameBoard[center.x + 1, center.y] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y));
+            }
+            if (center.y > 0 && gameBoard[center.x + 1, center.y - 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y - 1)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y - 1));
+            }
+            if (center.y < 5 && gameBoard[center.x + 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y + 1)))
+            {
+                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y + 1));
+            }
+        }
+
+        return enableFoods;
+    }
+
+    #endregion
+
+    #region DRAG
     public void OnBeginDrag(PointerEventData eventData)
     {
         GameObject underPointer = eventData.pointerEnter;
@@ -725,6 +859,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     {
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
     }
+
+    #endregion
 }
 
 public class MatchResult
