@@ -93,6 +93,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         if (Input.GetKeyDown(KeyCode.End))
         {
+            if (CheckIfNoFoodCanMatch())
+            {
+                Debug.Log("No food can match, reset board.");
+                ShuffleBoard();
+            }
+            else
+            {
+                Debug.Log("There are still food can match, continue game.");
+            }
             ShuffleBoard();
         }
 
@@ -111,6 +120,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     if (CheckIfNoFoodCanMatch())
                     {
                         Debug.Log("No food can match, reset board.");
+                        ShuffleBoard();
                     }
                     else
                     { 
@@ -662,10 +672,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                 //Nếu ô thức ăn là ô đặc biệt, kiểm tra xem có ô nào có thể sử dụng được không
                 //Nếu có ô nào có thể sử dụng được, thì trả về false
-                if (foods[x, y].foodType == FoodType.Special &&
+                if (gameBoard[x, y] == "HavingFood" && foods[x, y].foodType == FoodType.Special &&
                     CheckEnableUsedFood(new Vector2Int(x, y), new List<Vector2Int>()).Count > 0)
                 {
                     result = false;
+                    Debug.Log("There is a special food can be used, continue game.");
                     break;
                 }
 
