@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -90,6 +91,20 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             isDoneOneFallingRound = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.End))
+        {
+            if (CheckIfNoFoodCanMatch())
+            {
+                Debug.Log("No food can match, reset board.");
+                ShuffleBoard();
+            }
+            else
+            {
+                Debug.Log("There are still food can match, continue game.");
+            }
+            ShuffleBoard();
+        }
+
         if (startFalling)
         {
             if (isDoneOneFallingRound)
@@ -105,6 +120,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     if (CheckIfNoFoodCanMatch())
                     {
                         Debug.Log("No food can match, reset board.");
+                        ShuffleBoard();
                     }
                     else
                     { 
@@ -654,6 +670,16 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 if (gameBoard[x, y] != "HavingFood")
                     continue;
 
+                //Nếu ô thức ăn là ô đặc biệt, kiểm tra xem có ô nào có thể sử dụng được không
+                //Nếu có ô nào có thể sử dụng được, thì trả về false
+                if (gameBoard[x, y] == "HavingFood" && foods[x, y].foodType == FoodType.Special &&
+                    CheckEnableUsedFood(new Vector2Int(x, y), new List<Vector2Int>()).Count > 0)
+                {
+                    result = false;
+                    Debug.Log("There is a special food can be used, continue game.");
+                    break;
+                }
+
                 if (y > 0 && gameBoard[x, y - 1] == "HavingFood" && foods[x, y - 1].foodType == foods[x, y].foodType)
                 {
                     result = false;
@@ -730,15 +756,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (gameBoard[center.x - 1, center.y] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y)); 
+                enableFoods.Add(new Vector2Int(center.x - 1, center.y)); 
             }
             if (center.y > 0 && gameBoard[center.x - 1, center.y - 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y - 1)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y - 1));
+                enableFoods.Add(new Vector2Int(center.x - 1, center.y - 1));
             }
             if (center.y < 5 && gameBoard[center.x - 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y + 1)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x - 1, center.y + 1));
+                enableFoods.Add(new Vector2Int(center.x - 1, center.y + 1));
             }
         }
 
@@ -746,19 +772,167 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (gameBoard[center.x + 1, center.y] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y));
+                enableFoods.Add(new Vector2Int(center.x + 1, center.y));
             }
             if (center.y > 0 && gameBoard[center.x + 1, center.y - 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y - 1)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y - 1));
+                enableFoods.Add(new Vector2Int(center.x + 1, center.y - 1));
             }
             if (center.y < 5 && gameBoard[center.x + 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y + 1)))
             {
-                enableFoods.Add(center + new Vector2Int(center.x + 1, center.y + 1));
+                enableFoods.Add(new Vector2Int(center.x + 1, center.y + 1));
             }
         }
 
         return enableFoods;
+    }
+
+    public void ShuffleBoard()
+    {
+        Vector2Int center = new Vector2Int(-1, -1);
+        List<Vector2Int> disableFoods = new List<Vector2Int>(); // danh sách các ô thức ăn không thể sử dụng
+        List<Vector2Int> enableFoods = new List<Vector2Int>(); // danh sách các ô thức ăn có thể sử dụng
+
+        //Tìm 1 ô có thể dùng làm mốc để xáo lần 1
+        for (int x = boardHeight - 1; x >= 0; x--)
+        {
+            int y = boardWidth / 2;
+
+            if (gameBoard[x, y] == "HavingFood" && foods[x, y].foodType != FoodType.Special)
+            {
+                center = new Vector2Int(x, y); // lưu vị trí của ô thức ăn ở giữa
+
+                disableFoods = new List<Vector2Int> {
+                            new Vector2Int(x, y)
+                        };
+                enableFoods = CheckEnableUsedFood(new Vector2Int(x, y), new List<Vector2Int>()); // lấy danh sách các ô thức ăn có thể sử dụng
+
+                if (enableFoods.Count >= 2)
+                    break;
+            }
+
+            for (int i = y + 1; i < boardWidth; i++)
+            {
+                if (gameBoard[x, i] == "HavingFood" && foods[x, i].foodType != FoodType.Special)
+                {
+                    center = new Vector2Int(x, i);
+
+                    disableFoods = new List<Vector2Int> {
+                            new Vector2Int(x, i)
+                        };
+                    enableFoods = CheckEnableUsedFood(new Vector2Int(x, i), new List<Vector2Int>()); // lấy danh sách các ô thức ăn có thể sử dụng
+
+                    if (enableFoods.Count >= 2)
+                        break;
+                    else
+                        continue;
+                }
+            }
+
+            if (enableFoods.Count < 2)
+            {
+                for (int j = y - 1; j >= 0; j--)
+                {
+                    if (gameBoard[x, j] == "HavingFood" && foods[x, j].foodType != FoodType.Special)
+                    {
+                        center = new Vector2Int(x, j);
+
+                        disableFoods = new List<Vector2Int> {
+                            new Vector2Int(x, j)
+                        };
+                        enableFoods = CheckEnableUsedFood(new Vector2Int(x, j), new List<Vector2Int>()); // lấy danh sách các ô thức ăn có thể sử dụng
+
+                        if (enableFoods.Count >= 2)
+                            break;
+                        else
+                            continue;
+                    }
+                }
+            }
+
+            if (enableFoods.Count >= 2)
+                break;
+        }
+
+
+        List<Vector2Int> alreadyShuffleFood = new List<Vector2Int>(); // danh sách các ô thức ăn đã được xáo
+        //Kiểm tra nếu có ô có thể sử dụng làm mốc để xáo lần 1, tiến hành xáo lần 1
+        if (enableFoods.Count >= 2)
+        {
+            enableFoods = enableFoods.OrderBy(x => UnityEngine.Random.value).ToList(); // xáo trộn danh sách các ô thức ăn có thể sử dụng
+            Vector2Int firstRandomPos = enableFoods[0];
+            Vector2Int secondRandomPos = enableFoods[1];
+            Debug.Log("Center position: " + center + ", First random position: " + firstRandomPos + ", Second random position: " + secondRandomPos);
+            alreadyShuffleFood.Add(center);
+            alreadyShuffleFood.Add(firstRandomPos);
+            alreadyShuffleFood.Add(secondRandomPos);
+
+            GameObject newFoodPrefab = null;
+            foreach (var foodObject in foodPrefab)
+            {
+                if (foodObject.GetComponent<Food>().foodType == foods[center.x, center.y].foodType)
+                {
+                    newFoodPrefab = foodObject; // tìm prefab thức ăn có cùng loại với thức ăn ở ô giữa
+                    break;
+                }
+            }
+
+            Food firstOldFood = DeleteFoodAtPos(firstRandomPos.x, firstRandomPos.y); // xóa thức ăn ở ô đầu tiên
+            Food secondOldFood = DeleteFoodAtPos(secondRandomPos.x, secondRandomPos.y); // xóa thức ăn ở ô thứ hai
+            if (newFoodPrefab != null)
+            {
+                GameObject firstNewFoodObject = Instantiate(newFoodPrefab, cells[firstRandomPos.x, firstRandomPos.y].transform.position, Quaternion.identity, foodParent);
+                AddFoodAtPos(firstRandomPos.x, firstRandomPos.y, firstNewFoodObject.GetComponent<Food>());
+                GameObject secondNewFoodObject = Instantiate(newFoodPrefab, cells[secondRandomPos.x, secondRandomPos.y].transform.position, Quaternion.identity, foodParent);
+                AddFoodAtPos(secondRandomPos.x, secondRandomPos.y, secondNewFoodObject.GetComponent<Food>());
+            }
+            else
+            {
+                Debug.LogError("No food prefab found with the same type as the food at the center position.");
+            }
+
+            Destroy(firstOldFood.gameObject); // hủy đối tượng thức ăn cũ
+            Destroy(secondOldFood.gameObject); // hủy đối tượng thức ăn cũ
+        }
+
+        //Tiến hành xáo lần 2
+        int lowIndex = 0, highIndex = foodList.Count - 1;
+        while (lowIndex < highIndex)
+        { 
+            Vector2Int lowPos = new Vector2Int(foodList[lowIndex].xIndex, foodList[lowIndex].yIndex);
+            Vector2Int highPos = new Vector2Int(foodList[highIndex].xIndex, foodList[highIndex].yIndex);
+
+            while(alreadyShuffleFood.Contains(lowPos))
+            {
+                lowIndex++;
+                if (lowIndex >= highIndex)
+                    break;
+                lowPos = new Vector2Int(foodList[lowIndex].xIndex, foodList[lowIndex].yIndex);
+            }
+
+            while (alreadyShuffleFood.Contains(highPos))
+            {
+                highIndex--;
+                if (lowIndex >= highIndex)
+                    break;
+                highPos = new Vector2Int(foodList[highIndex].xIndex, foodList[highIndex].yIndex);
+            }
+
+            if (lowIndex >= highIndex)
+                break;
+
+            Food lowFood = DeleteFoodAtPos(lowPos.x, lowPos.y); // xóa thức ăn ở ô thấp
+            Food highFood = DeleteFoodAtPos(highPos.x, highPos.y); // xóa thức ăn ở ô cao
+            StartCoroutine(MoveFoodToNode(cells[lowPos.x, lowPos.y].transform.position, highPos.x, highPos.y, lowFood)); // di chuyển thức ăn ở ô thấp xuống ô cao
+            StartCoroutine(MoveFoodToNode(cells[highPos.x, highPos.y].transform.position, lowPos.x, lowPos.y, highFood)); // di chuyển thức ăn ở ô cao lên ô thấp
+
+
+            lowIndex++;
+            highIndex--;
+        }
+
+        //Xáo lại list food
+        foodList = foodList.OrderBy(x => UnityEngine.Random.value).ToList();
     }
 
     #endregion
