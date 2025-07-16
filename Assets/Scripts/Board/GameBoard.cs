@@ -478,6 +478,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         Food result = foods[x, y]; // lưu thức ăn đã xóa vào biến result
         foods[x, y] = null; // xóa thức ăn khỏi mảng foods
         foodList.Remove(result); // xóa thức ăn khỏi danh sách thức ăn
+        result.gameObject.SetActive(false); // ẩn đối tượng thức ăn
 
         return result;
     }
@@ -493,169 +494,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     }
 
     #endregion
-
-    public bool CheckBoard()
-    {
-        Debug.Log("Checking board");
-        bool hasMatched = false; // biến để kiểm tra xem có ô nào đã được so khớp hay không
-
-        // Kiểm tra tất cả các ô trên bàn cờ
-        //List<Food> matchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
-
-        for (int x = 0; x <= boardWidth; x++)
-        {
-            for (int y = 0; y <= boardHeight; y++)
-            {
-                // checking if food is matched
-                if (foods[x, y] != null && !foods[x, y].isMatched)
-                {
-                    // Kiểm tra theo chiều ngang
-                    if (CheckHorizontalMatch(x, y))
-                    {
-                        hasMatched = true;
-
-                        foreach (var hasMatchFoods in hasMatchedFoods)
-                        {
-                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
-                        }
-                        startFalling = true; // bắt đầu rơi thức ăn
-                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
-                    }
-                    // Kiểm tra theo chiều dọc
-                    if (CheckVerticalMatch(x, y))
-                    {
-                        hasMatched = true;
-
-                        foreach (var hasMatchFoods in hasMatchedFoods)
-                        {
-                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
-                        }
-                        startFalling = true; // bắt đầu rơi thức ăn
-                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
-                    }
-                    // Kiểm tra theo đường chéo dài
-                    if (CheckLongDiagonalMatch(x, y))
-                    {
-                        hasMatched = true;
-
-                        foreach (var hasMatchFoods in hasMatchedFoods)
-                        {
-                            DeleteFoodAtPos(hasMatchFoods.xIndex, hasMatchFoods.yIndex); // xóa thức ăn đã so khớp khỏi bàn cờ
-                        }
-                        startFalling = true; // bắt đầu rơi thức ăn
-                        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
-                    }
-                }
-
-                else
-                    hasMatched = false; // nếu ô thức ăn đã được so khớp thì không cần kiểm tra nữa
-            }
-        }
-
-        return false; // kiểm tra bàn cờ có hợp lệ hay không
-    }
-
-    // Is Connected
-
-    // Check Direction
-
-    //public bool CheckConnected(int x, int y)
-    //{
-    //    // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang, dọc hoặc đường chéo
-    //   if (foods[x, y].foodType == foods)
-    //}
-
-    public bool CheckHorizontalMatch(int x, int y)
-    {
-        for (int i = 0; i <= boardWidth; i++)
-        {
-            if (x + i >= boardWidth || foods[x + i, y] == null)
-            {
-                return false; // không đủ ô thức ăn để so khớp
-            }
-
-            // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
-            if (x + i <= boardWidth
-                && foods[x, y] != null && foods[x + i, y] != null
-                && foods[x, y].foodType == foods[x + i, y].foodType)
-            {
-                //matchedFoods.Add(foods[x, y]);
-                //matchedFoods.Add(foods[x + i, y]);
-
-                hasMatchedFoods.Add(foods[x, y]); // thêm ô thức ăn vào danh sách đã so khớp
-                hasMatchedFoods.Add(foods[x + i, y]); // thêm ô thức ăn vào danh sách đã so khớp
-                return true;
-            }
-
-        }
-
-        return false;
-    }
-
-    public bool CheckVerticalMatch(int x, int y)
-    {
-        for (int i = 0; i <= boardWidth; i++)
-        {
-            if (y + i >= boardHeight || foods[x, y + i] == null)
-            {
-                return false; // không đủ ô thức ăn để so khớp
-            }
-
-            // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
-            if (y + i <= boardHeight
-                && foods[x, y] != null && foods[x, y + i] != null
-                && foods[x, y].foodType == foods[x, y + i].foodType)
-            {
-                hasMatchedFoods.Add(foods[x, y]);
-                hasMatchedFoods.Add(foods[x, y + i]);
-                return true;
-            }
-
-        }
-
-        return false;
-    }
-
-    public bool CheckLongDiagonalMatch(int x, int y)
-    {
-        // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo đường chéo dài
-        for (int i = 0; i <= boardWidth; i++)
-        {
-            for (int j = 0; j <= boardHeight; j++)
-            {
-                if (x + i > boardWidth || y + j > boardHeight || foods[x + i, y + j] == null)
-                {
-                    return false; // không đủ ô thức ăn để so khớp
-                }
-
-                // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo chiều ngang
-                if (x + i <= boardWidth && y + j <= boardHeight
-                    && foods[x, y] != null && foods[x + i, y + j] != null
-                    && foods[x, y].foodType == foods[x + i, y + j].foodType)
-                {
-                    hasMatchedFoods.Add(foods[x, y]);
-                    hasMatchedFoods.Add(foods[x + i, y + j]);
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //public bool CheckSuperDiagonalMatch(int x, int y, List<Food> matchedFoods)
-    //{
-    //    // Kiểm tra xem có ít nhất 3 ô thức ăn liên tiếp theo đường chéo siêu dài
-    //    if (x + 2 < boardWidth && y - 2 >= 0 && foods[x, y] != null && foods[x + 1, y - 1] != null && foods[x + 2, y - 2] != null &&
-    //        foods[x, y].foodType == foods[x + 1, y - 1].foodType && foods[x, y].foodType == foods[x + 2, y - 2].foodType)
-    //    {
-    //        matchedFoods.Add(foods[x, y]);
-    //        matchedFoods.Add(foods[x + 1, y - 1]);
-    //        matchedFoods.Add(foods[x + 2, y - 2]);
-    //        return true;
-    //    }
-    //    return false;
-    //}
 
     #region CREATE THE WAY FOR PLAYER
 
@@ -1031,23 +869,18 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        for (int i = hasMatchedFoods.Count; i > 0; i--)
+        {
+            if (hasMatchedFoods[i - 1] != null)
+            {
+                DeleteFoodAtPos(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+            }
+        }
+
+        startFalling = true; // đặt biến startFalling về true để bắt đầu quá trình rơi thức ăn
+
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
     }
 
     #endregion
-}
-
-public class MatchResult
-{
-    List<Food> matchedFoods; // danh sách các ô thức ăn đã được so khớp
-    MatchDirection direction; // hướng của các ô thức ăn đã được so khớp
-}
-
-public enum MatchDirection
-{
-    Horizontal, // so khớp theo chiều ngang
-    Vertical, // so khớp theo chiều dọc
-    LongDiagonal, // so khớp theo đường chéo dài
-    Super, // so khớp theo đường chéo siêu dài
-    None // không có hướng so khớp
 }
