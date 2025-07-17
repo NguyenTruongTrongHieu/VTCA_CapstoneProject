@@ -464,7 +464,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         if (firstFallingFood == foodToMove)
         {
-            Debug.Log("First falling food: " + foodToMove.gameObject.name);
             isDoneOneFallingRound = true; // Đặt isDoneOneFallingRound về true khi đã xử lý thức ăn đầu tiên
         }
         foodToMove.isFalling = false;
