@@ -16,11 +16,14 @@ public class Food : MonoBehaviour
 
     [SerializeField] private Image foodHighLightImage;
     [SerializeField] private Image foodImage;
+    public ParticleSystem highlightVFX1;
+    public ParticleSystem highlightVFX2;
     public float foodScale = 0.8f; // Tỷ lệ kích thước của thức ăn
 
     [Header("Specical food")]
     public int multipleScore;
     public Text multipleText;
+    public ParticleSystem auraSpecialVFX;
 
     public Food(int _xIndex, int _yIndex)
     {
@@ -81,6 +84,8 @@ public class Food : MonoBehaviour
 
     public IEnumerator ChoosenAnim()
     {
+        highlightVFX1.Play();
+        highlightVFX2.Play();
         StartCoroutine(FoodHighLight(0.5f));
         StartCoroutine(ZoomIn(0.15f, 1.1f)); // Tăng kích thước lên 10%
         while (isMatched)

@@ -802,12 +802,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
 
         //Những ô thức ăn không cùng foodType với ô thức ăn đang được kéo sẽ bị mờ đi và thu nhỏ lại
-        foreach (var food in foodList)
+        if(!isCheckSpecialFood)
         {
-            if (food.foodType != underPointer.GetComponentInParent<Food>().foodType)
+            foreach (var food in foodList)
             {
-                StartCoroutine(food.FadeOut(0.15f, 0.7f));
-                StartCoroutine(food.ZoomOut(0.15f, 0.8f));
+                if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && food.foodType != FoodType.Special)
+                {
+                    StartCoroutine(food.FadeOut(0.15f, 0.7f));
+                    StartCoroutine(food.ZoomOut(0.15f, 0.8f));
+                }
             }
         }
     }
@@ -818,7 +821,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
 
 
-        if (hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
+        if (underPointer != null && hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
         {
             if (hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.Special)
             {
@@ -830,7 +833,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             return;
         }
 
-        if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
+        if (underPointer != null && underPointer.CompareTag("Food") && 
+            !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()) &&
+            CheckEnableUsedFood(new Vector2Int(hasMatchedFoods[hasMatchedFoods.Count - 1].xIndex,//Check xem food đang kéo có đang ở gần với food cuối cùng trong list không
+            hasMatchedFoods[hasMatchedFoods.Count - 1].yIndex), new List<Vector2Int>()).
+            Contains(new Vector2Int(underPointer.GetComponentInParent<Food>().xIndex,
+            underPointer.GetComponentInParent<Food>().yIndex)))
         {
 
             if (hasMatchedFoods.Count > 0)
@@ -844,6 +852,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                         underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                         StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+
+                        foreach (var food in foodList)
+                        {
+                            if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && food.foodType != FoodType.Special)
+                            {
+                                StartCoroutine(food.FadeOut(0.15f, 0.7f));
+                                StartCoroutine(food.ZoomOut(0.15f, 0.8f));
+                            }
+                        }
                     }
                     else
                     {
@@ -857,7 +874,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         }
                     }
                 }
-
                 else
                 {
                     if (hasMatchedFoods[0].foodType == underPointer.GetComponentInParent<Food>().foodType)
@@ -901,6 +917,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             if (hasMatchedFoods[i - 1] != null)
             {
                 hasMatchedFoods[i - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
+
+                if (hasMatchedFoods[i - 1].foodType == FoodType.Special)
+                {
+                    isCheckSpecialFood = false;
+                    multipleScore = 1;
+                    hasMatchedFoods[i - 1].auraSpecialVFX.Stop();
+                }
+                hasMatchedFoods[i - 1].highlightVFX1.Stop();
+                hasMatchedFoods[i - 1].highlightVFX2.Stop();
             }
         }
 
@@ -921,6 +946,9 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (hasMatchedFoods[i - 1] != null)
             {
+                if (hasMatchedFoods[i - 1].foodType == FoodType.Special)
+                {
+                }
                 StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.25f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
                 yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
