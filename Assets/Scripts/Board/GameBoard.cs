@@ -800,6 +800,16 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 }
             }
         }
+
+        //Những ô thức ăn không cùng foodType với ô thức ăn đang được kéo sẽ bị mờ đi và thu nhỏ lại
+        foreach (var food in foodList)
+        {
+            if (food.foodType != underPointer.GetComponentInParent<Food>().foodType)
+            {
+                StartCoroutine(food.FadeOut(0.15f, 0.7f));
+                StartCoroutine(food.ZoomOut(0.15f, 0.8f));
+            }
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -877,6 +887,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        foreach (var food in foodList)
+        {
+            if (food.foodType != hasMatchedFoods[0].foodType)
+            {
+                StartCoroutine(food.ReturnOriginalColor(0.15f)); // làm ro các ô thức ăn không cùng loại
+                StartCoroutine(food.ReturnOriginalScale(0.15f)); // phong to các ô thức ăn không cùng loại
+            }
+        }
+
         for (int i = hasMatchedFoods.Count; i > 0; i--)
         {
             if (hasMatchedFoods[i - 1] != null)

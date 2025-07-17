@@ -176,7 +176,7 @@ RectTransform:
   m_GameObject: {fileID: 8607616307315081520}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3784132659768835196}
@@ -206,5 +206,6 @@ MonoBehaviour:
   isFalling: 0
   isMatched: 0
   foodHighLightImage: {fileID: 7781294225545719425}
+  foodImage: {fileID: 1050035193900255742}
   multipleScore: 1
   multipleText: {fileID: 0}
