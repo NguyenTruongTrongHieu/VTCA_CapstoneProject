@@ -57,6 +57,7 @@ MonoBehaviour:
   isMatched: 0
   foodHighLightImage: {fileID: 8870237144446533189}
   foodImage: {fileID: 6393529792297410818}
+  foodScale: 0.8
   multipleScore: 1
   multipleText: {fileID: 0}
 --- !u!1 &6023179650836368831

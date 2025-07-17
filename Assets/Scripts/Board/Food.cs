@@ -16,6 +16,7 @@ public class Food : MonoBehaviour
 
     [SerializeField] private Image foodHighLightImage;
     [SerializeField] private Image foodImage;
+    public float foodScale = 0.8f; // Tỷ lệ kích thước của thức ăn
 
     [Header("Specical food")]
     public int multipleScore;
@@ -167,7 +168,7 @@ public class Food : MonoBehaviour
 
     public IEnumerator ReturnOriginalScale(float duration)
     {
-        Vector3 originalScale = new Vector3(0.9f, 0.9f, 1f);
+        Vector3 originalScale = new Vector3(foodScale, foodScale, 1f);
         Vector3 startScale = transform.localScale;
 
         float elapsedTime = 0f;
