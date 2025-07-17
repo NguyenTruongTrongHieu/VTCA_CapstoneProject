@@ -892,6 +892,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
         else
         {
+            StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight
             hasMatchedFoods.Clear(); // nếu không có thức ăn nào được so khớp thì xóa danh sách đã so khớp
         }
     }
@@ -902,14 +903,28 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (hasMatchedFoods[i - 1] != null)
             {
-                StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.5f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
-                yield return new WaitForSeconds(0.2f); // đợi một khoảng thời gian trước khi xóa thức ăn
+                StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.25f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
+                yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
             }
         }
 
         startFalling = true; // đặt biến startFalling về true để bắt đầu quá trình rơi thức ăn
         isDoneOneFallingRound = true;
+
+        hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+    }
+
+    IEnumerator OnTurnOffHighlightFood()
+    {
+        for (int i = hasMatchedFoods.Count; i > 0; i--)
+        {
+            if (hasMatchedFoods[i - 1] != null)
+            {
+                StartCoroutine(hasMatchedFoods[i - 1].ReturnOriginalScale(0.15f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
+            }
+            yield return null;
+        }
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
     }

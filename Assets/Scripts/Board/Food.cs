@@ -80,7 +80,7 @@ public class Food : MonoBehaviour
     public IEnumerator ChoosenAnim()
     {
         StartCoroutine(FoodHighLight(0.5f));
-        StartCoroutine(ZoomIn(0.15f, 1.2f)); // Tăng kích thước lên 20%
+        StartCoroutine(ZoomIn(0.15f, 1.1f)); // Tăng kích thước lên 10%
         while (isMatched)
         {
             yield return StartCoroutine(RotateTheFood(0.15f, 20f));
@@ -89,7 +89,7 @@ public class Food : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
            
         }
-        StartCoroutine(ReturnOriginalScale(0.15f)); // Trả về góc ban đầu
+        //StartCoroutine(ReturnOriginalScale(0.15f)); // Trả về góc ban đầu
     }
 
     public IEnumerator RotateTheFood(float duration, float rotation)
@@ -217,8 +217,8 @@ public class Food : MonoBehaviour
 
     public IEnumerator ScaleInAndScaleOut()
     {
-        yield return StartCoroutine(ZoomIn(0.1f, 5f)); // Tăng kích thước lên 20%
-        yield return new WaitForSeconds(0.1f);
+        yield return StartCoroutine(ZoomIn(0.2f, 5f)); // Tăng kích thước lên 20%
+        //yield return new WaitForSeconds(0.1f);
         StartCoroutine(ReturnOriginalScale(0.15f)); // Giảm kích thước xuống 80%
     }
 
@@ -237,7 +237,7 @@ public class Food : MonoBehaviour
         transform.localEulerAngles = targetRotation; // Đảm bảo góc cuối cùng chính xác
     }
 
-    public IEnumerator MoveTo(Transform targetPosition, float duration)
+    public IEnumerator MoveTo(Vector3 targetPosition, float duration)
     {
         currentPos = transform.position;
 
@@ -245,17 +245,18 @@ public class Food : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            transform.position = Vector2.Lerp(currentPos, targetPosition.position, elapsedTime / duration);
+            transform.position = Vector2.Lerp(currentPos, targetPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = targetPosition.position; // Đảm bảo vị trí cuối cùng chính xác
+        transform.position = targetPosition; // Đảm bảo vị trí cuối cùng chính xác
     }
 
     public IEnumerator MoveToPlayerHpSlider(float duration)
     {
-        this.transform.parent = UIManager.instance.inGamePanel.transform;
+        Vector3 targetPos = Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position);
+        this.transform.SetParent(UIManager.instance.inGamePanel.transform);
         isMatched = false;
         Food deletedFood = GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
 
@@ -268,7 +269,7 @@ public class Food : MonoBehaviour
         yield return StartCoroutine(TurnOver(0.3f));
         //StartCoroutine(ReturnOriginalScale(0.2f));
 
-        yield return StartCoroutine(MoveTo(UIManager.instance.targetPos.transform, duration));
+        yield return StartCoroutine(MoveTo(targetPos, duration));
 
         deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
     }
@@ -284,7 +285,7 @@ public class Food : MonoBehaviour
         {
             // Làm rõ dần màu
             float elapsedTime = 0f;
-            while (elapsedTime < duration)
+            while (elapsedTime < duration && isMatched)
             {
                 foodHighLightImage.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
@@ -292,11 +293,17 @@ public class Food : MonoBehaviour
             }
             foodHighLightImage.color = targetColor; // Đảm bảo màu sắc cuối cùng chính xác
 
-            yield return new WaitForSeconds(0.5f);
+            elapsedTime = 0f;
+            // Chờ một khoảng thời gian trước khi làm mờ
+            while (elapsedTime < duration && isMatched)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null; // Chờ trong khi vẫn là thức ăn được ăn
+            }
 
             // Làm mờ dần màu sắc
             elapsedTime = 0f;
-            while (elapsedTime < duration)
+            while (elapsedTime < duration && isMatched)
             {
                 foodHighLightImage.color = Color.Lerp(targetColor, originalColor, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
