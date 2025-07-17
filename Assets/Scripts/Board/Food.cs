@@ -15,10 +15,15 @@ public class Food : MonoBehaviour
     private Vector2 targetPos;
 
     [SerializeField] private Image foodHighLightImage;
+    [SerializeField] private Image foodImage;
+    public ParticleSystem highlightVFX1;
+    public ParticleSystem highlightVFX2;
+    public float foodScale = 0.8f; // Tỷ lệ kích thước của thức ăn
 
     [Header("Specical food")]
     public int multipleScore;
     public Text multipleText;
+    public ParticleSystem auraSpecialVFX;
 
     public Food(int _xIndex, int _yIndex)
     {
@@ -79,6 +84,8 @@ public class Food : MonoBehaviour
 
     public IEnumerator ChoosenAnim()
     {
+        highlightVFX1.Play();
+        highlightVFX2.Play();
         StartCoroutine(FoodHighLight(0.5f));
         StartCoroutine(ZoomIn(0.15f, 1.1f)); // Tăng kích thước lên 10%
         while (isMatched)
@@ -166,7 +173,7 @@ public class Food : MonoBehaviour
 
     public IEnumerator ReturnOriginalScale(float duration)
     {
-        Vector3 originalScale = new Vector3(0.9f, 0.9f, 1f);
+        Vector3 originalScale = new Vector3(foodScale, foodScale, 1f);
         Vector3 startScale = transform.localScale;
 
         float elapsedTime = 0f;
@@ -251,6 +258,41 @@ public class Food : MonoBehaviour
         }
 
         transform.position = targetPosition; // Đảm bảo vị trí cuối cùng chính xác
+    }
+
+    public IEnumerator FadeOut(float duration, float targetColorA)
+    {
+        Color originalColor = foodImage.color;
+        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, targetColorA); // Màu sắc mờ
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            foodImage.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        foodImage.color = targetColor; // Đảm bảo màu sắc cuối cùng chính xác
+    }
+
+    //Trở lại màu gốc
+    public IEnumerator ReturnOriginalColor(float duration)
+    {
+        Color originalColor = foodImage.color;
+        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f); // Màu sắc mờ
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            foodImage.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        foodImage.color = targetColor; // Đảm bảo màu sắc cuối cùng chính xác
     }
 
     public IEnumerator MoveToPlayerHpSlider(float duration)

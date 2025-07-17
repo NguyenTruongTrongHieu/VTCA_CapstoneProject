@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1652143759095011288}
   - component: {fileID: 1652143759095011301}
   m_Layer: 0
-  m_Name: CFXR2 Shiny Item (Loop)
+  m_Name: ShinyAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4903,7 +4903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &706296035568042448
 Transform:
   m_ObjectHideFlags: 0
@@ -9799,14 +9799,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8904701818585269032}
   - component: {fileID: 7831740662026284754}
-  - component: {fileID: 7485742623334072937}
+  - component: {fileID: 6220178210166221335}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8904701818585269032
 Transform:
   m_ObjectHideFlags: 0
@@ -9887,7 +9887,7 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!114 &7485742623334072937
+--- !u!114 &6220178210166221335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9927,7 +9927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5590073728362654065
 Transform:
   m_ObjectHideFlags: 0
