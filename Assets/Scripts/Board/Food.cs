@@ -14,6 +14,8 @@ public class Food : MonoBehaviour
     private Vector2 currentPos;
     private Vector2 targetPos;
 
+    [SerializeField] private Image foodHighLightImage;
+
     [Header("Specical food")]
     public int multipleScore;
     public Text multipleText;
@@ -25,7 +27,7 @@ public class Food : MonoBehaviour
     }
 
     public Food(int _xIndex, int _yIndex, int multipleScore)
-    { 
+    {
         xIndex = _xIndex;
         yIndex = _yIndex;
         this.multipleScore = multipleScore;
@@ -45,7 +47,7 @@ public class Food : MonoBehaviour
     private void Start()
     {
         if (foodType == FoodType.Special)
-        { 
+        {
             multipleText.text = $"X{multipleScore}"; // Hiển thị số điểm nhân
         }
     }
@@ -67,7 +69,7 @@ public class Food : MonoBehaviour
     }
 
     public void SetMultipleScore(int multipleScore)
-    { 
+    {
         this.multipleScore = multipleScore;
         if (multipleText != null)
         {
@@ -77,6 +79,7 @@ public class Food : MonoBehaviour
 
     public IEnumerator ChoosenAnim()
     {
+        StartCoroutine(FoodHighLight(0.5f));
         StartCoroutine(ZoomIn(0.15f, 1.2f)); // Tăng kích thước lên 20%
         while (isMatched)
         {
@@ -84,6 +87,7 @@ public class Food : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             yield return StartCoroutine(ReturnOriginalRotation(0.15f));
             yield return new WaitForSeconds(0.1f);
+           
         }
         StartCoroutine(ReturnOriginalScale(0.15f)); // Trả về góc ban đầu
     }
@@ -212,14 +216,14 @@ public class Food : MonoBehaviour
     }
 
     public IEnumerator ScaleInAndScaleOut()
-    { 
+    {
         yield return StartCoroutine(ZoomIn(0.1f, 5f)); // Tăng kích thước lên 20%
         yield return new WaitForSeconds(0.1f);
         StartCoroutine(ReturnOriginalScale(0.15f)); // Giảm kích thước xuống 80%
     }
 
     public IEnumerator TurnOver(float duration)
-    { 
+    {
         Vector3 originalRotation = transform.localEulerAngles;
         Vector3 targetRotation = originalRotation + new Vector3(0, 0, -180); // Xoay 180 độ
         float elapsedTime = 0f;
@@ -252,6 +256,11 @@ public class Food : MonoBehaviour
     public IEnumerator MoveToPlayerHpSlider(float duration)
     {
         this.transform.parent = UIManager.instance.inGamePanel.transform;
+        isMatched = false;
+        Food deletedFood = GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
+
+        //this.StopCoroutine(FoodHighLight(0.5f)); // Dừng hiệu ứng highlight
+        //foodHighLightImage.color = new Color(foodHighLightImage.color.r, foodHighLightImage.color.g, foodHighLightImage.color.b, 0.0f);
 
         //StartCoroutine(ZoomIn(0.2f, 3f));
         //StartCoroutine(ZoomOut(0.15f, 0.5f));
@@ -260,10 +269,57 @@ public class Food : MonoBehaviour
         //StartCoroutine(ReturnOriginalScale(0.2f));
 
         yield return StartCoroutine(MoveTo(UIManager.instance.targetPos.transform, duration));
-    }
-}
 
-public enum FoodType
+        deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
+    }
+
+    public IEnumerator FoodHighLight(float duration)
+    {
+        foodHighLightImage.gameObject.SetActive(true);
+        Color originalColor = foodHighLightImage.color; // Lưu màu sắc gốc
+        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 1.0f); // Màu sắc mờ
+
+
+        while (isMatched)
+        {
+            // Làm rõ dần màu
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                foodHighLightImage.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            foodHighLightImage.color = targetColor; // Đảm bảo màu sắc cuối cùng chính xác
+
+            yield return new WaitForSeconds(0.5f);
+
+            // Làm mờ dần màu sắc
+            elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                foodHighLightImage.color = Color.Lerp(targetColor, originalColor, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            foodHighLightImage.color = originalColor; // Đảm bảo màu sắc cuối cùng chính xác
+        }
+
+        Color currentHighLightColor = foodHighLightImage.color;
+        //Làm mờ màu sắc về 0 bằng Lerp
+        //float fadeTimer = 0f; // Thời gian làm mờ
+        //while (fadeTimer < 0.1f)
+        //{
+        //    foodHighLightImage.color = Color.Lerp(currentHighLightColor, originalColor, fadeTimer / 0.1f);
+        //    fadeTimer += Time.deltaTime;
+        //    yield return null;
+        //}
+
+        foodHighLightImage.color = originalColor; // Đảm bảo màu sắc cuối cùng chính xác
+    }
+
+}
+    public enum FoodType
 {
     Special,
     Apple,
