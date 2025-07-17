@@ -478,7 +478,6 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         Food result = foods[x, y]; // lưu thức ăn đã xóa vào biến result
         foods[x, y] = null; // xóa thức ăn khỏi mảng foods
         foodList.Remove(result); // xóa thức ăn khỏi danh sách thức ăn
-        result.gameObject.SetActive(false); // ẩn đối tượng thức ăn
 
         return result;
     }
@@ -786,6 +785,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 Debug.Log("Add food: " + underPointer.name);
                 hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
+                StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
 
                 if (hasMatchedFoods[0].foodType == FoodType.Special)
                 {
@@ -815,7 +816,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 isCheckSpecialFood = false; // đặt biến kiểm tra món đặc biệt là false
                 multipleScore = 1; // đặt số điểm nhân mặc định là 1
             }
-
+            hasMatchedFoods[hasMatchedFoods.Count - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
             hasMatchedFoods.RemoveAt(hasMatchedFoods.Count - 1); // nếu ô thức ăn đã so khớp là ô cuối cùng thì xóa nó khỏi danh sách
             return;
         }
@@ -832,6 +833,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         Debug.Log("Add food: " + underPointer.name);
 
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                        underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
+                        StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                     }
                     else
                     {
@@ -840,6 +843,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                             Debug.Log("Add food: " + underPointer.name);
 
                             hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                            underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
+                            StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                         }
                     }
                 }
@@ -851,6 +856,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         Debug.Log("Add food: " + underPointer.name);
 
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                        underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
+                        StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                     }
 
                     else if (underPointer.GetComponentInParent<Food>().foodType == FoodType.Special && isCheckSpecialFood == false)
@@ -858,6 +865,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         Debug.Log("Add food: " + underPointer.name);
 
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
+                        underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
+                        StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                         multipleScore = underPointer.GetComponentInParent<Food>().multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
                         isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
                         Debug.Log("Multiple score: " + multipleScore);
@@ -873,11 +882,34 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (hasMatchedFoods[i - 1] != null)
             {
-                DeleteFoodAtPos(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+                hasMatchedFoods[i - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
+            }
+        }
+
+        if (hasMatchedFoods.Count >= 2)
+        {
+            StartCoroutine(OnDeletedMatchFood()); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+        }
+        else
+        {
+            hasMatchedFoods.Clear(); // nếu không có thức ăn nào được so khớp thì xóa danh sách đã so khớp
+        }
+    }
+
+    IEnumerator OnDeletedMatchFood()
+    {
+        for (int i = hasMatchedFoods.Count; i > 0; i--)
+        {
+            if (hasMatchedFoods[i - 1] != null)
+            {
+                StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.5f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
+                yield return new WaitForSeconds(0.2f); // đợi một khoảng thời gian trước khi xóa thức ăn
+
             }
         }
 
         startFalling = true; // đặt biến startFalling về true để bắt đầu quá trình rơi thức ăn
+        isDoneOneFallingRound = true;
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
     }
