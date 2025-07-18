@@ -260,6 +260,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 cells[x, y].cellState = "HavingFood"; // cập nhật trạng thái ô thành có thức ăn
             }
         }
+
+        if (CheckIfNoFoodCanMatch())
+        {
+            ShuffleBoard();
+        }
     }
 
     public void InitializeBoard2()
