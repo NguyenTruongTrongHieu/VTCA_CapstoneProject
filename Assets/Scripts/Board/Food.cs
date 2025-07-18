@@ -94,8 +94,10 @@ public class Food : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             yield return StartCoroutine(ReturnOriginalRotation(0.15f));
             yield return new WaitForSeconds(0.1f);
-           
+
         }
+        highlightVFX1.Stop();
+        highlightVFX2.Stop();
         //StartCoroutine(ReturnOriginalScale(0.15f)); // Trả về góc ban đầu
     }
 
