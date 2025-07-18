@@ -42,7 +42,7 @@ public class State : MonoBehaviour
         image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ bền
     }
 
-    public IEnumerator TakeHit(float duration, float magnitude)
+    public IEnumerator TakeHit(float magnitude)
     {
         durability--;
         if (durability > 0)
@@ -59,17 +59,38 @@ public class State : MonoBehaviour
         RectTransform rt = image.rectTransform;
         Vector3 originalPos = Vector3.zero; // Lưu vị trí ban đầu của khối gỗ
 
-        while (elapsed < duration)
+        // Tạo điểm đích bị lệch
+        Vector3 offset = new Vector3(1,1, 0) * magnitude;
+        Vector3 targetPos1 = originalPos + offset;
+        Vector3 targetPos2 = originalPos - offset;
+
+        while (elapsed < 0.05f)
         {
-            float offsetX = Random.Range(-1f, 1f) * magnitude;
-            float offsetY = Random.Range(-1f, 1f) * magnitude;
-
-            rt.anchoredPosition = originalPos + new Vector3(offsetX, offsetY, 0);
-
+            // Di chuyển dần đến vị trí lắc
+            rt.anchoredPosition = Vector3.Lerp(originalPos, targetPos1, elapsed / 0.1f);
             elapsed += Time.deltaTime;
             yield return null;
         }
+        rt.anchoredPosition = targetPos1; // Đặt vị trí lắc
 
+        elapsed = 0f; // Reset thời gian đã trôi qua
+        while (elapsed < 0.1f)
+        {
+            // Di chuyển dần đến vị trí lắc ngược lại
+            rt.anchoredPosition = Vector3.Lerp(targetPos1, targetPos2, elapsed / 0.2f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        rt.anchoredPosition = targetPos2; // Đặt vị trí lắc ngược lại
+
+        elapsed = 0f; // Reset thời gian đã trôi qua
+        while (elapsed < 0.05f)
+        {
+            // Di chuyển dần về vị trí ban đầu
+            rt.anchoredPosition = Vector3.Lerp(targetPos2, originalPos, elapsed / 0.1f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
         rt.anchoredPosition = originalPos; // Reset về vị trí cũ
 
         if (durability <= 0)

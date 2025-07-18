@@ -995,6 +995,9 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.25f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
                 yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
+                //Smoke VFX
+                cells[currentPos.x, currentPos.y].TurnOnSmokeVFX();
+
                 //Hit state
                 HitState(currentPos); // gọi hàm HitState để xử lý va chạm với các khối gỗ
             }
@@ -1011,25 +1014,25 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         if (center.x > 0 && gameBoard[center.x - 1, center.y] == "HavingState")
         {
             State state = states2DArray[center.x - 1, center.y];
-            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+            state.StartCoroutine(state.TakeHit(15f));
         }
 
         if (center.y > 0 && gameBoard[center.x, center.y - 1] == "HavingState")
         {
             State state = states2DArray[center.x, center.y - 1];
-            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+            state.StartCoroutine(state.TakeHit(15f));
         }
 
         if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingState")
         {
             State state = states2DArray[center.x, center.y + 1];
-            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+            state.StartCoroutine(state.TakeHit(15f));
         }
 
         if (center.x < 5 && gameBoard[center.x + 1, center.y] == "HavingState")
         {
             State state = states2DArray[center.x + 1, center.y];
-            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+            state.StartCoroutine(state.TakeHit(15f));
         }
     }
 
