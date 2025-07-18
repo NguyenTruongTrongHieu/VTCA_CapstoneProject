@@ -53,6 +53,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public Food[,] foods;
     public List<Food> foodList = new List<Food>();
+    public State[,] states2DArray; // mảng hai chiều chứa các khối gỗ của bàn cờ
 
     public string[,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
@@ -148,6 +149,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
         cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
         foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
+        states2DArray = new State[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
@@ -233,6 +235,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     gameBoard[x, y] = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
                     cells[x, y].cellState = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
                     foods[x, y] = null; // không có thức ăn trong ô có khối gỗ
+                    states2DArray[x, y] = state.GetComponent<State>(); // lưu khối gỗ vào mảng states
                     continue; // bỏ qua việc tạo thức ăn cho ô này
                 }
 
@@ -264,6 +267,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
         cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
         foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
+        states2DArray = new State[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
@@ -489,6 +493,27 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         cells[x, y].food = food.gameObject; // lưu thức ăn vào ô
         foods[x, y] = food; // lưu thức ăn vào mảng foods
         foodList.Add(food); // thêm thức ăn vào danh sách thức ăn
+    }
+
+    public void AddStateAtPos(int x, int y, State state)
+    {
+        state.SetIndex(x, y); // thiết lập chỉ số hàng và cột của khối gỗ
+        gameBoard[x, y] = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
+        cells[x, y].cellState = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
+        foods[x, y] = null; // không có thức ăn trong ô có khối gỗ
+        states2DArray[x, y] = state; // lưu khối gỗ vào mảng states
+    }
+
+    public State DeleteStateAtPos(int x, int y)
+    {
+        gameBoard[x, y] = "EmptyCell"; 
+        cells[x, y].cellState = "Empty"; 
+        cells[x, y].food = null; 
+        State result = states2DArray[x, y];
+        foods[x, y] = null;
+        states2DArray[x, y] = null; // xóa khối gỗ khỏi mảng states
+
+        return result;
     }
 
     #endregion
@@ -778,6 +803,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     {
         GameObject underPointer = eventData.pointerEnter;
 
+        if (underPointer == null || !underPointer.CompareTag("Food"))
+        {
+            return;
+        }
+
         if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
         {
             if (hasMatchedFoods.Count == 0)
@@ -819,7 +849,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     {
         GameObject underPointer = eventData.pointerEnter;
 
-
+        if (underPointer == null || !underPointer.CompareTag("Food") || hasMatchedFoods.Count < 1)
+        {
+            return;
+        }
 
         if (underPointer != null && hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
         {
@@ -829,6 +862,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 multipleScore = 1; // đặt số điểm nhân mặc định là 1
             }
             hasMatchedFoods[hasMatchedFoods.Count - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
+            StartCoroutine(hasMatchedFoods[hasMatchedFoods.Count - 1].ReturnOriginalScale(0.15f));
             hasMatchedFoods.RemoveAt(hasMatchedFoods.Count - 1); // nếu ô thức ăn đã so khớp là ô cuối cùng thì xóa nó khỏi danh sách
             return;
         }
@@ -903,6 +937,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (hasMatchedFoods.Count < 1)
+        {
+            return;
+        }
+
         foreach (var food in foodList)
         {
             if (food.foodType != hasMatchedFoods[0].foodType)
@@ -946,12 +985,13 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (hasMatchedFoods[i - 1] != null)
             {
-                if (hasMatchedFoods[i - 1].foodType == FoodType.Special)
-                {
-                }
+                Vector2Int currentPos = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+
                 StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.25f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
                 yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
+                //Hit state
+                HitState(currentPos); // gọi hàm HitState để xử lý va chạm với các khối gỗ
             }
         }
 
@@ -959,6 +999,33 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         isDoneOneFallingRound = true;
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+    }
+
+    public void HitState(Vector2Int center)
+    {
+        if (center.x > 0 && gameBoard[center.x - 1, center.y] == "HavingState")
+        {
+            State state = states2DArray[center.x - 1, center.y];
+            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+        }
+
+        if (center.y > 0 && gameBoard[center.x, center.y - 1] == "HavingState")
+        {
+            State state = states2DArray[center.x, center.y - 1];
+            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+        }
+
+        if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingState")
+        {
+            State state = states2DArray[center.x, center.y + 1];
+            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+        }
+
+        if (center.x < 5 && gameBoard[center.x + 1, center.y] == "HavingState")
+        {
+            State state = states2DArray[center.x + 1, center.y];
+            state.StartCoroutine(state.TakeHit(0.3f, 30f));
+        }
     }
 
     IEnumerator OnTurnOffHighlightFood()
