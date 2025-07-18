@@ -11,6 +11,9 @@ public class Node : MonoBehaviour
     public int xIndex; // biến chứa chỉ số hàng của ô
     public int yIndex; // biến chứa chỉ số cột của ô
 
+    public ParticleSystem smokeVFX1;
+    public ParticleSystem smokeVFX2;
+
     public Node (string cellState, GameObject _food)
     {
         this.cellState = cellState;
@@ -21,5 +24,11 @@ public class Node : MonoBehaviour
     {
         xIndex = _xIndex;
         yIndex = _yIndex;
+    }
+
+    public void TurnOnSmokeVFX()
+    { 
+        smokeVFX1.Play();
+        smokeVFX2.Play();
     }
 }
