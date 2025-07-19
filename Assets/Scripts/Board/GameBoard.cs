@@ -25,6 +25,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public int multipleScore;
     public int numberToCheckSpecialFood; //  dùng để kiểm tra món đặt biệt
     public bool isCheckSpecialFood; // biến kiểm tra xem có cần kiểm tra món đặc biệt hay không
+    private int[] foodCount = {4,7,10,13,16,19,21}; // mảng đếm số lượng món đặc biệt theo loại
+    private int[] specialMutiplie = {3, 5, 7, 9,11, 13, 15}; // mảng nhân điểm theo loại món đặc biệt
 
     // get a prafernce  to the cells prefabs
     [Header("Prefabs")]
@@ -956,6 +958,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             }
         }
 
+
+        bool havingSpecialFood = false; // biến để kiểm tra xem có ô thức ăn đặc biệt nào trong danh sách đã so khớp hay không
         for (int i = hasMatchedFoods.Count; i > 0; i--)
         {
             if (hasMatchedFoods[i - 1] != null)
@@ -963,7 +967,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 hasMatchedFoods[i - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
 
                 if (hasMatchedFoods[i - 1].foodType == FoodType.Special)
-                {
+                { 
+                    havingSpecialFood = true; // nếu có ô thức ăn đặc biệt thì đặt biến havingSpecialFood về true
                     isCheckSpecialFood = false;
                     multipleScore = 1;
                     hasMatchedFoods[i - 1].auraSpecialVFX.Stop();
@@ -975,8 +980,9 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         if (hasMatchedFoods.Count >= 2)
         {
-            StartCoroutine(OnDeletedMatchFood()); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+            StartCoroutine(OnDeletedMatchFood(havingSpecialFood)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
         }
+
         else
         {
             StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight
@@ -984,10 +990,20 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
     }
 
-    IEnumerator OnDeletedMatchFood()
+    IEnumerator OnDeletedMatchFood(bool haveSpecialFood)
     {
+        Vector2 specialPos = new Vector2();
+        Vector2Int specialFoodIndex = new Vector2Int();
+
         for (int i = hasMatchedFoods.Count; i > 0; i--)
         {
+            if (i == 1)
+            {
+                specialPos = cells[hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex].transform.position;
+
+                specialFoodIndex = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+            }
+
             if (hasMatchedFoods[i - 1] != null)
             {
                 Vector2Int currentPos = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
@@ -1002,6 +1018,24 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 HitState(currentPos); // gọi hàm HitState để xử lý va chạm với các khối gỗ
             }
         }
+
+        for (int i = foodCount.Length - 1; i >= 0; i--)
+        {
+            if (hasMatchedFoods.Count >= foodCount[i] && haveSpecialFood != true)
+            {
+                //StartCoroutine(OnDeletedMatchFood()); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+                //int randomIndex = UnityEngine.Random.Range(0, hasMatchedFoods.Count); // chọn ngẫu nhiên một ô thức ăn trong danh sách đã so khớp
+                GameObject specialFood = Instantiate(specialFoodPrefab, specialPos, Quaternion.identity, foodParent); // tạo một ô thức ăn đặc biệt tại vị trí của ô thức ăn đã so khớp
+                specialFood.transform.localScale = Vector3.zero; // đặt kích thước của ô thức ăn đặc biệt về 0
+                Food food = specialFood.GetComponent<Food>();
+                food.SetMultipleScore(specialMutiplie[i]); // đặt số điểm nhân của ô thức ăn đặc biệt là 3
+                food.StartCoroutine(food.ReturnOriginalScale(0.1f));
+                AddFoodAtPos(specialFoodIndex.x, specialFoodIndex.y, food); // thêm ô thức ăn đặc biệt vào ô đã so khớp
+
+                break; // thoát khỏi vòng lặp nếu đã tạo ô thức ăn đặc biệt
+            }
+        }
+
 
         startFalling = true; // đặt biến startFalling về true để bắt đầu quá trình rơi thức ăn
         isDoneOneFallingRound = true;
