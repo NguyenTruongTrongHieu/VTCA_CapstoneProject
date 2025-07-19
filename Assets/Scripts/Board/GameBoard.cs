@@ -1048,25 +1048,25 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         if (center.x > 0 && gameBoard[center.x - 1, center.y] == "HavingState")
         {
             State state = states2DArray[center.x - 1, center.y];
-            state.StartCoroutine(state.TakeHit(15f));
+            state.StartCoroutine(state.TakeHit(20f));
         }
 
         if (center.y > 0 && gameBoard[center.x, center.y - 1] == "HavingState")
         {
             State state = states2DArray[center.x, center.y - 1];
-            state.StartCoroutine(state.TakeHit(15f));
+            state.StartCoroutine(state.TakeHit(20f));
         }
 
         if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingState")
         {
             State state = states2DArray[center.x, center.y + 1];
-            state.StartCoroutine(state.TakeHit(15f));
+            state.StartCoroutine(state.TakeHit(20f));
         }
 
         if (center.x < 5 && gameBoard[center.x + 1, center.y] == "HavingState")
         {
             State state = states2DArray[center.x + 1, center.y];
-            state.StartCoroutine(state.TakeHit(15f));
+            state.StartCoroutine(state.TakeHit(20f));
         }
     }
 
