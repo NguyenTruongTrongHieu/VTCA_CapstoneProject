@@ -34,6 +34,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public GameObject specialFoodPrefab;
     public GameObject statePrefab; // prefab của khối gỗ
     public GameObject cellPrefab; // prefab của ô mặc định
+    public GameObject lockCellPrefab;
 
     [Header("Transform")]
     public Transform foodParent; // đối tượng cha chứa các ô thức ăn
@@ -148,10 +149,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     #region INITIALIZE BOARD AND FOOD
     public void InitializeBoard()
     {
-        gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
-        cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
-        foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
-        states2DArray = new State[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
+        gameBoard = new string[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        cells = new Node[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        foods = new Food[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô thức ăn
+        states2DArray = new State[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
@@ -212,13 +213,16 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     //List<Vector2Int>
     public void InitializeFood(List<Vector2Int> states, List<Vector2Int> lockCell)
     {
-        for (int y = 0; y < boardHeight; y++)
+        for (int y = 0; y < boardWidth; y++)
         {
-            for (int x = 0; x < boardWidth; x++)
+            for (int x = 0; x < boardHeight; x++)
             {
                 var findLockCell = lockCell.FindIndex(xy => xy.x == x && xy.y == y); // tìm trạng thái của ô hiện tại trong danh sách lockCell
                 if (findLockCell >= 0)
                 {
+                    Vector2 pos = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
+                    GameObject lockCellObj = Instantiate(lockCellPrefab, pos, Quaternion.identity, foodParent); 
+
                     // nếu ô hiện tại là ô bị khóa, không tạo thức ăn
                     gameBoard[x, y] = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
                     cells[x, y].cellState = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
@@ -271,21 +275,21 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     public void InitializeBoard2()
     {
-        gameBoard = new string[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
-        cells = new Node[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
-        foods = new Food[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các ô thức ăn
-        states2DArray = new State[boardWidth, boardHeight]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
+        gameBoard = new string[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        cells = new Node[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
+        foods = new Food[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô thức ăn
+        states2DArray = new State[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
 
 
-        for (int y = 0; y < boardHeight; y++)
+        for (int y = 0; y < boardWidth; y++)
         {
-            for (int x = 0; x < boardWidth; x++)
+            for (int x = 0; x < boardHeight; x++)
             {
                 // tạo một ô mới từ prefab đã chọn
-                Transform cell = cellParent.GetChild(6 * x + y); // tạo một ô mặc định từ prefab đã chọn
+                Transform cell = cellParent.GetChild(boardWidth * x + y); // tạo một ô mặc định từ prefab đã chọn
                 cell.GetComponent<Node>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "EmptyCell"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
                 cells[x, y] = cell.GetComponent<Node>(); // lưu ô vào mảng nodes
@@ -366,9 +370,9 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         isFirstFallingFood = true;
         firstFallingFood = null; // reset the first falling food
 
-        for (int x = boardWidth - 1; x >= 0; x--)
+        for (int y = boardWidth - 1; y >= 0; y--)
         {
-            for (int y = boardHeight - 1; y >= 0; y--)
+            for (int x = boardHeight - 1; x >= 0; x--)
             {
                 if (gameBoard[x, y] != "EmptyCell")//Đổi điều kiện dựa trên tình hình game sau này
                     continue;
@@ -405,7 +409,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                     StartCoroutine(MoveFoodToNode(cells[x - 1, y].transform.position, x, y, foodToMove)); // Di chuyển thức ăn xuống ô hiện tại
                 }
-                else if (y < 5 && foods[x - 1, y + 1] != null)
+                else if (y < boardWidth - 1 && foods[x - 1, y + 1] != null)
                 {
                     result = true; // có ô trống để rơi thức ăn
                     Food foodToMove = DeleteFoodAtPos(x - 1, y + 1);
@@ -554,7 +558,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     break;
                 }
 
-                if (y < 5 && gameBoard[x, y + 1] == "HavingFood" && foods[x, y + 1].foodType == foods[x, y].foodType)
+                if (y < boardWidth - 1 && gameBoard[x, y + 1] == "HavingFood" && foods[x, y + 1].foodType == foods[x, y].foodType)
                 {
                     result = false;
                     break;
@@ -572,14 +576,14 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         result = false;
                         break;
                     }
-                    else if (y < 5 && gameBoard[x - 1, y + 1] == "HavingFood" && foods[x - 1, y + 1].foodType == foods[x, y].foodType)
+                    else if (y < boardWidth - 1 && gameBoard[x - 1, y + 1] == "HavingFood" && foods[x - 1, y + 1].foodType == foods[x, y].foodType)
                     {
                         result = false;
                         break;
                     }
                 }
 
-                if (x < 5)
+                if (x < boardHeight - 1)
                 {
                     if (gameBoard[x + 1, y] == "HavingFood" && foods[x + 1, y].foodType == foods[x, y].foodType)
                     {
@@ -615,7 +619,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             enableFoods.Add(new Vector2Int(center.x, center.y - 1)); // thêm ô thức ăn phía trên vào danh sách có thể sử dụng
         }
 
-        if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x, center.y + 1)))
+        if (center.y < boardWidth - 1 && gameBoard[center.x, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x, center.y + 1)))
         {
             enableFoods.Add(new Vector2Int(center.x, center.y + 1)); // thêm ô thức ăn phía dưới vào danh sách có thể sử dụng
         }
@@ -630,13 +634,13 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 enableFoods.Add(new Vector2Int(center.x - 1, center.y - 1));
             }
-            if (center.y < 5 && gameBoard[center.x - 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y + 1)))
+            if (center.y < boardWidth - 1 && gameBoard[center.x - 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x - 1, center.y + 1)))
             {
                 enableFoods.Add(new Vector2Int(center.x - 1, center.y + 1));
             }
         }
 
-        if (center.x < 5)
+        if (center.x < boardHeight - 1)
         {
             if (gameBoard[center.x + 1, center.y] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y)))
             {
@@ -646,7 +650,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 enableFoods.Add(new Vector2Int(center.x + 1, center.y - 1));
             }
-            if (center.y < 5 && gameBoard[center.x + 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y + 1)))
+            if (center.y < boardWidth - 1 && gameBoard[center.x + 1, center.y + 1] == "HavingFood" && !disableFoods.Contains(new Vector2Int(center.x + 1, center.y + 1)))
             {
                 enableFoods.Add(new Vector2Int(center.x + 1, center.y + 1));
             }
@@ -664,7 +668,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         //Tìm 1 ô có thể dùng làm mốc để xáo lần 1
         for (int x = boardHeight - 1; x >= 0; x--)
         {
-            int y = boardWidth / 2;
+            int y = (boardWidth - 1) / 2;
 
             if (gameBoard[x, y] == "HavingFood" && foods[x, y].foodType != FoodType.Special)
             {
