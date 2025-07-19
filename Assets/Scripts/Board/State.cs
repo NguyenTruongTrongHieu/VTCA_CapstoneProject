@@ -44,10 +44,19 @@ public class State : MonoBehaviour
 
     public IEnumerator TakeHit(float magnitude)
     {
+        yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xử lý va chạm
+
         durability--;
+
+
+        State thisState = this;
         if (durability > 0)
         {
             image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ bền
+        }
+        else
+        {
+            thisState = GameBoard.Instance.DeleteStateAtPos(xIndex, yIndex);
         }
         hitStateVFX1.Play(); // Phát hiệu ứng VFX khi khối gỗ bị đánh
         hitStateVFX2.Play();
@@ -95,7 +104,6 @@ public class State : MonoBehaviour
 
         if (durability <= 0)
         {
-            State thisState = GameBoard.Instance.DeleteStateAtPos(xIndex, yIndex);
             Destroy(thisState.gameObject); // Destroy the state object when durability reaches 0
         }
     }
