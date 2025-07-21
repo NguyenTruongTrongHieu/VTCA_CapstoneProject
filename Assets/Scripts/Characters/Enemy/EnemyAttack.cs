@@ -38,7 +38,7 @@ public class EnemyAttack : MonoBehaviour
         if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
         { 
             attackState = "Attacking";
-            StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));
+            StartCoroutine(PlayAttackSequence(6, false));
         }
     }
 
@@ -62,7 +62,7 @@ public class EnemyAttack : MonoBehaviour
             //    AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
             //    return  info.normalizedTime >= 1f;
             //});
-            yield return new WaitForSeconds(0.5f); // Thời gian giữa các đòn tấn công
+            yield return new WaitForSeconds(0.75f); // Thời gian giữa các đòn tấn công
         }
 
         if (isHavingSpecialAttack)
