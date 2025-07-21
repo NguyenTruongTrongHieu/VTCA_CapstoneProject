@@ -65,6 +65,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.19685708
+        functionName: TurnOnSpecialHitVFX
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.607874
         functionName: TurnOnSpecialHitWeaponCollider
         data: 
@@ -79,8 +86,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.50399995
-        functionName: TurnOnSpecialHitVFX
+      - time: 0.4257778
+        functionName: TurnOnSpecialHitVFX2
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

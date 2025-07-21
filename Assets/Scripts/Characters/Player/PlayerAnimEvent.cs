@@ -9,6 +9,7 @@ public class PlayerAnimEvent : MonoBehaviour
     [Header("VFX")]
     public ParticleSystem hitVFX;
     public ParticleSystem specialHitVFX;
+    public ParticleSystem specialHitVFX2;
 
     [Header("Light")]
     public Light specialHitVFXLight;
@@ -72,5 +73,10 @@ public class PlayerAnimEvent : MonoBehaviour
     public void TurnOffSpecialHitLightVFX()
     {
         specialHitVFXLight.gameObject.SetActive(false); // Disable the light for the special hit visual effect
+    }
+
+    public void TurnOnSpecialHitVFX2()
+    { 
+        specialHitVFX2.Play(); // Play the second special hit visual effect
     }
 }
