@@ -482,15 +482,43 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.27126226
+      - time: 0.0026666769
+        functionName: TurnOnSpecialHitVFX
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.009777781
+        functionName: TurnOnSpecialHitLightVFX
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.31650034
         functionName: TurnOnSpecialHitWeaponCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.41925567
+      - time: 0.35496998
         functionName: TurnOffSpecialHitWeaponCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8294603
+        functionName: TurnOffSpecialHitVFX
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8370159
+        functionName: TurnOffSpecialHitLightVFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

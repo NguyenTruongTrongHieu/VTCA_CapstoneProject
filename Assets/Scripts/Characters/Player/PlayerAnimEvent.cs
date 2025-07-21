@@ -6,6 +6,14 @@ public class PlayerAnimEvent : MonoBehaviour
     public Collider weaponCollider; // Collider for the weapon, used to detect hits
     public Collider specialHitWeaponCollider; // Collider for special hits, used to detect hits from special attacks
 
+    [Header("VFX")]
+    public ParticleSystem hitVFX;
+    public ParticleSystem specialHitVFX;
+
+    [Header("Light")]
+    public Light specialHitVFXLight;
+
+
     public void TurnOnWeaponColider()
     { 
         weaponCollider.enabled = true; // Enable the weapon collider to detect hits
@@ -34,5 +42,35 @@ public class PlayerAnimEvent : MonoBehaviour
     public void TurnCurrentTurnToPlayer()
     {
         GameManager.instance.currentTurn = "Player"; // Set the current turn to Player, indicating it's the player's turn
+    }
+
+    public void TurnOnSpecialHitVFX()
+    { 
+        specialHitVFX.Play(); // Play the special hit visual effect
+    }
+
+    public void TurnOnHitVFX()
+    { 
+        hitVFX.Play(); // Play the normal hit visual effect
+    }
+
+    public void TurnOffHitVFX()
+    {
+        hitVFX.Stop(); // Stop the normal hit visual effect
+    }
+
+    public void TurnOffSpecialHitVFX()
+    {
+        specialHitVFX.Stop(); // Stop the special hit visual effect
+    }
+
+    public void TurnOnSpecialHitLightVFX()
+    { 
+        specialHitVFXLight.gameObject.SetActive(true); // Enable the light for the special hit visual effect
+    }
+
+    public void TurnOffSpecialHitLightVFX()
+    {
+        specialHitVFXLight.gameObject.SetActive(false); // Disable the light for the special hit visual effect
     }
 }
