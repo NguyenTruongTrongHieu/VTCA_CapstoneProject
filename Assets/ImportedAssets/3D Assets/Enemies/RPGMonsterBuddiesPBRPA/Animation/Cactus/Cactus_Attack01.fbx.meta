@@ -62,14 +62,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.49208832
+      - time: 0.4682788
         functionName: TurnOnFirstHitCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5480825
+      - time: 0.5314158
         functionName: TurnOffFirstHitCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
