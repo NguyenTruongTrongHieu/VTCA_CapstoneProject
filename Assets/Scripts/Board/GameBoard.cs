@@ -67,6 +67,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     //public Node[,] nodes; // danh sách các ô của bàn cờ
     //public List<GameObject> foodList = new List<GameObject>(); // danh sách các ô chứa thức ăn
 
+    [Header("Line Settings")]
+    //[SerializeField] private RectTransform[] foodPoints; // các điểm thức ăn để vẽ đường nối
+    //[SerializeField] private LineController lineController; // đối tượng điều khiển đường nối
+    [SerializeField] private UILineRenderer uiLineRenderer; // đối tượng điều khiển đường nối UI
+
 
     //layoutArray
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
@@ -827,6 +832,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                 underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                 StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+                uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // tạo đường nối giữa các ô thức ăn đã so khớp
 
                 if (hasMatchedFoods[0].foodType == FoodType.Special)
                 {
@@ -865,6 +871,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             return;
         }
 
+        // Đi lùi
         if (underPointer != null && hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
         {
             if (hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.Special)
@@ -875,6 +882,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             hasMatchedFoods[hasMatchedFoods.Count - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
             StartCoroutine(hasMatchedFoods[hasMatchedFoods.Count - 1].ReturnOriginalScale(0.15f));
             hasMatchedFoods.RemoveAt(hasMatchedFoods.Count - 1); // nếu ô thức ăn đã so khớp là ô cuối cùng thì xóa nó khỏi danh sách
+            uiLineRenderer.ClearLatestLine(); // xóa đường nối giữa các ô thức ăn đã so khớp
             return;
         }
 
@@ -897,6 +905,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                         underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                         StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+                        uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // thiết lập đường nối giữa các ô thức ăn đã so khớp
 
                         foreach (var food in foodList)
                         {
@@ -916,6 +925,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                             hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                             underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                             StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+                            uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // tạo đường nối giữa các ô thức ăn đã so khớp
                         }
                     }
                 }
@@ -928,6 +938,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                         underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                         StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+                        uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // thiết lập đường nối giữa các ô thức ăn đã so khớp
                     }
 
                     else if (underPointer.GetComponentInParent<Food>().foodType == FoodType.Special && isCheckSpecialFood == false)
@@ -938,6 +949,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                         StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                         multipleScore = underPointer.GetComponentInParent<Food>().multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
+                        uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // thiết lập đường nối giữa các ô thức ăn đã so khớp
                         isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
                         Debug.Log("Multiple score: " + multipleScore);
                     }
@@ -992,6 +1004,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight
             hasMatchedFoods.Clear(); // nếu không có thức ăn nào được so khớp thì xóa danh sách đã so khớp
         }
+
+        uiLineRenderer.ClearLines(); // xóa đường nối giữa các ô thức ăn đã so khớp
     }
 
     IEnumerator OnDeletedMatchFood(bool haveSpecialFood)
