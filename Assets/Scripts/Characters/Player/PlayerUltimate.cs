@@ -124,8 +124,15 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
         playerTransform.GetComponent<PlayerAttack>().playerStat.Healing(basicMaxHealthPlayer * 30 / 100);
         isUltimateValid = false; // Reset ultimate validity after use
+        StartCoroutine(PlayUltiVfx(2f)); // Start the coroutine to play ultimate visual effects
     }
 
+    public IEnumerator PlayUltiVfx(float waitTime)
+    { 
+        playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX(); // Trigger the ultimate animation
+        yield return new WaitForSeconds(waitTime); // Wait for the specified time
+        playerTransform.GetComponent<PlayerAttack>().StopUltiVFX(); // Stop the ultimate visual effect
+    }
     public void Player2Ultimate()
     {
         isUltimateValid = true; // Set ultimate as valid
@@ -134,6 +141,8 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
         totalRound = 3; // Set the total rounds for the ultimate ability
         StartCoroutine(Player2UltimateCoroutine()); // Start the coroutine for Player 2's ultimate
+        StartCoroutine(PlayUltiVfx(0.75f));
+        playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2(); // Play the ultimate visual effect
     }
 
     public IEnumerator Player2UltimateCoroutine()
@@ -143,6 +152,7 @@ public class PlayerUltimate : MonoBehaviour
             yield return null;
         }
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = basicDamagePlayer;
+        playerTransform.GetComponent<PlayerAttack>().StopUltiVFX2();
         isUltimateValid = false; // Reset ultimate validity after use
     }
 
@@ -152,6 +162,7 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
         StartCoroutine(Spawn3MultipleX3());
         isUltimateValid = false; // Reset ultimate validity after use
+        StartCoroutine(PlayUltiVfx(1.5f));
     }
 
     public IEnumerator Spawn3MultipleX3()

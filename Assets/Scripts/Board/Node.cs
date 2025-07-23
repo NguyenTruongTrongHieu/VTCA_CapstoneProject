@@ -13,6 +13,7 @@ public class Node : MonoBehaviour
 
     public ParticleSystem smokeVFX1;
     public ParticleSystem smokeVFX2;
+    public ParticleSystem smokeVFX3;
 
     public Node (string cellState, GameObject _food)
     {
@@ -30,5 +31,9 @@ public class Node : MonoBehaviour
     { 
         smokeVFX1.Play();
         smokeVFX2.Play();
+        if (smokeVFX3 != null)
+        {
+            smokeVFX3.Play();
+        }
     }
 }
