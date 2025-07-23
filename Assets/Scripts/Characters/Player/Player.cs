@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -158,8 +159,15 @@ public class PlayerIdle : NodeBehaviourTree
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
             Debug.Log(" Player Idle");
             playerSelf.rb.isKinematic = false; // Disable physics interactions for smooth movement
-        }
 
+            if (LevelManager.instance.currentLevel.
+                enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().
+                enemyType == EnemyType.boss)
+            {
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.75f));
+            }
+        }
+        
         playerSelf.animator.SetBool(playerSelf.isMovingHash, false);
 
         state = NodeState.success;

@@ -98,7 +98,7 @@ MonoBehaviour:
   damage: 3
   hpSlider: {fileID: 0}
   id: 1
-  name: MushroomAngry
+  name: ShroomerMushroomAngry
   enemyType: 0
 --- !u!1 &6728526692346273299
 GameObject:
