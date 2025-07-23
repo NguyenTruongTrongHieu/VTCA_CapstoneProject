@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 0447182bd66f5ca4fb61d2d2e771bb56
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189463
+  packageName: 'Monster: Wolf boss'
+  packageVersion: 1.0
+  assetPath: Assets/Hatogame_new/BossMonsterPack1/Wolfboss/Animation/Wolfboss@die.FBX
+  uploadId: 626876
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -107,10 +112,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 189463
-  packageName: 'Monster: Wolf boss'
-  packageVersion: 1.0
-  assetPath: Assets/Hatogame_new/BossMonsterPack1/Wolfboss/Animation/Wolfboss@die.FBX
-  uploadId: 626876

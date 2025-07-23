@@ -86,7 +86,7 @@ public class PlayerUltimate : MonoBehaviour
         var playerStat = playerTransform.GetComponent<PlayerStat>();
         playerStat.SetUpStatAndSlider();
         playerTransform.GetComponent<PlayerAttack>().ResetAnimState();
-        //CameraManager.instance.SetTargetForCam(playerTransform);
+        CameraManager.instance.ResetCamForPlayer();
         playerTransform.GetComponent<Player>().ReturnStartPos();
         playerTransform.GetComponent<Player>().SetUpBehaviourTree();
 

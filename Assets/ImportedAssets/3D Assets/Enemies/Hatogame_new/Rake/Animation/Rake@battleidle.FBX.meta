@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: bae27c4fd633c0f4eb0695aee8dad422
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189460
+  packageName: 'Monster: Rake'
+  packageVersion: 1.0
+  assetPath: Assets/Hatogame_new/Rake/Animation/Rake@battleidle.FBX
+  uploadId: 626865
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -31,7 +36,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: battleidle
+      takeName: Take 001
+      internalID: 1827226128182048838
+      firstFrame: 100
+      lastFrame: 235
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 100
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -107,10 +141,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 189460
-  packageName: 'Monster: Rake'
-  packageVersion: 1.0
-  assetPath: Assets/Hatogame_new/Rake/Animation/Rake@battleidle.FBX
-  uploadId: 626865

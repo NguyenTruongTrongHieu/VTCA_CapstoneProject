@@ -203,7 +203,7 @@ MonoBehaviour:
   damage: 3
   hpSlider: {fileID: 0}
   id: 0
-  name: Cactus
+  name: ShroomerCactus
   enemyType: 0
 --- !u!1001 &1809496304455506647
 PrefabInstance:
