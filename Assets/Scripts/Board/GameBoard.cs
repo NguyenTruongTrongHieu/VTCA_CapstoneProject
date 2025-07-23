@@ -994,11 +994,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             }
         }
 
+        //Xử lý food bay đến player hoặc enemy hoặc không bay đến đâu cả
         if (hasMatchedFoods.Count >= 2)
         {
             StartCoroutine(OnDeletedMatchFood(havingSpecialFood)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+            PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().PlayTakeFruitVFX();
         }
-
         else
         {
             StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight

@@ -9,6 +9,12 @@ public class PlayerAttack : MonoBehaviour
     public string attackState;
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
+
+    [Header("VFX")]
+    public ParticleSystem auraTakeFruitVFX;
+    public ParticleSystem ultiVFX;
+    public ParticleSystem ultiVFX2;//Use for vfx dot ulti
+
     private List<int> attackHashes = new List<int>();//Trigger
     private int specialAttackHash;//Trigger
     private int doneAttackHash; // Trigger for done attack
@@ -91,6 +97,7 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator DoneAttack(bool isEnemyDie, bool isAllEnemiesDie)
     {
+        StopTakeFruitVFX(); // Dừng hiệu ứng khi kết thúc tấn công
         yield return new WaitForSeconds(0.5f); // Thời gian nghỉ sau khi ra hết đòn
         animator.SetTrigger(doneAttackHash); // Kết thúc chuỗi tấn công
 
@@ -148,6 +155,54 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool(isDeadHash, false); // Reset dead animation state
         animator.SetBool(isVictoryHash, false); // Reset victory animation state
         animator.SetTrigger(doneAttackHash); // Reset done attack state
+    }
+
+    public void PlayTakeFruitVFX()
+    {
+        if (auraTakeFruitVFX != null)
+        {
+            auraTakeFruitVFX.Play(); // Play the aura effect when taking fruit
+        }
+    }
+
+    public void StopTakeFruitVFX()
+    {
+        if (auraTakeFruitVFX != null)
+        {
+            auraTakeFruitVFX.Stop(); // Stop the aura effect
+        }
+    }
+
+    public void PlayUltiVFX()
+    {
+        if (ultiVFX != null)
+        {
+            ultiVFX.Play(); // Play the ultimate visual effect
+        }
+    }
+
+    public void StopUltiVFX()
+    {
+        if (ultiVFX != null)
+        {
+            ultiVFX.Stop(); // Stop the ultimate visual effect
+        }
+    }
+
+    public void PlayUltiVFX2()
+    {
+        if (ultiVFX2 != null)
+        {
+            ultiVFX2.Play(); // Play the second ultimate visual effect
+        }
+    }
+
+    public void StopUltiVFX2()
+    {
+        if (ultiVFX2 != null)
+        {
+            ultiVFX2.Stop(); // Stop the second ultimate visual effect
+        }
     }
 
     private void OnTriggerEnter(Collider other)
