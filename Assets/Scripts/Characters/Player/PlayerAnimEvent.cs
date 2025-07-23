@@ -79,4 +79,11 @@ public class PlayerAnimEvent : MonoBehaviour
     { 
         specialHitVFX2.Play(); // Play the second special hit visual effect
     }
+
+    public void TurnOnAndSetPosAtEnemyForHitVFX()
+    {
+        hitVFX.gameObject.transform.position = LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position;
+        hitVFX.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);// Stop the hit VFX to reset it before playing again
+        hitVFX.Play();
+    }
 }
