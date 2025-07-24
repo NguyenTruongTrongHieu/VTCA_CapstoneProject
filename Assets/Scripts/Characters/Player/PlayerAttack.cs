@@ -154,7 +154,7 @@ public class PlayerAttack : MonoBehaviour
     { 
         animator.SetBool(isDeadHash, false); // Reset dead animation state
         animator.SetBool(isVictoryHash, false); // Reset victory animation state
-        animator.SetTrigger(doneAttackHash); // Reset done attack state
+       // animator.SetTrigger(doneAttackHash); // Reset done attack state
     }
 
     public void PlayTakeFruitVFX()
