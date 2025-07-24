@@ -69,7 +69,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6497777
+      - time: 0.67596817
         functionName: TurnOffFirstHitCollider
         data: 
         objectReferenceParameter: {instanceID: 0}

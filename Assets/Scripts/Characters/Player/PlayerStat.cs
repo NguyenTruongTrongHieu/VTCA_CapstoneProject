@@ -24,6 +24,7 @@ public class PlayerStat : Stats
     [Header("Percent bonus")]
     public float healthPercentBonus; // Bonus health percentage
     public float damagePercentBonus; // Bonus damage percentage
+    public float lifeStealPercentBonus; // Bonus lifesteal percentage   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     [Header("Playing")]
     public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn; "None": not do attack; "Win": all enemies die; "Lose": player die
     private bool isPlayerTurn = false; // True if it's player's turn, false if it's enemy's turn
+    public int multipleScoreForPlayerHit = 1; // Score multiplier for player hits
+
     public int currentEnemyIndex = 0; // Index of the current enemy in the level
     public List<Vector3> enemiesStartPosition = new List<Vector3>(); // List to store the start positions of enemies
     public Vector3 enemiesStartRotation;

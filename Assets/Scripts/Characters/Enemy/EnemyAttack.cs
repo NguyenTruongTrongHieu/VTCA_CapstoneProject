@@ -130,8 +130,10 @@ public class EnemyAttack : MonoBehaviour
             PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
             if (playerStat != null)
             {
-                Debug.Log("Player hit");
-                enemyStat.TakeDamage(playerStat.damage);
+                float dam = playerStat.damage;
+                enemyStat.TakeDamage(dam);
+                playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
+
                 if (enemyStat.CheckIfObjectDead())
                 {
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
@@ -139,7 +141,6 @@ public class EnemyAttack : MonoBehaviour
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
-                            Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             Destroy(gameObject, 1f);
                         }
@@ -162,7 +163,12 @@ public class EnemyAttack : MonoBehaviour
             if (playerStat != null)
             {
                 Debug.Log("Player special hit");
-                enemyStat.TakeDamage(playerStat.damage * 3);
+
+                float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit;
+                GameManager.instance.multipleScoreForPlayerHit = 1;
+                enemyStat.TakeDamage(dam);
+                playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
+
                 if (enemyStat.CheckIfObjectDead())
                 {
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
@@ -172,7 +178,7 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Enemy is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
-                            Destroy(gameObject, 0.8f);
+                            Destroy(gameObject, 1f);
                         }
                     }
                 }

@@ -361,7 +361,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.47289178
+      - time: 0.49432033
         functionName: TurnOffSpecialHitWeaponCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
