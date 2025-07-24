@@ -998,6 +998,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 { 
                     havingSpecialFood = true; // nếu có ô thức ăn đặc biệt thì đặt biến havingSpecialFood về true
                     isCheckSpecialFood = false;
+                    GameManager.instance.multipleScoreForPlayerHit = multipleScore;
                     multipleScore = 1;
                     hasMatchedFoods[i - 1].auraSpecialVFX.Stop();
                 }
@@ -1073,6 +1074,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         isDoneOneFallingRound = true;
 
         //Player thuc hien tan cong
+        yield return new WaitForSeconds(0.25f);//Waiting for food to move to player
         if (haveSpecialFood)
         {
             StartCoroutine(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().

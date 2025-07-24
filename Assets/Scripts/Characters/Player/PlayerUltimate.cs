@@ -9,10 +9,14 @@ public class PlayerUltimate : MonoBehaviour
 
     private int ultimateHash;
 
-    [Header("Stat")]
+    [Header("Basic player's stat")]
     public float basicDamagePlayer; // Damage dealt by the basic attack
     public float basicMaxHealthPlayer;
     public float basicCurrentHealthPlayer; // Current health of the player
+    public float basicLifeStealPlayer; // Lifesteal percentage of the player
+
+    [Header("Ultimate's stat")]
+    public float lifeStealPercent; // Lifesteal percentage during the ultimate ability
     public float ultimateDamage; // Damage dealt by the ultimate ability
 
     [Header("Check if ultimate is valid")]
@@ -65,8 +69,11 @@ public class PlayerUltimate : MonoBehaviour
                 player.SetActive(true);
                 playerTransform = player.transform;
                 playerStat.SetUpStatAndSlider();
+
                 basicDamagePlayer = playerStat.damage; // Get the player's damage
                 basicMaxHealthPlayer = playerStat.maxHealth; // Get the player's max health
+                basicLifeStealPlayer = playerStat.lifeStealPercentBonus; // Get the player's lifesteal percentage
+
                 player.GetComponent<Player>().ReturnStartPos();
                 CameraManager.instance.SetTargetForCam(player.transform);//call when change player
                 player.GetComponent<Player>().SetUpBehaviourTree();
@@ -122,11 +129,27 @@ public class PlayerUltimate : MonoBehaviour
     {
         isUltimateValid = true; // Set ultimate as valid
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
-        playerTransform.GetComponent<PlayerAttack>().playerStat.Healing(basicMaxHealthPlayer * 30 / 100);
-        isUltimateValid = false; // Reset ultimate validity after use
+
+        lifeStealPercent = basicLifeStealPlayer + 0.1f;
+        playerTransform.GetComponent<PlayerStat>().lifeStealPercentBonus = lifeStealPercent; 
+
+        totalRound = 3; // Set the total rounds for the ultimate ability
+
         StartCoroutine(PlayUltiVfx(2f)); // Start the coroutine to play ultimate visual effects
+        playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2();
+        StartCoroutine(Player1UltimateCoroutine()); // Start the coroutine for Player 1's ultimate
     }
 
+    public IEnumerator Player1UltimateCoroutine()
+    {
+        while (totalRound > 0)
+        {
+            yield return null;
+        }
+        playerTransform.GetComponent<PlayerAttack>().playerStat.lifeStealPercentBonus = basicLifeStealPlayer;
+        playerTransform.GetComponent<PlayerAttack>().StopUltiVFX2();
+        isUltimateValid = false; // Reset ultimate validity after use
+    }
     public IEnumerator PlayUltiVfx(float waitTime)
     { 
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX(); // Trigger the ultimate animation
@@ -137,10 +160,14 @@ public class PlayerUltimate : MonoBehaviour
     {
         isUltimateValid = true; // Set ultimate as valid
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
-        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 15 / 100); 
+
+        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 0.15f); 
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
+
         totalRound = 3; // Set the total rounds for the ultimate ability
+
         StartCoroutine(Player2UltimateCoroutine()); // Start the coroutine for Player 2's ultimate
+
         StartCoroutine(PlayUltiVfx(0.75f));
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2(); // Play the ultimate visual effect
     }
@@ -160,8 +187,11 @@ public class PlayerUltimate : MonoBehaviour
     { 
         isUltimateValid = true;
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
+
         StartCoroutine(Spawn3MultipleX3());
+
         isUltimateValid = false; // Reset ultimate validity after use
+
         StartCoroutine(PlayUltiVfx(1.5f));
     }
 

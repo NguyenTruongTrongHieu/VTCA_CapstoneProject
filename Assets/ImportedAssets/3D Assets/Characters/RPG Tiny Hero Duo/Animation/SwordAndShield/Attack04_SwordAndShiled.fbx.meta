@@ -72,15 +72,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.607874
-        functionName: TurnOnSpecialHitWeaponCollider
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.647188
-        functionName: TurnOffSpecialHitWeaponCollider
+      - time: 0.41866666
+        functionName: TurnOnSpecialHitLightVFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -93,8 +86,15 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.41866666
-        functionName: TurnOnSpecialHitLightVFX
+      - time: 0.607874
+        functionName: TurnOnSpecialHitWeaponCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.68528324
+        functionName: TurnOffSpecialHitWeaponCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
