@@ -182,7 +182,6 @@ public class CameraManager : MonoBehaviour
 
     public IEnumerator SetVerticalFOV(float target, float duration)
     {
-        Debug.Log("Setting vertical FOV to: " + target + " over duration: " + duration);
         if (target < cineCam.Lens.FieldOfView)
         {
             // Decrease FOV to target with lerp and duration, don't use,deltaTime, use reality time

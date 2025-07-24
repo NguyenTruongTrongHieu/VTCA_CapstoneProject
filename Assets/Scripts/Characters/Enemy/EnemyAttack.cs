@@ -141,7 +141,7 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
-                            Destroy(gameObject, 0.8f);
+                            Destroy(gameObject, 1f);
                         }
                     }
                 }
