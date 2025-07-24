@@ -100,6 +100,7 @@ public class PlayerAttack : MonoBehaviour
         StopTakeFruitVFX(); // Dừng hiệu ứng khi kết thúc tấn công
         yield return new WaitForSeconds(0.5f); // Thời gian nghỉ sau khi ra hết đòn
         animator.SetTrigger(doneAttackHash); // Kết thúc chuỗi tấn công
+        yield return new WaitForSeconds(1f); // Thời gian chờ anim chạy về done attack hoặc đợi cam thực hiện xong anim, tối thiểu đợi 0.5f
 
         //Check if all enemies die
         if (isAllEnemiesDie)
