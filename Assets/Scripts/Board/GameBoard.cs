@@ -21,10 +21,13 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     [Header("Matching manager")]
     public List<Food> hasMatchedFoods = new List<Food>(); // danh sách các ô thức ăn đã được so khớp
+
+    public string specialFoodType; // loại món ăn đặc biệt, "": không có special, "Multiple": loại nhân dam đòn đánh, "DebuffTakeDam": Loại tăng sát thương nhận vào của enemy
     public int numberOfFoodMatching;
     public int multipleScore;
     public int numberToCheckSpecialFood; //  dùng để kiểm tra món đặt biệt
     public bool isCheckSpecialFood; // biến kiểm tra xem có cần kiểm tra món đặc biệt hay không
+
     private int[] foodCount = {4,7,10,13,16,19,21}; // mảng đếm số lượng món đặc biệt theo loại
     private int[] specialMutiplie = {3, 5, 7, 9,11, 13, 15}; // mảng nhân điểm theo loại món đặc biệt
 
@@ -32,6 +35,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     [Header("Prefabs")]
     public GameObject[] foodPrefab; // prefabs của đồ ăn
     public GameObject specialFoodPrefab;
+    public GameObject debuffTakeDamSpecialFoodPrefab;
     public GameObject statePrefab; // prefab của khối gỗ
     public GameObject cellPrefab; // prefab của ô mặc định
     public GameObject lockCellPrefab;
@@ -834,16 +838,19 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
                 uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // tạo đường nối giữa các ô thức ăn đã so khớp
 
-                if (hasMatchedFoods[0].foodType == FoodType.Special)
+                if (hasMatchedFoods[0].foodType == FoodType.Special || hasMatchedFoods[0].foodType == FoodType.DebuffSpecial)
                 {
+                    specialFoodType = hasMatchedFoods[0].specialType;
                     numberToCheckSpecialFood = 1;
                     multipleScore = hasMatchedFoods[0].multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
                     isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
                 }
                 else
                 {
+                    specialFoodType = "";
                     numberToCheckSpecialFood = 0;
                     multipleScore = 1; // đặt số điểm nhân mặc định là 1
+                    isCheckSpecialFood = false;
                 }
             }
         }
@@ -853,7 +860,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             foreach (var food in foodList)
             {
-                if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && food.foodType != FoodType.Special)
+                if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && 
+                    (food.foodType != FoodType.Special && food.foodType != FoodType.DebuffSpecial))
                 {
                     StartCoroutine(food.FadeOut(0.15f, 0.7f));
                     StartCoroutine(food.ZoomOut(0.15f, 0.8f));
@@ -874,8 +882,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         // Đi lùi
         if (underPointer != null && hasMatchedFoods.Count - 2 == hasMatchedFoods.FindIndex(x => x == underPointer.GetComponentInParent<Food>()) && hasMatchedFoods.Count >= 2)
         {
-            if (hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.Special)
+            if (hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.Special ||
+                hasMatchedFoods[hasMatchedFoods.Count - 1].foodType == FoodType.DebuffSpecial)
             {
+                specialFoodType = "";
                 isCheckSpecialFood = false; // đặt biến kiểm tra món đặc biệt là false
                 multipleScore = 1; // đặt số điểm nhân mặc định là 1
             }
@@ -884,13 +894,16 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             hasMatchedFoods.RemoveAt(hasMatchedFoods.Count - 1); // nếu ô thức ăn đã so khớp là ô cuối cùng thì xóa nó khỏi danh sách
             uiLineRenderer.ClearLatestLine(); // xóa đường nối giữa các ô thức ăn đã so khớp
 
-            if(hasMatchedFoods.Count == 1 && FoodType.Special == hasMatchedFoods[0].foodType)
-            foreach (var food in foodList)
+            if (hasMatchedFoods.Count == 1 && (FoodType.Special == hasMatchedFoods[0].foodType ||
+                FoodType.DebuffSpecial == hasMatchedFoods[0].foodType))
             {
-                if (food.foodType != hasMatchedFoods[0].foodType)
+                foreach (var food in foodList)
                 {
-                    StartCoroutine(food.ReturnOriginalColor(0.15f)); // làm ro các ô thức ăn không cùng loại
-                    StartCoroutine(food.ReturnOriginalScale(0.15f)); // phong to các ô thức ăn không cùng loại
+                    if (food.foodType != hasMatchedFoods[0].foodType)
+                    {
+                        StartCoroutine(food.ReturnOriginalColor(0.15f)); // làm ro các ô thức ăn không cùng loại
+                        StartCoroutine(food.ReturnOriginalScale(0.15f)); // phong to các ô thức ăn không cùng loại
+                    }
                 }
             }
 
@@ -909,7 +922,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 if (numberToCheckSpecialFood == 1)
                 {
-                    if (hasMatchedFoods.Count == 1 && underPointer.GetComponentInParent<Food>().foodType != FoodType.Special)
+                    if (hasMatchedFoods.Count == 1 && (underPointer.GetComponentInParent<Food>().foodType != FoodType.Special && 
+                        underPointer.GetComponentInParent<Food>().foodType != FoodType.DebuffSpecial))
                     {
                         
                         Debug.Log("Add food: " + underPointer.name);
@@ -921,7 +935,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                         foreach (var food in foodList)
                         {
-                            if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && food.foodType != FoodType.Special)
+                            if (food.foodType != underPointer.GetComponentInParent<Food>().foodType && 
+                                (food.foodType != FoodType.Special && food.foodType != FoodType.DebuffSpecial))
                             {
                                 StartCoroutine(food.FadeOut(0.15f, 0.7f));
                                 StartCoroutine(food.ZoomOut(0.15f, 0.8f));
@@ -953,16 +968,20 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                         uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // thiết lập đường nối giữa các ô thức ăn đã so khớp
                     }
 
-                    else if (underPointer.GetComponentInParent<Food>().foodType == FoodType.Special && isCheckSpecialFood == false)
+                    else if ((underPointer.GetComponentInParent<Food>().foodType == FoodType.Special || 
+                        underPointer.GetComponentInParent<Food>().foodType == FoodType.DebuffSpecial) && isCheckSpecialFood == false)
                     {
                         Debug.Log("Add food: " + underPointer.name);
 
                         hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                         underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                         StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
+
+                        specialFoodType = underPointer.GetComponentInParent<Food>().specialType; // lấy loại món đặc biệt của ô thức ăn đầu tiên
                         multipleScore = underPointer.GetComponentInParent<Food>().multipleScore; // lấy số điểm nhân của ô thức ăn đầu tiên
-                        uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>()); // thiết lập đường nối giữa các ô thức ăn đã so khớp
                         isCheckSpecialFood = true; // đặt biến kiểm tra món đặc biệt là true
+
+                        uiLineRenderer.CreateLine(underPointer.GetComponent<RectTransform>());
                         Debug.Log("Multiple score: " + multipleScore);
                     }
                 }
@@ -979,28 +998,36 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         foreach (var food in foodList)
         {
-            if (food.foodType != hasMatchedFoods[0].foodType)
+            if (food.foodType != hasMatchedFoods[0].foodType && 
+                (food.foodType != FoodType.Special && food.foodType != FoodType.DebuffSpecial))
             {
                 StartCoroutine(food.ReturnOriginalColor(0.15f)); // làm ro các ô thức ăn không cùng loại
                 StartCoroutine(food.ReturnOriginalScale(0.15f)); // phong to các ô thức ăn không cùng loại
             }
         }
 
-
         bool havingSpecialFood = false; // biến để kiểm tra xem có ô thức ăn đặc biệt nào trong danh sách đã so khớp hay không
+        bool isFoodMoveToPlayer = true;
+        string specialTypeTmp = ""; 
         for (int i = hasMatchedFoods.Count; i > 0; i--)
         {
             if (hasMatchedFoods[i - 1] != null)
             {
                 hasMatchedFoods[i - 1].isMatched = false; // đặt biến isMatched của ô thức ăn đã so khớp về false
 
-                if (hasMatchedFoods[i - 1].foodType == FoodType.Special)
-                { 
+                if (hasMatchedFoods[i - 1].foodType == FoodType.Special ||
+                    hasMatchedFoods[i - 1].foodType == FoodType.DebuffSpecial)
+                {
+                    isFoodMoveToPlayer = specialFoodType == "Multiple";
+                    specialTypeTmp = specialFoodType;
+
+                    specialFoodType = "";
                     havingSpecialFood = true; // nếu có ô thức ăn đặc biệt thì đặt biến havingSpecialFood về true
+
                     isCheckSpecialFood = false;
+                    numberToCheckSpecialFood = 0; // đặt biến numberToCheckSpecialFood về 0
                     GameManager.instance.multipleScoreForPlayerHit = multipleScore;
                     multipleScore = 1;
-                    hasMatchedFoods[i - 1].auraSpecialVFX.Stop();
                 }
                 hasMatchedFoods[i - 1].highlightVFX1.Stop();
                 hasMatchedFoods[i - 1].highlightVFX2.Stop();
@@ -1010,8 +1037,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         //Xử lý food bay đến player hoặc enemy hoặc không bay đến đâu cả
         if (hasMatchedFoods.Count >= 2)
         {
-            StartCoroutine(OnDeletedMatchFood(havingSpecialFood)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
-            PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().PlayTakeFruitVFX();
+            StartCoroutine(OnDeletedMatchFood(havingSpecialFood, isFoodMoveToPlayer, specialTypeTmp)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+            
         }
         else
         {
@@ -1022,11 +1049,22 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         uiLineRenderer.ClearLines(); // xóa đường nối giữa các ô thức ăn đã so khớp
     }
 
-    IEnumerator OnDeletedMatchFood(bool haveSpecialFood)
+    IEnumerator OnDeletedMatchFood(bool haveSpecialFood, bool isFoodMoveToPlayer, string specialType)
     {
         GameManager.instance.currentTurn = "None";
         Vector2 specialPos = new Vector2();
         Vector2Int specialFoodIndex = new Vector2Int();
+
+        if (isFoodMoveToPlayer)
+        {
+            PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().PlayTakeFruitVFX();
+        }
+
+        if (specialType == "DebuffTakeDam")
+        {
+            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyAttack>().debuffVFX.Play();
+            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyAttack>().enemyDebuffTurn = 1;
+        }
 
         for (int i = hasMatchedFoods.Count; i > 0; i--)
         {
@@ -1041,7 +1079,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 Vector2Int currentPos = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
 
-                StartCoroutine(hasMatchedFoods[i - 1].MoveToPlayerHpSlider(0.25f)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
+                StartCoroutine(hasMatchedFoods[i - 1].MoveToTarget(0.25f, isFoodMoveToPlayer, specialType)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
                 yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
                 //Smoke VFX
@@ -1075,15 +1113,22 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         //Player thuc hien tan cong
         yield return new WaitForSeconds(0.25f);//Waiting for food to move to player
-        if (haveSpecialFood)
+        if (isFoodMoveToPlayer)
         {
-            StartCoroutine(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().
-                PlayAttackSequence(hasMatchedFoods.Count - 1, true));
+            if (haveSpecialFood)
+            {
+                StartCoroutine(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().
+                    PlayAttackSequence(hasMatchedFoods.Count - 1, true));
+            }
+            else
+            {
+                StartCoroutine(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().
+                    PlayAttackSequence(hasMatchedFoods.Count, false));
+            }
         }
         else
         {
-            StartCoroutine(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().
-                PlayAttackSequence(hasMatchedFoods.Count, false));
+            GameManager.instance.currentTurn = "Player";
         }
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp

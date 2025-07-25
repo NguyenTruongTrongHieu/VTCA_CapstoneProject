@@ -21,9 +21,12 @@ public class Food : MonoBehaviour
     public float foodScale = 0.8f; // Tỷ lệ kích thước của thức ăn
 
     [Header("Specical food")]
+    public string specialType;//"": không có special; "Multiple": thức ăn nhân thêm dam, tạo ra đòn đặc biệt cho player;
+                              //"DebuffTakeDam": thức ăn làm enemy tăng dam phải nhận
     public int multipleScore;
     public Text multipleText;
     public ParticleSystem auraSpecialVFX;
+
 
     public Food(int _xIndex, int _yIndex)
     {
@@ -55,6 +58,13 @@ public class Food : MonoBehaviour
         {
             multipleText.text = $"X{multipleScore}"; // Hiển thị số điểm nhân
         }
+        else if (foodType == FoodType.DebuffSpecial)
+        {
+            if (specialType == "DebuffTakeDam")
+            {
+                multipleText.text = "TD";
+            }
+        }
     }
 
     private void Update()
@@ -69,7 +79,7 @@ public class Food : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            StartCoroutine(MoveToPlayerHpSlider(0.5f));
+            StartCoroutine(MoveToTarget(0.5f, true, "Multiple"));
         }
     }
 
@@ -297,9 +307,11 @@ public class Food : MonoBehaviour
         foodImage.color = targetColor; // Đảm bảo màu sắc cuối cùng chính xác
     }
 
-    public IEnumerator MoveToPlayerHpSlider(float duration)
+    public IEnumerator MoveToTarget(float duration, bool targetIsPlayer, string specialFoodType)//SpecialFoodTyoe: dựa theo Food và GameBoard
     {
-        Vector3 targetPos = Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position);
+        Vector3 targetPos = targetIsPlayer ? Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position) 
+            : Camera.main.WorldToScreenPoint(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position);
+
         this.transform.SetParent(UIManager.instance.inGamePanel.transform);
         isMatched = false;
         Food deletedFood = GameBoard.Instance.DeleteFoodAtPos(xIndex, yIndex);
@@ -314,6 +326,17 @@ public class Food : MonoBehaviour
         //StartCoroutine(ReturnOriginalScale(0.2f));
 
         yield return StartCoroutine(MoveTo(targetPos, duration));
+
+        if (!targetIsPlayer)
+        {
+            LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyAttack>().GetHitAnim();
+
+            // Kiểm tra loại thức ăn bay đến enemy và thực hiện công dụng của food đó
+            if (specialFoodType == "DebuffTakeDam")
+            {
+                LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().defense += 0.1f;
+            }
+        }
 
         deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
     }
@@ -373,6 +396,7 @@ public class Food : MonoBehaviour
     public enum FoodType
 {
     Special,
+    DebuffSpecial,
     Apple,
     Banana,
     Orange,

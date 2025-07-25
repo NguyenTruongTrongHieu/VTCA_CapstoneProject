@@ -8,6 +8,13 @@ public class EnemyAttack : MonoBehaviour
 
     public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
+    [Header("VFX")]
+    public ParticleSystem debuffVFX;
+
+    [Header("Count turn")]
+    public int enemyDebuffTurn;
+    public int enemyBuffTurn;
+
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
     private List<int> attackHashes = new List<int>();//Trigger
@@ -78,6 +85,17 @@ public class EnemyAttack : MonoBehaviour
 
     public IEnumerator DoneAttack(bool isPlayerDie)
     {
+        if (enemyDebuffTurn > 0)
+        { 
+            enemyDebuffTurn--;
+            if (enemyDebuffTurn <= 0)
+            {
+                debuffVFX.Stop();
+
+                enemyStat.SetUpDefense();
+            }
+        }
+
         yield return new WaitForSeconds(0.5f); // Thời gian nghỉ sau khi ra hết đòn
         animator.SetTrigger(doneAttackHash); // Kết thúc chuỗi tấn công
 
@@ -123,6 +141,11 @@ public class EnemyAttack : MonoBehaviour
         transform.rotation = targetRotation; // Ensure final rotation is set
     }
 
+    public void GetHitAnim()
+    {
+        animator.SetTrigger(getHitHash);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerHit"))
@@ -130,7 +153,7 @@ public class EnemyAttack : MonoBehaviour
             PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
             if (playerStat != null)
             {
-                float dam = playerStat.damage;
+                float dam = playerStat.damage * enemyStat.defense;
                 enemyStat.TakeDamage(dam);
                 playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
 
@@ -164,7 +187,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 Debug.Log("Player special hit");
 
-                float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit;
+                float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;
                 enemyStat.TakeDamage(dam);
                 playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
