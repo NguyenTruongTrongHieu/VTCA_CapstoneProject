@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433f9309160a9b144bf83ae52b8cc315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodType: 5
+  foodType: 6
   xIndex: 0
   yIndex: 0
   isFalling: 0
@@ -61,6 +61,7 @@ MonoBehaviour:
   highlightVFX1: {fileID: 6474792731984901318}
   highlightVFX2: {fileID: 8171661280786393509}
   foodScale: 0.8
+  specialType: 
   multipleScore: 1
   multipleText: {fileID: 0}
   auraSpecialVFX: {fileID: 0}

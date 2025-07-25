@@ -188,14 +188,14 @@ public class PlayerUltimate : MonoBehaviour
         isUltimateValid = true;
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
 
-        StartCoroutine(Spawn3MultipleX3());
+        StartCoroutine(SpawnDebuffTakeDam());
 
         isUltimateValid = false; // Reset ultimate validity after use
 
         StartCoroutine(PlayUltiVfx(1.5f));
     }
 
-    public IEnumerator Spawn3MultipleX3()
+    public IEnumerator SpawnDebuffTakeDam()
     {
         List<int> usedCell = new List<int>();
 
@@ -214,11 +214,11 @@ public class PlayerUltimate : MonoBehaviour
                 GameBoard.Instance.foodList[foodIndex].yIndex);
              yield return oldFood.StartCoroutine(oldFood.ZoomOut(0.25f, 0));
 
-            GameObject foodObject = Instantiate(GameBoard.Instance.specialFoodPrefab, 
+            GameObject foodObject = Instantiate(GameBoard.Instance.debuffTakeDamSpecialFoodPrefab, 
                oldFood.transform.position, Quaternion.identity, GameBoard.Instance.foodParent);
             foodObject.transform.localScale = Vector3.zero;
             Food food = foodObject.GetComponent<Food>();
-            food.SetMultipleScore(3); // Set the multiple score to 3
+            
             yield return food.StartCoroutine(food.ReturnOriginalScale(0.25f));
 
             GameBoard.Instance.AddFoodAtPos(oldFood.xIndex, oldFood.yIndex, food);
