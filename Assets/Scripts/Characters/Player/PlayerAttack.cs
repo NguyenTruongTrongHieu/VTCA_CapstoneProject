@@ -132,6 +132,7 @@ public class PlayerAttack : MonoBehaviour
         //CameraManager.instance.SetScreenPosComposition(1f, true, 0f));
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
         StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
+        StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
         UIManager.instance.ShowGameOverPanel(true);
     }
@@ -228,7 +229,7 @@ public class PlayerAttack : MonoBehaviour
                         {
                             Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger the dead animation
-                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 1, 1));
+                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 3, -8f));
                         }
                         else
                         {
