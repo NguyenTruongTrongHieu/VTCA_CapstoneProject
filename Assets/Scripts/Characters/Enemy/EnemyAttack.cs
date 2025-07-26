@@ -45,7 +45,7 @@ public class EnemyAttack : MonoBehaviour
         if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
         { 
             attackState = "Attacking";
-            StartCoroutine(PlayAttackSequence(6, false));//Random.Range(1, 4)
+            StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));//Random.Range(1, 4)
         }
     }
 
@@ -102,12 +102,14 @@ public class EnemyAttack : MonoBehaviour
         //Check if current enemy die
         if (isPlayerDie)
         {
+            yield return new WaitForSeconds(1.15f);
             GameManager.instance.currentTurn = "Lose";
             GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             GameManager.instance.currentTurn = "Player";
         }
 
@@ -118,6 +120,10 @@ public class EnemyAttack : MonoBehaviour
     {
         animator.SetBool(isVictoryHash, true);
         StartCoroutine(RotateToTarget(GameManager.instance.enemiesEndRotation));
+
+        CameraManager.instance.SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
+        StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
+        StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
 
         UIManager.instance.ShowGameOverPanel(false);
     }
@@ -155,6 +161,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 float dam = playerStat.damage * enemyStat.defense;
                 enemyStat.TakeDamage(dam);
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
 
                 if (enemyStat.CheckIfObjectDead())
@@ -165,6 +172,7 @@ public class EnemyAttack : MonoBehaviour
                         if (playerAttack.attackState == "DoneAttack")
                         {
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 1, 1));
                             Destroy(gameObject, 1f);
                         }
                     }
@@ -190,6 +198,7 @@ public class EnemyAttack : MonoBehaviour
                 float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;
                 enemyStat.TakeDamage(dam);
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
 
                 if (enemyStat.CheckIfObjectDead())
@@ -201,6 +210,7 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Enemy is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 1, 1));
                             Destroy(gameObject, 1f);
                         }
                     }

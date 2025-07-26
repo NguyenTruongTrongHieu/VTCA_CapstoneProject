@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraManager : MonoBehaviour
 {
@@ -226,6 +227,103 @@ public class CameraManager : MonoBehaviour
         else
         {
             yield return null; // No change needed, exit coroutine
+        }
+    }
+
+    public IEnumerator SetFollowOffset(float duration, char offsetPos, float target)
+    {
+        if (offsetPos == 'X' || offsetPos == 'x')
+        { 
+            float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                float newOffsetX = Mathf.Lerp(currentFollowOffsetX, target, elapsedTime / duration);
+                cineCam.GetComponent<CinemachineFollow>().FollowOffset.x = newOffsetX;
+                elapsedTime += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+            cineCam.GetComponent<CinemachineFollow>().FollowOffset.x = target; // Ensure final value is set to target
+        }
+        else if (offsetPos == 'Y' || offsetPos == 'y')
+        {
+            float currentFollowOffsetY = cineCam.GetComponent<CinemachineFollow>().FollowOffset.y;
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                float newOffsetY = Mathf.Lerp(currentFollowOffsetY, target, elapsedTime / duration);
+                cineCam.GetComponent<CinemachineFollow>().FollowOffset.y = newOffsetY;
+                elapsedTime += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+            cineCam.GetComponent<CinemachineFollow>().FollowOffset.y = target; // Ensure final value is set to target
+        }
+        else if (offsetPos == 'Z' || offsetPos == 'z')
+        {
+            float currentFollowOffsetZ = cineCam.GetComponent<CinemachineFollow>().FollowOffset.z;
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
+            {
+                float newOffsetZ = Mathf.Lerp(currentFollowOffsetZ, target, elapsedTime / duration);
+                cineCam.GetComponent<CinemachineFollow>().FollowOffset.z = newOffsetZ;
+                elapsedTime += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+            cineCam.GetComponent<CinemachineFollow>().FollowOffset.z = target; // Ensure final value is set to target
+        }
+    }
+
+    public IEnumerator ShakeCamera(float amplitude, float frequency, float time)
+    { 
+        // Start the camera shake effect
+        if (cineCam != null)
+        {
+            cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = amplitude;
+            cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().FrequencyGain = frequency;
+
+            float elapsedTime = 0f;
+            float targetAmplitude = 0f;
+            float targetFrequency = 0f;
+            while (elapsedTime < time)
+            {
+                // Gradually reduce the amplitude and frequency to zero
+                float t = elapsedTime / time;
+                cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = Mathf.Lerp(amplitude, targetAmplitude, t);
+                cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().FrequencyGain = Mathf.Lerp(frequency, targetFrequency, t);
+                elapsedTime += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+
+            // Stop the camera shake effect
+            cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().AmplitudeGain = 0f;
+            cineCam.GetComponent<CinemachineBasicMultiChannelPerlin>().FrequencyGain = 0f;
+        }
+    }
+
+    public IEnumerator SetCamWhenTargetDie(bool isPlayerDie, float durationZoomIn, float durationZoomOut)
+    {
+        StartCoroutine(ShakeCamera(2f, 0.4f, 1f));
+        if (isPlayerDie)//Cam target to enemy
+        {
+            SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
+            StartCoroutine(SetFollowOffset(0.1f, 'Z', -8f));
+            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', 3f));
+
+            yield return new WaitForSeconds(0.35f);
+
+            StartCoroutine(SetFollowOffset(0.6f, 'Z', -10f));
+            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', 0f));
+
+        }
+        else//Cam target to plyer
+        {
+            StartCoroutine(SetFollowOffset(0.1f, 'Z', -8f));
+            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', -3f));
+
+            yield return new WaitForSeconds(0.35f);
+
+            StartCoroutine(SetFollowOffset(0.6f, 'Z', -10f));
+            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', 0f));
         }
     }
 }

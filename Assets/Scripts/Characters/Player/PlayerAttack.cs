@@ -100,11 +100,12 @@ public class PlayerAttack : MonoBehaviour
         StopTakeFruitVFX(); // Dừng hiệu ứng khi kết thúc tấn công
         yield return new WaitForSeconds(0.5f); // Thời gian nghỉ sau khi ra hết đòn
         animator.SetTrigger(doneAttackHash); // Kết thúc chuỗi tấn công
-        yield return new WaitForSeconds(1f); // Thời gian chờ anim chạy về done attack hoặc đợi cam thực hiện xong anim, tối thiểu đợi 0.5f
+        yield return new WaitForSeconds(0.5f); // Thời gian chờ anim chạy về done attack hoặc đợi cam thực hiện xong anim, tối thiểu đợi 0.5f
 
         //Check if all enemies die
         if (isAllEnemiesDie)
         {
+            yield return new WaitForSeconds(0.5f);
             GameManager.instance.currentTurn = "Win";
             GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
@@ -112,6 +113,7 @@ public class PlayerAttack : MonoBehaviour
         //Check if current enemy die
         else if (isEnemyDie)
         {
+            yield return new WaitForSeconds(0.5f);
             GameManager.instance.currentTurn = "None";
             GameManager.instance.GoToNextEnemy(); // Go to next enemy
             GetComponent<Player>().SetUpBehaviourTree();
@@ -129,6 +131,7 @@ public class PlayerAttack : MonoBehaviour
         StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, 0f));
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
+        StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
 
         UIManager.instance.ShowGameOverPanel(true);
     }
@@ -215,6 +218,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log("Enemy hit");
                 playerStat.TakeDamage(enemyStat.damage);
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 if (playerStat.CheckIfObjectDead())
                 { 
                     var enemyAttack = other.GetComponentInParent<EnemyAttack>();
@@ -224,6 +228,7 @@ public class PlayerAttack : MonoBehaviour
                         {
                             Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger the dead animation
+                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 1, 1));
                         }
                         else
                         {
