@@ -26,9 +26,14 @@ public class CameraManager : MonoBehaviour
     public void ResetCamForPlayer()
     {
         SetTargetForCam(PlayerUltimate.instance.playerTransform);
+
         StartCoroutine(SetHardLookAt(0.5f, 'Z', 0f));
         StartCoroutine(SetHardLookAt(0.5f, 'X', 0f));
         StartCoroutine(SetHardLookAt(0.5f, 'Y', 0f));
+
+        StartCoroutine(SetFollowOffset(0.5f, 'X', 0f)); // Reset follow offset Z to 0
+        StartCoroutine(SetFollowOffset(0.5f, 'Z', -10f)); // Reset follow offset Y to 0
+
         StartCoroutine(SetVerticalFOV(35f, 0.5f)); // Reset vertical FOV to 35
     }
 
@@ -300,30 +305,57 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SetCamWhenTargetDie(bool isPlayerDie, float durationZoomIn, float durationZoomOut)
+    public IEnumerator SetCamWhenTargetDie(bool isPlayerDie, float followOffsetX, float followOffsetZ)
     {
         StartCoroutine(ShakeCamera(2f, 0.4f, 1f));
+        float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
+        float currentFollowOffsetZ = cineCam.GetComponent<CinemachineFollow>().FollowOffset.z;
         if (isPlayerDie)//Cam target to enemy
         {
             SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
-            StartCoroutine(SetFollowOffset(0.1f, 'Z', -8f));
-            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', 3f));
+            StartCoroutine(SetFollowOffset(0.1f, 'Z', followOffsetZ));
+            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', followOffsetX));
 
             yield return new WaitForSeconds(0.35f);
 
-            StartCoroutine(SetFollowOffset(0.6f, 'Z', -10f));
-            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', 0f));
+            StartCoroutine(SetFollowOffset(0.6f, 'Z', currentFollowOffsetZ));
+            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', currentFollowOffsetX));
 
         }
         else//Cam target to plyer
         {
-            StartCoroutine(SetFollowOffset(0.1f, 'Z', -8f));
-            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', -3f));
+            StartCoroutine(SetFollowOffset(0.1f, 'Z', followOffsetZ));
+            yield return StartCoroutine(SetFollowOffset(0.1f, 'X', -followOffsetX));
 
             yield return new WaitForSeconds(0.35f);
 
-            StartCoroutine(SetFollowOffset(0.6f, 'Z', -10f));
-            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', 0f));
+            StartCoroutine(SetFollowOffset(0.6f, 'Z', currentFollowOffsetZ));
+            yield return StartCoroutine(SetFollowOffset(0.6f, 'X', currentFollowOffsetX));
         }
+    }
+
+    public IEnumerator SetCamForSpecialAttack(float targetLookAtOffsetZ, float targetFOV)
+    {
+        float currentLookAtOffsetZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
+        float currentFOV = cineCam.Lens.FieldOfView;
+
+        SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
+        StartCoroutine(SetHardLookAt(50f, 'z', targetLookAtOffsetZ));
+        yield return StartCoroutine(SetVerticalFOV(targetFOV, 0.1f));
+
+        float startSlowTime = Time.realtimeSinceStartup;
+        float endSlowTime = startSlowTime + 1f; // Duration of the slow motion effect
+        while (Time.realtimeSinceStartup < endSlowTime)
+        {
+            Time.timeScale = 0.1f;
+            yield return null; // Wait for the next frame
+        }
+        Time.timeScale = 1f; // Reset time scale to normal
+
+        SetTargetForCam(PlayerUltimate.instance.playerTransform);
+        StartCoroutine(SetHardLookAt(1f, 'z',currentLookAtOffsetZ));
+        yield return StartCoroutine(SetVerticalFOV(currentFOV, 0.5f));
+
+        yield return null;    
     }
 }

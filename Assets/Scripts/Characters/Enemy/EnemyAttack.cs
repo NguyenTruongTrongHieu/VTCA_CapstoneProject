@@ -124,6 +124,7 @@ public class EnemyAttack : MonoBehaviour
         CameraManager.instance.SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
         StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
         StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
+        StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
         UIManager.instance.ShowGameOverPanel(false);
     }
@@ -172,7 +173,14 @@ public class EnemyAttack : MonoBehaviour
                         if (playerAttack.attackState == "DoneAttack")
                         {
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
-                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 1, 1));
+                            if (enemyStat.enemyType == EnemyType.normal)
+                            {
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 3, -8));
+                            }
+                            else
+                            {
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 5, -6));
+                            }
                             Destroy(gameObject, 1f);
                         }
                     }
@@ -198,8 +206,17 @@ public class EnemyAttack : MonoBehaviour
                 float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;
                 enemyStat.TakeDamage(dam);
-                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
+
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
+                if (enemyStat.enemyType == EnemyType.normal)
+                {
+                    CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.35f, 24f));
+                }
+                else
+                {
+                    CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.3f, 30f));
+                }
 
                 if (enemyStat.CheckIfObjectDead())
                 {
@@ -210,7 +227,6 @@ public class EnemyAttack : MonoBehaviour
                         {
                             Debug.Log("Enemy is dead");
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
-                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 1, 1));
                             Destroy(gameObject, 1f);
                         }
                     }

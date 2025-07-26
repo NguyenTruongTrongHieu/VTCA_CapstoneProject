@@ -165,6 +165,8 @@ public class PlayerIdle : NodeBehaviourTree
                 enemyType == EnemyType.boss)
             {
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.75f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 1));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.75f, 'X', 1));
             }
         }
         
