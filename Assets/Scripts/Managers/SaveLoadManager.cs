@@ -12,11 +12,15 @@ public class SaveLoadManager : MonoBehaviour
     public int currentLevelIndex;
     public int currentBasicHealthLevel;
     public int currentBasicDamageLevel;
+
     public string currentPlayerName;
+    public int currentLevelOfCurrentPlayer;
+
     public int currentCoin;
     public int currentDiamond;
     public int currentGoldKey;
-    public List<string> unlockPlayerAndSkin;
+    public List<string> unlockPlayerAndSkin;//saving name PlayerPrefab
+    public Dictionary<int, int> unlockPlayerAndPlayerCurrentLevel;//saving id player and current level of that player
 
     [Header("Loading UI")]
     public GameObject loadingPanel;
@@ -54,6 +58,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         currentLevelIndex = 1;
         currentPlayerName = "Player1";
+        currentLevelOfCurrentPlayer = 3;
     }
 
     public IEnumerator LoadingSceneAsync()

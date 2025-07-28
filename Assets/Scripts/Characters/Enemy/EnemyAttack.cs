@@ -163,7 +163,7 @@ public class EnemyAttack : MonoBehaviour
                 float dam = playerStat.damage * enemyStat.defense;
                 enemyStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
-                playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
+                playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 if (enemyStat.CheckIfObjectDead())
                 {
@@ -206,7 +206,7 @@ public class EnemyAttack : MonoBehaviour
                 float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;
                 enemyStat.TakeDamage(dam);
-                playerStat.Healing(dam * playerStat.lifeStealPercentBonus);
+                playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 if (enemyStat.enemyType == EnemyType.normal)

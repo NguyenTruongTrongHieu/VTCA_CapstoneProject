@@ -42,7 +42,7 @@ public class PlayerUltimate : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GetPlayerTransform(SaveLoadManager.instance.currentPlayerName); // Get the player transform for Player1
+        GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer); // Get the player transform for Player1
         ultimateHash = Animator.StringToHash("Ultimate"); // Get the hash for the ultimate animation
     }
 
@@ -51,7 +51,7 @@ public class PlayerUltimate : MonoBehaviour
     {
     }
 
-    public void GetPlayerTransform(string playerName)
+    public void GetPlayerTransform(string playerName, int currentLevelOfPlayer)
     {
         int childCount = transform.childCount; // Get the number of child objects
         for (int i = 0; i < childCount; i++)
@@ -68,11 +68,13 @@ public class PlayerUltimate : MonoBehaviour
             {
                 player.SetActive(true);
                 playerTransform = player.transform;
+
+                playerStat.bonusStatAtCurrentLevel = playerStat.bonusStatsLevel[currentLevelOfPlayer - 1]; // Set the bonus stats for the player at the current level
                 playerStat.SetUpStatAndSlider();
 
                 basicDamagePlayer = playerStat.damage; // Get the player's damage
                 basicMaxHealthPlayer = playerStat.maxHealth; // Get the player's max health
-                basicLifeStealPlayer = playerStat.lifeStealPercentBonus; // Get the player's lifesteal percentage
+                basicLifeStealPlayer = playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus; // Get the player's lifesteal percentage
 
                 player.GetComponent<Player>().ReturnStartPos();
                 CameraManager.instance.SetTargetForCam(player.transform);//call when change player
@@ -131,7 +133,7 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
 
         lifeStealPercent = basicLifeStealPlayer + 0.1f;
-        playerTransform.GetComponent<PlayerStat>().lifeStealPercentBonus = lifeStealPercent; 
+        playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.lifeStealPercentBonus = lifeStealPercent; 
 
         totalRound = 3; // Set the total rounds for the ultimate ability
 
@@ -146,7 +148,7 @@ public class PlayerUltimate : MonoBehaviour
         {
             yield return null;
         }
-        playerTransform.GetComponent<PlayerAttack>().playerStat.lifeStealPercentBonus = basicLifeStealPlayer;
+        playerTransform.GetComponent<PlayerAttack>().playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus = basicLifeStealPlayer;
         playerTransform.GetComponent<PlayerAttack>().StopUltiVFX2();
         isUltimateValid = false; // Reset ultimate validity after use
     }
