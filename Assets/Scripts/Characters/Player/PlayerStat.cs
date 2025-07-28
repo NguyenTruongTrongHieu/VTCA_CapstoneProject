@@ -22,9 +22,8 @@ public class PlayerStat : Stats
     public PlayerClass playerClass; // Player's class
 
     [Header("Percent bonus")]
-    public float healthPercentBonus; // Bonus health percentage
-    public float damagePercentBonus; // Bonus damage percentage
-    public float lifeStealPercentBonus; // Bonus lifesteal percentage   
+    public BonusStatForPlayer bonusStatAtCurrentLevel;
+    public BonusStatForPlayer[] bonusStatsLevel;  
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,8 +39,8 @@ public class PlayerStat : Stats
 
     public void SetUpDamAndHealth()
     {
-        damage = GameManager.instance.basicDamage + GameManager.instance.basicDamage * damagePercentBonus;
-        maxHealth = GameManager.instance.basicHealth + GameManager.instance.basicHealth * healthPercentBonus;
+        damage = GameManager.instance.basicDamage + GameManager.instance.basicDamage * bonusStatAtCurrentLevel.damagePercentBonus;
+        maxHealth = GameManager.instance.basicHealth + GameManager.instance.basicHealth * bonusStatAtCurrentLevel.healthPercentBonus;
     }
 
     public void SetUpStatAndSlider()
@@ -49,4 +48,12 @@ public class PlayerStat : Stats
         SetUpDamAndHealth();
         SetupHPSlider();
     }
+}
+
+[System.Serializable]
+public class BonusStatForPlayer
+{
+    public float healthPercentBonus; // Bonus health percentage
+    public float damagePercentBonus; // Bonus damage percentage
+    public float lifeStealPercentBonus; // Bonus lifesteal percentage
 }
