@@ -307,7 +307,7 @@ public class CameraManager : MonoBehaviour
 
     public IEnumerator SetCamWhenTargetDie(bool isPlayerDie, float followOffsetX, float followOffsetZ)
     {
-        StartCoroutine(ShakeCamera(5f, 1f, 1f));
+        StartCoroutine(ShakeCamera(5f, 1f, 0.5f));
         float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
         float currentFollowOffsetZ = cineCam.GetComponent<CinemachineFollow>().FollowOffset.z;
         if (isPlayerDie)//Cam target to enemy
@@ -336,7 +336,7 @@ public class CameraManager : MonoBehaviour
 
     public IEnumerator SetCamForSpecialAttack(float targetLookAtOffsetZ, float targetFOV)
     {
-        StartCoroutine(ShakeCamera(5f, 1f, 1f));
+        StartCoroutine(ShakeCamera(5f, 1f, 0.5f));
         float currentLookAtOffsetZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
         float currentFOV = cineCam.Lens.FieldOfView;
 

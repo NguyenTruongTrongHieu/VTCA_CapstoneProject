@@ -219,7 +219,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log("Enemy hit");
                 playerStat.TakeDamage(enemyStat.damage);
-                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
                 if (playerStat.CheckIfObjectDead())
                 { 
                     var enemyAttack = other.GetComponentInParent<EnemyAttack>();

@@ -45,6 +45,11 @@ public class SaveLoadManager : MonoBehaviour
     {
         LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex - 1].sceneName);
         LevelManager.instance.AddStateAndLockCellToCurrentLevel();
+
+        GameManager.instance.currentDamageLevel = currentBasicDamageLevel;
+        GameManager.instance.currentHealthLevel = currentBasicHealthLevel;
+        GameManager.instance.SetUpBasicDamAndHP();
+
         StartCoroutine(LoadingSceneAsync());
     }
 
@@ -57,6 +62,9 @@ public class SaveLoadManager : MonoBehaviour
     public void LoadDataWithPlayerPref()
     {
         currentLevelIndex = 2;
+        currentBasicDamageLevel = 1;
+        currentBasicHealthLevel = 1;
+
         currentPlayerName = "Player1";
         currentLevelOfCurrentPlayer = 1;
     }

@@ -14,11 +14,16 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    const int BASEVALUE_DAMAGE = 10; // Increment value for damage level
+    const int BASEVALUE_HEALTH = 100; // Increment value for health level
+
     public static GameManager instance;
 
     public GameState currentGameState = GameState.MainMenu;
 
     [Header("MainMenu")]
+    public int currentDamageLevel;
+    public int currentHealthLevel;
     public float basicDamage = 10f; // Basic damage for the player
     public float basicHealth = 100f; // Basic health for the player
 
@@ -113,6 +118,62 @@ public class GameManager : MonoBehaviour
         // This method should be called after the enemy takes damage
         // Return true if the enemy is dead, false otherwise
         return result; // Placeholder implementation
+    }
+
+    public void SetUpBasicDamAndHP()
+    {
+        SetUpBasicDam();
+        SetUpBasicHP();
+    }
+
+    public void SetUpBasicDam()
+    {
+        int incrementDamage = 0;
+
+        if (currentDamageLevel < 10)
+        {
+            incrementDamage = 2;
+        }
+        else
+        { 
+            incrementDamage = 5;
+        }
+
+        basicDamage = BASEVALUE_DAMAGE + ((currentDamageLevel - 1) * incrementDamage);
+    }
+
+    public void SetUpBasicHP()
+    {
+        int incrementHealth = 0;
+
+        if (currentHealthLevel < 10)
+        {
+            incrementHealth = 5;
+        }
+        else
+        { 
+            incrementHealth = 10;
+        }
+
+        basicHealth = BASEVALUE_HEALTH + ((currentHealthLevel - 1) * incrementHealth);
+    }
+
+    public void UpgradeDam()
+    { 
+        currentDamageLevel++;
+        SaveLoadManager.instance.currentBasicDamageLevel = currentDamageLevel;
+        SetUpBasicDam();
+
+        PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
+    }
+
+    public void UpgradeHealth()
+    { 
+        currentHealthLevel++;
+        SaveLoadManager.instance.currentBasicHealthLevel = currentHealthLevel;
+        SetUpBasicHP();
+
+        PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
     }
 
     public IEnumerator LoadNewLevel()
