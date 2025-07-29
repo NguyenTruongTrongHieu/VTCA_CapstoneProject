@@ -10,6 +10,10 @@ public class EnemyAttack : MonoBehaviour
 
     [Header("VFX")]
     public ParticleSystem debuffVFX;
+    public ParticleSystem hitImpact;
+    public ParticleSystem hitImpactSpecial;
+    public ParticleSystem bloodSplash;
+    public ParticleSystem beingHitText;
 
     [Header("Count turn")]
     public int enemyDebuffTurn;
@@ -164,6 +168,7 @@ public class EnemyAttack : MonoBehaviour
                 enemyStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
+                BeingAttactk();
 
                 if (enemyStat.CheckIfObjectDead())
                 {
@@ -207,6 +212,7 @@ public class EnemyAttack : MonoBehaviour
                 GameManager.instance.multipleScoreForPlayerHit = 1;
                 enemyStat.TakeDamage(dam);
                 playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
+                BeingAttackSpecial();
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(2f, 2f, 0.25f));
                 if (enemyStat.enemyType == EnemyType.normal)
@@ -237,5 +243,19 @@ public class EnemyAttack : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void BeingAttactk()
+    {
+        hitImpact.Play();
+        bloodSplash.Play();
+        beingHitText.Play();
+    }
+
+    public void BeingAttackSpecial()
+    {
+        hitImpactSpecial.Play();
+        bloodSplash.Play();
+        beingHitText.Play();
     }
 }
