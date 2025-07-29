@@ -49,6 +49,7 @@ MonoBehaviour:
   basicDamage: 10
   basicHealth: 100
   currentTurn: 
+  multipleScoreForPlayerHit: 1
   currentEnemyIndex: 0
   enemiesStartPosition:
   - {x: 15, y: 0, z: 10}
@@ -80,17 +81,79 @@ MonoBehaviour:
   levels:
   - index: 1
     enemiesAtLevel:
-    - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
-    - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
+    - {fileID: 6029603621710947302, guid: 8a5b4f440601dfd4e8fce9c05635e87b, type: 3}
+    - {fileID: 6029603621710947302, guid: 2ac02505a2929564bb9563ec228f76b6, type: 3}
     sceneName: Scene1
     statesInBoard:
-    - {x: 0, y: 0}
-    - {x: 1, y: 1}
-    - {x: 2, y: 2}
-    - {x: 3, y: 3}
-    - {x: 4, y: 4}
-    - {x: 5, y: 5}
+    - {x: 0, y: 1}
+    - {x: 1, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 4}
+    - {x: 4, y: 5}
+    - {x: 5, y: 6}
     lockCellInBoard:
-    - {x: 0, y: 5}
-    - {x: 0, y: 4}
+    - {x: 0, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 1, y: 0}
+    - {x: 0, y: 7}
+    - {x: 1, y: 7}
+    - {x: 2, y: 7}
+    - {x: 3, y: 7}
+    - {x: 4, y: 7}
+    - {x: 5, y: 7}
+  - index: 2
+    enemiesAtLevel:
+    - {fileID: 6029603621710947302, guid: c034e2fbcebc7fa4d8efae13263b32bb, type: 3}
+    - {fileID: 6029603621710947302, guid: e0751174f24fdce4992f3bb56374c7b4, type: 3}
+    - {fileID: 6029603621710947302, guid: cf555ae65dbb5e547bb7d3b626d66cb2, type: 3}
+    sceneName: Scene1
+    statesInBoard:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+    lockCellInBoard:
     - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 4, y: 4}
+    - {x: 3, y: 4}
+    - {x: 2, y: 4}
+    - {x: 1, y: 4}
+    - {x: 0, y: 4}
+  - index: 3
+    enemiesAtLevel:
+    - {fileID: 6029603621710947302, guid: 648b67e5f9f4d1a47be977f72618a1bc, type: 3}
+    - {fileID: 6029603621710947302, guid: 9e867401f3540924fbbf95a6c5bac0e1, type: 3}
+    - {fileID: 6029603621710947302, guid: 2ac02505a2929564bb9563ec228f76b6, type: 3}
+    - {fileID: 6029603621710947302, guid: 3aabd6c6b8db7cb45872fa25c2528e0d, type: 3}
+    sceneName: Scene2
+    statesInBoard:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+    lockCellInBoard:
+    - {x: 0, y: 0}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 4, y: 4}
+    - {x: 3, y: 4}
+    - {x: 2, y: 4}
+    - {x: 1, y: 4}
+    - {x: 5, y: 5}
