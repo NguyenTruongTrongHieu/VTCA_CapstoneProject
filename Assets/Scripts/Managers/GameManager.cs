@@ -1,6 +1,8 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -70,12 +72,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void GoToNextEnemy()
-    { 
+    {
         currentEnemyIndex++;
     }
 
     public bool CheckIfAllEnemiesDead()
-    { 
+    {
         bool result = true;
 
         foreach (var enemy in LevelManager.instance.currentLevel.enemiesAtLevel)
@@ -104,12 +106,42 @@ public class GameManager : MonoBehaviour
         if (enemyStat != null)
         {
             if (enemyStat.CheckIfObjectDead())
-            { 
+            {
                 result = true; // Current enemy is dead
             }
         }
         // This method should be called after the enemy takes damage
         // Return true if the enemy is dead, false otherwise
         return result; // Placeholder implementation
+    }
+
+    public IEnumerator LoadNewLevel()
+    {
+        //LoadScene
+        if (LevelManager.instance.currentLevel.sceneName != SceneManager.GetActiveScene().name)
+        {
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
+
+            while (!asyncOperation.isDone)
+            {
+                yield return null; // Wait for the next frame
+            }
+        }
+        else
+        {
+            //Reset game board
+            GameBoard.Instance.ResetBoard();
+            GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
+        }
+
+        //Reset enemies and player
+        LevelManager.instance.DeleteAllEnemy();
+        LevelManager.instance.SpawnEnemiesAtCurrentLevel();
+        UIManager.instance.ultimateButton.onClick.RemoveAllListeners(); // Remove all listeners from the ultimate button
+        PlayerUltimate.instance.ResetPlayer();
+
+        UIManager.instance.ShowMainMenuPanel();
+
+        SaveLoadManager.instance.loadingPanel.SetActive(false);
     }
 }
