@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -74,6 +75,7 @@ public class UIManager : MonoBehaviour
 
         LevelManager.instance.DeleteAllEnemy();
         LevelManager.instance.SpawnEnemiesAtCurrentLevel();
+        ultimateButton.onClick.RemoveAllListeners();
         PlayerUltimate.instance.ResetPlayer();
 
         SaveLoadManager.instance.loadingPanel.SetActive(false);
@@ -113,26 +115,6 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentTurn = ""; // Reset the current turn
         GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
 
-        //LoadScene
-        if (LevelManager.instance.currentLevel.sceneName != SceneManager.GetActiveScene().name)
-        {
-            SceneManager.LoadScene(LevelManager.instance.currentLevel.sceneName); // Load the scene for the current level
-        }
-        else
-        {
-            //Reset game board
-            GameBoard.Instance.ResetBoard();
-            GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
-        }
-
-        //Reset enemies and player
-        LevelManager.instance.DeleteAllEnemy();
-        LevelManager.instance.SpawnEnemiesAtCurrentLevel();
-        ultimateButton.onClick.RemoveAllListeners(); // Remove all listeners from the ultimate button
-        PlayerUltimate.instance.ResetPlayer();
-
-        ShowMainMenuPanel();
-
-        SaveLoadManager.instance.loadingPanel.SetActive(false);
+        GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
     }
 }
