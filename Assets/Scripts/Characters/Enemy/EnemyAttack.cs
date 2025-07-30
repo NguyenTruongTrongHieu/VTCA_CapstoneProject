@@ -9,6 +9,8 @@ public class EnemyAttack : MonoBehaviour
     public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
     [Header("VFX")]
+    public ParticleSystem dropCoinNormalVFX;
+    public ParticleSystem dropCoinSpecialVFX;
     public ParticleSystem debuffVFX;
     public ParticleSystem hitImpact;
     public ParticleSystem hitImpactSpecial;
@@ -172,11 +174,16 @@ public class EnemyAttack : MonoBehaviour
 
                 if (enemyStat.CheckIfObjectDead())
                 {
+                    //Add coin and Play drop coin VFX
+                    dropCoinNormalVFX.Play();
+
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
+                            dropCoinSpecialVFX.Play();
+
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             if (enemyStat.enemyType == EnemyType.normal)
                             {
@@ -227,11 +234,17 @@ public class EnemyAttack : MonoBehaviour
 
                 if (enemyStat.CheckIfObjectDead())
                 {
+                    //Add coin and Play drop coin VFX
+                    dropCoinNormalVFX.Play();
+
+
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
+                            dropCoinSpecialVFX.Play();
+
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             Destroy(gameObject, 1f);
                         }
