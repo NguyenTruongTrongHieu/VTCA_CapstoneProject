@@ -61,11 +61,11 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadDataWithPlayerPref()
     {
-        currentLevelIndex = 2;
+        currentLevelIndex = 1;
         currentBasicDamageLevel = 1;
         currentBasicHealthLevel = 1;
 
-        currentPlayerName = "Player1";
+        currentPlayerName = "Player3";
         currentLevelOfCurrentPlayer = 1;
     }
 
