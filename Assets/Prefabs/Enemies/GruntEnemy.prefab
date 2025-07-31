@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyStat: {fileID: 5190853607653065583}
   attackState: 
+  targetPosToDisplayDamText: {fileID: 4991945057547979579}
   dropCoinNormalVFX: {fileID: 6070204745448209921}
   dropCoinSpecialVFX: {fileID: 3170152577511719443}
   debuffVFX: {fileID: 8572287160946062404}
@@ -164,6 +165,37 @@ MonoBehaviour:
   enemyType: 0
   basicDefense: 1
   defense: 1
+--- !u!1 &8144704304589532369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4991945057547979579}
+  m_Layer: 0
+  m_Name: TargetPosToDisplayDamText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4991945057547979579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8144704304589532369}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.6987501, z: 1.3750006}
+  m_LocalScale: {x: 1.2499999, y: 1.25, z: 1.2499999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3434178833306686505}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &579807817531648959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -440,6 +472,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5304911586177118974, guid: 176299a76ecfc7544b22a66fae200ac7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9066318654459400706}
+    - targetCorrespondingSourceObject: {fileID: 5304911586177118974, guid: 176299a76ecfc7544b22a66fae200ac7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4991945057547979579}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3155058319838657794, guid: 176299a76ecfc7544b22a66fae200ac7, type: 3}
       insertIndex: -1
