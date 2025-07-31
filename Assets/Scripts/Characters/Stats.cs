@@ -21,7 +21,7 @@ public class Stats : MonoBehaviour
         currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
     }
 
-    public virtual void SetupHPSlider()
+    public virtual void SetupHPAndUpdateSlider()
     {
         currentHealth = maxHealth; // Initialize current health to max health
         if (hpSlider != null)

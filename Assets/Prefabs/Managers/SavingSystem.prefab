@@ -226,6 +226,7 @@ MonoBehaviour:
   currentBasicHealthLevel: 0
   currentBasicDamageLevel: 0
   currentPlayerName: 
+  currentLevelOfCurrentPlayer: 0
   currentCoin: 0
   currentDiamond: 0
   currentGoldKey: 0

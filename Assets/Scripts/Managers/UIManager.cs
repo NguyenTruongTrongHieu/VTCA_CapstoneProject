@@ -33,6 +33,11 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public Button returnMenuButton;
 
+    [Header("DamText Prefabs")]
+    public GameObject damageText;
+    [Tooltip("The width of the character in the damage text prefab, used for positioning the text correctly")]
+    public float characterWidth;
+
     private void Awake()
     {
         if (instance == null)
@@ -111,6 +116,55 @@ public class UIManager : MonoBehaviour
         basicHealthText.text = $"{GameManager.instance.basicHealth}";
         costToUpgradeHealthText.text = $"0";//Đưa hàm tính giá tiền vào đây
     }
+    #endregion
+
+    #region IN GAME
+
+    public void DisplayDamageText(Transform startTransform, Transform targetTransform, float dam)
+    { 
+        string text = NumberFomatter.FormatFloatToString(dam, 2);
+        Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
+
+        GameObject damageTextObject = Instantiate(damageText, startPos, Quaternion.identity, transform);
+        Text damText = damageTextObject.GetComponent<Text>();
+        RectTransform rectTransformDamText = damageTextObject.GetComponent<RectTransform>();
+
+        // Set the text and text size
+        damText.text += text;
+        Vector2 textSize = rectTransformDamText.sizeDelta;
+        textSize.x += characterWidth * text.Length;
+        rectTransformDamText.sizeDelta = textSize;
+
+        //Animation Text ZoomOut and Move Up
+        StartCoroutine(DisplayText(startPos, Camera.main.WorldToScreenPoint(targetTransform.position), rectTransformDamText));
+    }
+
+    IEnumerator DisplayText(Vector3 startPos, Vector3 targetPos, RectTransform text)
+    { 
+        float elaspedTime = 0f;
+        Vector3 startScale = text.localScale;
+        Vector3 targetScale = Vector3.one;
+        while (elaspedTime < 0.1f)//Chạy anim này trong vòng 0.1s
+        {
+            elaspedTime += Time.deltaTime;
+            text.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.1f);
+            yield return null;
+        }
+        text.localScale = targetScale; // Đặt tỉ lệ cuối cùng
+
+        elaspedTime = 0f;
+        while (elaspedTime < 0.2f)//Chạy anim này trong vòng 0.2s
+        { 
+            elaspedTime += Time.deltaTime;
+            text.position = Vector3.Lerp(startPos, targetPos, elaspedTime / 0.2f);
+            yield return null;
+        }
+        text.position = targetPos; // Đặt vị trí cuối cùng
+
+        yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xóa text
+        Destroy(text.gameObject); // Xóa text sau khi hoàn thành
+    }
+
     #endregion
 
     #region SETTING
