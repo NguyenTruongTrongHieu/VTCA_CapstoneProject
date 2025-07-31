@@ -46,7 +46,7 @@ public class PlayerStat : Stats
     public void SetUpStatAndSlider()
     { 
         SetUpDamAndHealth();
-        SetupHPSlider();
+        SetupHPAndUpdateSlider();
     }
 }
 

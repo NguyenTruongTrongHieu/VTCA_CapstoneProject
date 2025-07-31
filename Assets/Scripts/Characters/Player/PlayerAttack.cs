@@ -218,7 +218,9 @@ public class PlayerAttack : MonoBehaviour
             if (enemyStat != null)
             {
                 Debug.Log("Enemy hit");
-                playerStat.TakeDamage(enemyStat.damage);
+                float dam = NumberFomatter.RoundFloatToTwoDecimalPlaces(enemyStat.damage);
+
+                playerStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
                 if (playerStat.CheckIfObjectDead())
                 { 

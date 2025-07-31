@@ -167,9 +167,16 @@ public class EnemyAttack : MonoBehaviour
             if (playerStat != null)
             {
                 float dam = playerStat.damage * enemyStat.defense;
+
+                //Làm tròn giá trị sát thương
+                dam = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam);
+                float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
+
                 enemyStat.TakeDamage(dam);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, beingHitText.transform, dam);
+                playerStat.Healing(heal);
+
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
-                playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
                 BeingAttactk();
 
                 if (enemyStat.CheckIfObjectDead())
@@ -218,8 +225,14 @@ public class EnemyAttack : MonoBehaviour
 
                 float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;
+
+                //Làm tròn giá trị sát thương
+                dam = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam);
+                float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
+
                 enemyStat.TakeDamage(dam);
-                playerStat.Healing(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, beingHitText.transform, dam);
+                playerStat.Healing(heal);
                 BeingAttackSpecial();
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));

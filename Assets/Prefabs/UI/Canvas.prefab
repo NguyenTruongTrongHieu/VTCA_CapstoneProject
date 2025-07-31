@@ -683,6 +683,8 @@ MonoBehaviour:
   targetPos: {fileID: 3400100488840648962}
   gameOverPanel: {fileID: 621530273230333154}
   returnMenuButton: {fileID: 3067675496669766151}
+  damageText: {fileID: 2484180374567475607, guid: 4df89ff13fabc564bbe91179b49c6795, type: 3}
+  characterWidth: 150
 --- !u!1 &3375258285495940944
 GameObject:
   m_ObjectHideFlags: 0
