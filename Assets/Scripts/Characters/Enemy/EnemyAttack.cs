@@ -8,6 +8,8 @@ public class EnemyAttack : MonoBehaviour
 
     public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
+    public Transform targetPosToDisplayDamText;
+
     [Header("VFX")]
     public ParticleSystem dropCoinNormalVFX;
     public ParticleSystem dropCoinSpecialVFX;
@@ -173,7 +175,7 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, beingHitText.transform, dam);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
@@ -231,7 +233,7 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, beingHitText.transform, dam);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
                 BeingAttackSpecial();
 
