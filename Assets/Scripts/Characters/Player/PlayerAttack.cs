@@ -14,6 +14,9 @@ public class PlayerAttack : MonoBehaviour
     public ParticleSystem auraTakeFruitVFX;
     public ParticleSystem ultiVFX;
     public ParticleSystem ultiVFX2;//Use for vfx dot ulti
+    public ParticleSystem hitImpact;
+    public ParticleSystem bloodSplash;
+    public ParticleSystem[] beingHitText;
 
     private List<int> attackHashes = new List<int>();//Trigger
     private int specialAttackHash;//Trigger
@@ -222,6 +225,8 @@ public class PlayerAttack : MonoBehaviour
 
                 playerStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
+                BeingAttactk(); 
+
                 if (playerStat.CheckIfObjectDead())
                 { 
                     var enemyAttack = other.GetComponentInParent<EnemyAttack>();
@@ -246,5 +251,13 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void BeingAttactk()
+    {
+        int randomIndex = Random.Range(0, beingHitText.Length);
+        hitImpact.Play();
+        bloodSplash.Play();
+        beingHitText[randomIndex].Play();
     }
 }
