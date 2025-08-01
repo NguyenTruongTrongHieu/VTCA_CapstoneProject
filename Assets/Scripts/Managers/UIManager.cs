@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
+    public TabsManager tabsManager;
+
     [Header("Currency")]
     public GameObject coinPanel;
     public Text coinText;
@@ -90,6 +92,10 @@ public class UIManager : MonoBehaviour
         StartCoroutine(
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
+        foreach (Image tabsButtons in tabsManager.tabButtons)
+        {
+            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
+        }
     }
     #endregion
 
