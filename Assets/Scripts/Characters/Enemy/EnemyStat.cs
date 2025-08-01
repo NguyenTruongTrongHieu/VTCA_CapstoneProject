@@ -19,6 +19,10 @@ public class EnemyStat : Stats
     [SerializeField] private float basicDefense = 1f;
     public float defense = 1f;
 
+    [Header("Reward")]
+    public int coinReward = 0; // Amount of coins rewarded when the enemy is defeated
+    public int diamondReward = 0; // Amount of diamonds rewarded when the enemy is defeated
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

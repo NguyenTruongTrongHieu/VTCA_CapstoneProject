@@ -7,6 +7,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
+    [Header("Currency")]
+    public GameObject coinPanel;
+    public Text coinText;
+
     [Header("Main menu")]
     public Button playButton;
     public Button upgradeDamButton;
@@ -36,7 +40,11 @@ public class UIManager : MonoBehaviour
     [Header("DamText Prefabs")]
     public GameObject damageText;
     [Tooltip("The width of the character in the damage text prefab, used for positioning the text correctly")]
-    public float characterWidth;
+    public float characterWidthDamText;
+
+    [Header("CoinText prefabs")]
+    public GameObject coinTextPrefab;
+    public float characterWidthCoinText;
 
     private void Awake()
     {
@@ -57,6 +65,7 @@ public class UIManager : MonoBehaviour
         // Set up the main menu
         SetUITextForUpgradeDamButton();
         SetUITextForUpgradeHealthButton();
+        UpdateCoinText();
 
         ShowMainMenuPanel();
     }
@@ -82,6 +91,103 @@ public class UIManager : MonoBehaviour
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
     }
+    #endregion
+
+    #region CURRENCY
+
+    //Coin
+    public void UpdateCoinText()
+    {
+        coinText.text = NumberFomatter.FormatIntToString(CurrencyManager.instance.coins, 2);
+    }
+
+    public IEnumerator CoinPanelZoomInAndZoomOut()
+    { 
+        float elaspedTime = 0f;
+        Vector3 startScale = coinPanel.transform.localScale;
+        Vector3 targetScale = new Vector3(0.5f, 0.5f, 0.5f); // Zoom out scale
+        while(elaspedTime < 0.05f)
+        { 
+            elaspedTime += Time.deltaTime;
+            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            yield return null;
+        }
+        coinPanel.transform.localScale = targetScale; // Set the final scale
+
+        elaspedTime = 0f;
+        startScale = coinPanel.transform.localScale;
+        targetScale = new Vector3(1.5f, 1.5f, 1.5f); // Zoom in scale
+        while (elaspedTime < 0.1f)
+        {
+            elaspedTime += Time.deltaTime;
+            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            yield return null;
+        }
+        coinPanel.transform.localScale = targetScale; // Set the final scale
+
+        elaspedTime = 0f;
+        startScale = coinPanel.transform.localScale;
+        targetScale = new Vector3(1f, 1f, 1f); // Reset to original scale
+        while (elaspedTime < 0.05f)
+        {
+            elaspedTime += Time.deltaTime;
+            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            yield return null;
+        }
+        coinPanel.transform.localScale = targetScale; // Set the final scale
+    }
+
+    public IEnumerator SpawnCoinPrefabAndMoveToCoinPanel(Transform startTransform, int coinAmount)
+    {
+        string text = NumberFomatter.FormatIntToString(coinAmount, 2);
+        Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
+
+        GameObject coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+        Text coinText = coinTextObject.GetComponent<Text>();
+        RectTransform rectTransformCoinText = coinTextObject.GetComponent<RectTransform>();
+
+        // Set the text and text size
+        coinText.text += text;
+        Vector2 textSize = rectTransformCoinText.sizeDelta;
+        textSize.x += characterWidthCoinText * text.Length;
+        rectTransformCoinText.sizeDelta = textSize;
+
+        // Animation Text ZoomOut and Move Up
+        float elaspedTime = 0f;
+        Vector3 startScale = rectTransformCoinText.localScale;
+        Vector3 targetScale = Vector3.one; // Zoom in scale
+        while (elaspedTime < 0.1f) // Run this animation for 0.1s
+        {
+            elaspedTime += Time.deltaTime;
+            rectTransformCoinText.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.1f);
+            yield return null;
+        }
+        rectTransformCoinText.localScale = targetScale; // Set the final scale
+        yield return new WaitForSeconds(0.25f); // Wait for a moment before moving
+
+        elaspedTime = 0f;
+        startScale = rectTransformCoinText.localScale;
+        targetScale = Vector3.one * 0.6f; // Scale down 
+        while (elaspedTime < 0.1f) // Run this animation for 0.2s
+        {
+            elaspedTime += Time.deltaTime;
+            rectTransformCoinText.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            yield return null;
+        }
+        rectTransformCoinText.localScale = targetScale; // Set the final scale
+
+        elaspedTime = 0f;
+        Vector3 targetPos = coinPanel.transform.position;
+        while (elaspedTime < 0.2f) // Run this animation for 0.2s
+        {
+            elaspedTime += Time.deltaTime;
+            rectTransformCoinText.position = Vector3.Lerp(startPos, targetPos, elaspedTime / 0.2f);
+            yield return null;
+        }
+        rectTransformCoinText.position = targetPos; // Set the final position
+        Destroy(coinTextObject);
+    }
+
     #endregion
 
     #region UPGRADE
@@ -132,7 +238,7 @@ public class UIManager : MonoBehaviour
         // Set the text and text size
         damText.text += text;
         Vector2 textSize = rectTransformDamText.sizeDelta;
-        textSize.x += characterWidth * text.Length;
+        textSize.x += characterWidthDamText * text.Length;
         rectTransformDamText.sizeDelta = textSize;
 
         //Animation Text ZoomOut and Move Up

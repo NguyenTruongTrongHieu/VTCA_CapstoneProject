@@ -142,6 +142,8 @@ MonoBehaviour:
   enemyType: 0
   basicDefense: 1
   defense: 1
+  coinReward: 100
+  diamondReward: 0
 --- !u!1 &7879433869182790735
 GameObject:
   m_ObjectHideFlags: 0

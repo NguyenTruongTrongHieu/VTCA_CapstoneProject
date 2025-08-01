@@ -185,6 +185,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f)));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -192,6 +193,7 @@ public class EnemyAttack : MonoBehaviour
                         if (playerAttack.attackState == "DoneAttack")
                         {
                             dropCoinSpecialVFX.Play();
+                            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             if (enemyStat.enemyType == EnemyType.normal)
@@ -251,7 +253,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f)));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -259,6 +261,7 @@ public class EnemyAttack : MonoBehaviour
                         if (playerAttack.attackState == "DoneAttack")
                         {
                             dropCoinSpecialVFX.Play();
+                            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             Destroy(gameObject, 1f);

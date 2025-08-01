@@ -195,6 +195,8 @@ MonoBehaviour:
   enemyType: 0
   basicDefense: 1
   defense: 1
+  coinReward: 100
+  diamondReward: 0
 --- !u!1001 &969589591256377919
 PrefabInstance:
   m_ObjectHideFlags: 0
