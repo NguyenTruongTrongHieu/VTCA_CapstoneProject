@@ -17,7 +17,7 @@ public class EnemyAttack : MonoBehaviour
     public ParticleSystem hitImpact;
     public ParticleSystem hitImpactSpecial;
     public ParticleSystem bloodSplash;
-    public ParticleSystem beingHitText;
+    public ParticleSystem[] beingHitText;
 
     [Header("Count turn")]
     public int enemyDebuffTurn;
@@ -278,15 +278,17 @@ public class EnemyAttack : MonoBehaviour
 
     public void BeingAttactk()
     {
+        int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpact.Play();
         bloodSplash.Play();
-        beingHitText.Play();
+        beingHitText[randomIndex].Play();
     }
 
     public void BeingAttackSpecial()
     {
+        int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpactSpecial.Play();
         bloodSplash.Play();
-        beingHitText.Play();
+        beingHitText[randomIndex].Play();
     }
 }

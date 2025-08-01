@@ -115,7 +115,13 @@ MonoBehaviour:
   hitImpact: {fileID: 6912211573514361335}
   hitImpactSpecial: {fileID: 2850621292371803632}
   bloodSplash: {fileID: 4119600342566253773}
-  beingHitText: {fileID: 3730186145600288306}
+  beingHitText:
+  - {fileID: 3730186145600288306}
+  - {fileID: 1801458963875234863}
+  - {fileID: 2163076273677197473}
+  - {fileID: 5777336231235248231}
+  - {fileID: 6760208905485520741}
+  - {fileID: 1027568583938626315}
   enemyDebuffTurn: 0
   enemyBuffTurn: 0
   animator: {fileID: 2314029799001472940}
@@ -331,10 +337,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6834314768829321147}
     m_Modifications:
-    - target: {fileID: 1614711596656575882, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
-      propertyPath: m_Intensity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2387686106237834988, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_Name
       value: Being Attack Effect
@@ -379,27 +381,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5286438124057551400, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5286438124057551400, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.226
-      objectReference: {fileID: 0}
-    - target: {fileID: 6339239985141066513, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.575
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245223025498887372, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.748
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+--- !u!198 &1027568583938626315 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9093992463226766829, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 8103930490936186598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1801458963875234863 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7599508511903404745, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 8103930490936186598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2163076273677197473 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7958489124089869895, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 8103930490936186598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &2850621292371803632 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6339239985141066518, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
@@ -415,9 +416,19 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5286438124057551403, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 8103930490936186598}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &5777336231235248231 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2331678685011129985, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 8103930490936186598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6484483782611742638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2993612256550320456, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 8103930490936186598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6760208905485520741 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3289853100429465987, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 8103930490936186598}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &6912211573514361335 stripped
