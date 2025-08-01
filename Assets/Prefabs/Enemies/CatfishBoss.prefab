@@ -144,6 +144,8 @@ MonoBehaviour:
   - {fileID: 8047065021953178556}
   - {fileID: 7084379502521717950}
   - {fileID: 3585845651335497936}
+  damageDisplay: {fileID: 304342760980629124}
+  particleDamagePrefab: {fileID: 4343576456440594378}
   enemyDebuffTurn: 0
   enemyBuffTurn: 0
   animator: {fileID: 1490128429007655724}
@@ -556,6 +558,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+--- !u!198 &304342760980629124 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5462334500014590905, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 5762112085086260541}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &480215133432655638 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5286438124057551403, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
@@ -586,6 +593,17 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 9093992463226766829, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 5762112085086260541}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4343576456440594378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8336261520822989559, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 5762112085086260541}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03c8102322ad0d04fa6ae3f17887e967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &6948148762117325356 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3430592921099800337, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}

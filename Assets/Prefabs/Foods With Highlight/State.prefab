@@ -249,6 +249,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2353600328335836176, guid: ceec7516237b4104b94300043ca39784, type: 3}
+      propertyPath: clearBehavior
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2353600328335836179, guid: ceec7516237b4104b94300043ca39784, type: 3}
       propertyPath: m_Name
       value: CFXR3 Hit Leaves A (Lit)
