@@ -50,6 +50,8 @@ public class SaveLoadManager : MonoBehaviour
         GameManager.instance.currentHealthLevel = currentBasicHealthLevel;
         GameManager.instance.SetUpBasicDamAndHP();
 
+        CurrencyManager.instance.coins = currentCoin;
+
         StartCoroutine(LoadingSceneAsync());
     }
 
@@ -67,6 +69,8 @@ public class SaveLoadManager : MonoBehaviour
 
         currentPlayerName = "Player3";
         currentLevelOfCurrentPlayer = 1;
+
+        currentCoin = 0;
     }
 
     public IEnumerator LoadingSceneAsync()
