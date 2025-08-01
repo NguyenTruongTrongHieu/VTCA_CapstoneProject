@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using CartoonFX;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class EnemyAttack : MonoBehaviour
     public ParticleSystem hitImpactSpecial;
     public ParticleSystem bloodSplash;
     public ParticleSystem[] beingHitText;
+    public ParticleSystem damageDisplay;
+    private CFXR_ParticleText particleDamagePrefab;
 
     [Header("Count turn")]
     public int enemyDebuffTurn;
@@ -45,6 +49,8 @@ public class EnemyAttack : MonoBehaviour
         {
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
         }
+
+        particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
     }
 
     // Update is called once per frame
@@ -177,7 +183,7 @@ public class EnemyAttack : MonoBehaviour
                 enemyStat.TakeDamage(dam);
                 UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
-
+                DisplayDamageText(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
                 BeingAttactk();
 
@@ -290,5 +296,11 @@ public class EnemyAttack : MonoBehaviour
         hitImpactSpecial.Play();
         bloodSplash.Play();
         beingHitText[randomIndex].Play();
+    }
+
+    public void DisplayDamageText(float damage)
+    {
+        particleDamagePrefab.text = Mathf.Round(damage).ToString();
+        damageDisplay.Play(); // Play the damage display effect
     }
 }

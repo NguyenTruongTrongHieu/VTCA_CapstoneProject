@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CartoonFX;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour
 
     public TabsManager tabsManager;
 
+   
     [Header("Currency")]
     public GameObject coinPanel;
     public Text coinText;
