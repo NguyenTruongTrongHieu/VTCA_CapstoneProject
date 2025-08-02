@@ -198,8 +198,7 @@ public class EnemyAttack : MonoBehaviour
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
-                            dropCoinSpecialVFX.Play();
-                            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
+                            StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             if (enemyStat.enemyType == EnemyType.normal)
@@ -267,8 +266,7 @@ public class EnemyAttack : MonoBehaviour
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
-                            dropCoinSpecialVFX.Play();
-                            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
+                            StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             Destroy(gameObject, 1f);
@@ -281,6 +279,13 @@ public class EnemyAttack : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator PlayDropCoinEffectWhenPlayerDie()
+    {
+        yield return new WaitForSeconds(0.5f);
+        dropCoinSpecialVFX.Play();
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
     }
 
     public void BeingAttactk()
