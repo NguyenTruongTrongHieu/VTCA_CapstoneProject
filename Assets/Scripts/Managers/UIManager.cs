@@ -88,16 +88,16 @@ public class UIManager : MonoBehaviour
 
         mainMenuPanel.SetActive(false);
         inGamePanel.SetActive(true);
+        foreach (Image tabsButtons in tabsManager.tabButtons)
+        {
+            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
+        }
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
         StartCoroutine(
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
-        foreach (Image tabsButtons in tabsManager.tabButtons)
-        {
-            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
-        }
     }
     #endregion
 
@@ -316,6 +316,11 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.SetActive(true);
         inGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+
+        foreach (Image tabsButtons in tabsManager.tabButtons)
+        {
+            tabsButtons.gameObject.SetActive(true); // Hide all tab buttons
+        }
     }
     #endregion
 
