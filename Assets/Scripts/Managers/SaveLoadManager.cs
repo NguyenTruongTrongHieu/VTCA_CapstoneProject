@@ -67,7 +67,7 @@ public class SaveLoadManager : MonoBehaviour
         currentBasicDamageLevel = 1;
         currentBasicHealthLevel = 1;
 
-        currentPlayerName = "Player3";
+        currentPlayerName = "Player2";
         currentLevelOfCurrentPlayer = 1;
 
         currentCoin = 0;

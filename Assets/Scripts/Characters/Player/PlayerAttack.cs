@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CartoonFX;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ public class PlayerAttack : MonoBehaviour
     public ParticleSystem hitImpact;
     public ParticleSystem bloodSplash;
     public ParticleSystem[] beingHitText;
+    public ParticleSystem damageDisplay;
+    private CFXR_ParticleText particleDamagePrefab;
 
     private List<int> attackHashes = new List<int>();//Trigger
     private int specialAttackHash;//Trigger
@@ -37,6 +40,8 @@ public class PlayerAttack : MonoBehaviour
         {
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
         }
+
+        particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
     }
 
     // Update is called once per frame
@@ -225,6 +230,7 @@ public class PlayerAttack : MonoBehaviour
 
                 playerStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
+                DisplayDamageText(dam); // Display damage text
                 BeingAttactk(); 
 
                 if (playerStat.CheckIfObjectDead())
@@ -259,5 +265,12 @@ public class PlayerAttack : MonoBehaviour
         hitImpact.Play();
         bloodSplash.Play();
         beingHitText[randomIndex].Play();
+    }
+
+    public void DisplayDamageText(float damage)
+    {
+        string damageText = "-" + NumberFomatter.FormatFloatToString(damage, 2);
+        particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
+        damageDisplay.Play(); // Play the damage display effect
     }
 }
