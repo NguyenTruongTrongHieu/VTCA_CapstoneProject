@@ -172,6 +172,7 @@ MonoBehaviour:
   - {fileID: 524508618408121911}
   - {fileID: 773285775557540149}
   - {fileID: 6424663391287043419}
+  damageDisplay: {fileID: 3912767712582259025}
 --- !u!114 &2669768800509826746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,9 +542,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4601931302043253770}
     m_Modifications:
+    - target: {fileID: 1262585215707529881, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.471
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262585215707529881, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6700001
+      objectReference: {fileID: 0}
     - target: {fileID: 1614711596656575882, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_Intensity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051869084190551451, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.368
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051869084190551451, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2345820013776455167, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 2345820013776455167, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.157
       objectReference: {fileID: 0}
     - target: {fileID: 2387686106237834988, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_Name
@@ -605,13 +630,37 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.063
       objectReference: {fileID: 0}
+    - target: {fileID: 5758426137083408885, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.403
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758426137083408885, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6700001
+      objectReference: {fileID: 0}
     - target: {fileID: 6388553172592830161, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.16
+      value: 1.184
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388553172592830161, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6700001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958489124089869894, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958489124089869894, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6700001
       objectReference: {fileID: 0}
     - target: {fileID: 8245223025498887372, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.96
+      value: 1.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245223025498887372, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.67
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -637,6 +686,11 @@ ParticleSystem:
 --- !u!4 &1051545272846850558 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2993612256550320456, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_PrefabInstance: {fileID: 2818308500766646454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3912767712582259025 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1247590721745957351, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 2818308500766646454}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &5291341535378888433 stripped

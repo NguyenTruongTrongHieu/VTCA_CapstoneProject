@@ -301,7 +301,7 @@ public class EnemyAttack : MonoBehaviour
 
     public void DisplayDamageText(float damage)
     {
-        string damageText = NumberFomatter.FormatFloatToString(damage, 2);
+        string damageText = "-" +NumberFomatter.FormatFloatToString(damage, 2);
         particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
         damageDisplay.Play(); // Play the damage display effect
     }
