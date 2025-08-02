@@ -181,7 +181,7 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
+                //UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
                 DisplayDamageText(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
@@ -241,8 +241,9 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
+                //UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
+                DisplayDamageText(dam);
                 BeingAttackSpecial();
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
@@ -300,7 +301,8 @@ public class EnemyAttack : MonoBehaviour
 
     public void DisplayDamageText(float damage)
     {
-        particleDamagePrefab.text = Mathf.Round(damage).ToString();
+        string damageText = NumberFomatter.FormatFloatToString(damage, 2);
+        particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
         damageDisplay.Play(); // Play the damage display effect
     }
 }
