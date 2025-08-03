@@ -1,5 +1,6 @@
 ﻿using CartoonFX;
 using System.Collections;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -35,7 +36,7 @@ public class UIManager : MonoBehaviour
     public GameObject disableMatching;
     public Button ultimateButton;
     public Slider manaSlider;
-    public GameObject targetPos;//Test
+    public float startPosYManaSlider;
 
     [Header("Game Over")]
     public GameObject gameOverPanel;
@@ -72,6 +73,8 @@ public class UIManager : MonoBehaviour
         UpdateCoinText();
 
         ShowMainMenuPanel();
+
+        startPosYManaSlider = manaSlider.GetComponent<RectTransform>().anchoredPosition.y;
     }
 
     // Update is called once per frame
@@ -86,12 +89,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentGameState = GameState.Playing;
         GameManager.instance.currentTurn = "None"; // Set the current turn to None
 
-        mainMenuPanel.SetActive(false);
-        inGamePanel.SetActive(true);
-        foreach (Image tabsButtons in tabsManager.tabButtons)
-        {
-            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
-        }
+        ShowInGamePanel();
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
@@ -203,6 +201,8 @@ public class UIManager : MonoBehaviour
     {
         //Increase the damage level
         GameManager.instance.UpgradeDam();
+        //Update Player ultimate
+        PlayerUltimate.instance.SetUpBaseStatForPlayer();
 
         //Set UIButton
         SetUITextForUpgradeDamButton();
@@ -212,6 +212,8 @@ public class UIManager : MonoBehaviour
     {
         //Increase the health level
         GameManager.instance.UpgradeHealth();
+        //Update Player ultimate
+        PlayerUltimate.instance.SetUpBaseStatForPlayer();
 
         //Set UIButton
         SetUITextForUpgradeHealthButton();
@@ -279,6 +281,76 @@ public class UIManager : MonoBehaviour
         Destroy(text.gameObject); // Xóa text sau khi hoàn thành
     }
 
+    public IEnumerator IncreaseManaSliderValue(float duration, float targetValue)
+    {
+        if (targetValue >= PlayerUltimate.instance.maxMana)
+        {
+            yield return null;
+        }
+
+        float elapsedTime = 0f;
+        float startValue = manaSlider.value;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            manaSlider.value = Mathf.Lerp(startValue, targetValue, elapsedTime / duration);
+            yield return null;
+        }
+        manaSlider.value = targetValue; // Set the final value
+    }
+
+    public IEnumerator HideManaSlider(float duration)
+    { 
+        RectTransform rectTransform = manaSlider.GetComponent<RectTransform>();
+        float elapsedTime = 0f;
+        Vector2 startPos = rectTransform.anchoredPosition;
+        Vector2 targetPos = new Vector2(startPos.x, startPosYManaSlider - 160f);
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / duration);
+            yield return null;
+        }
+        rectTransform.anchoredPosition = targetPos; // Set the final position
+        manaSlider.gameObject.SetActive(false); // Hide the slider after the animation
+    }
+
+    public IEnumerator AppearManaSlider(float duration)
+    {
+        manaSlider.gameObject.SetActive(true); // Ensure the slider is active
+        RectTransform rectTransform = manaSlider.GetComponent<RectTransform>();
+        float elapsedTime = 0f;
+        Vector2 startPos = rectTransform.anchoredPosition;
+        Vector2 targetPos = new Vector2(startPos.x, startPosYManaSlider);
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / duration);
+            yield return null;
+        }
+        rectTransform.anchoredPosition = targetPos; // Set the final position
+    }
+
+    public IEnumerator ShowUltimateButtonAnim(float duration)
+    { 
+        ultimateButton.transform.localScale = Vector3.zero; // Start with the button hidden
+        ultimateButton.gameObject.SetActive(true); // Ensure the button is active
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            ultimateButton.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsedTime / duration);
+            yield return null;
+        }
+        ultimateButton.transform.localScale = Vector3.one; // Ensure the final scale is set to 1
+    }
+
+    public IEnumerator ChangeManaSliderAndUltimateButton()
+    { 
+        yield return StartCoroutine(HideManaSlider(0.2f)); // Show the mana slider
+        StartCoroutine(ShowUltimateButtonAnim(0.1f)); // Show the ultimate button
+    }
+
     #endregion
 
     #region SETTING
@@ -302,13 +374,24 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region SHOW PANEL
+
+    public void ShowInGamePanel()
+    {
+        mainMenuPanel.SetActive(false);
+        ultimateButton.gameObject.SetActive(false);
+        manaSlider.gameObject.SetActive(true);
+        inGamePanel.SetActive(true);
+        foreach (Image tabsButtons in tabsManager.tabButtons)
+        {
+            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
+        }
+    }
+
     public void ShowGameOverPanel(bool isPlayerWin)
     {
         gameOverPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
         inGamePanel.SetActive(false);
-
-
     }
 
     public void ShowMainMenuPanel()

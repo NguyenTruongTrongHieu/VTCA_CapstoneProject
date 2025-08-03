@@ -174,6 +174,8 @@ public class EnemyAttack : MonoBehaviour
             PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
             if (playerStat != null)
             {
+                PlayerUltimate.instance.AddMana(10);
+
                 float dam = playerStat.damage * enemyStat.defense;
 
                 //Làm tròn giá trị sát thương
@@ -230,7 +232,7 @@ public class EnemyAttack : MonoBehaviour
             PlayerStat playerStat = other.GetComponentInParent<PlayerStat>();
             if (playerStat != null)
             {
-                Debug.Log("Player special hit");
+                PlayerUltimate.instance.AddMana(10 * GameManager.instance.multipleScoreForPlayerHit);
 
                 float dam = playerStat.damage * GameManager.instance.multipleScoreForPlayerHit * enemyStat.defense;
                 GameManager.instance.multipleScoreForPlayerHit = 1;

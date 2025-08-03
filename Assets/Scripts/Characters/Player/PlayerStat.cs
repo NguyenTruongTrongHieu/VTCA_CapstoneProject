@@ -12,10 +12,6 @@ public enum PlayerClass
 
 public class PlayerStat : Stats
 {
-    [Header("Ulti")]
-    public float mana;
-    public float maxMana;
-
     [Header("Information")]
     public int id;
     public string name; // Player's name

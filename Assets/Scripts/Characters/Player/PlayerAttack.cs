@@ -225,7 +225,8 @@ public class PlayerAttack : MonoBehaviour
             EnemyStat enemyStat = other.GetComponentInParent<EnemyStat>();
             if (enemyStat != null)
             {
-                Debug.Log("Enemy hit");
+                PlayerUltimate.instance.AddMana(5);
+
                 float dam = NumberFomatter.RoundFloatToTwoDecimalPlaces(enemyStat.damage);
 
                 playerStat.TakeDamage(dam);

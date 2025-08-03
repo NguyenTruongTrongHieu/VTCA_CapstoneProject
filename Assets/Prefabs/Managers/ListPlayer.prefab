@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
+  mana: 0
+  maxMana: 100
   basicDamagePlayer: 0
   basicMaxHealthPlayer: 0
   basicCurrentHealthPlayer: 0

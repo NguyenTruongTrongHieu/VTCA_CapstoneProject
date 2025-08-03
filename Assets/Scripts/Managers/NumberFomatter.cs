@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 
 public static class NumberFomatter
 {
@@ -19,16 +20,16 @@ public static class NumberFomatter
             if (Mathf.Approximately(number, Mathf.Round(number)))
                 return number.ToString("0");
             else
-                return number.ToString(format);
+                return number.ToString(format, CultureInfo.InvariantCulture);
         }
 
         // Nếu số lớn hơn hoặc bằng 1000 → hiển thị K, M, B
         if (number >= 1_000_000_000f)
-            return (number / 1_000_000_000f).ToString(format) + "B";
+            return (number / 1_000_000_000f).ToString(format, CultureInfo.InvariantCulture) + "B";
         else if (number >= 1_000_000f)
-            return (number / 1_000_000f).ToString(format) + "M";
+            return (number / 1_000_000f).ToString(format, CultureInfo.InvariantCulture) + "M";
         else // >= 1_000
-            return (number / 1_000f).ToString(format) + "K";
+            return (number / 1_000f).ToString(format, CultureInfo.InvariantCulture) + "K";
     }
 
     public static string FormatIntToString(int number, int decimalPlaces)
@@ -38,11 +39,11 @@ public static class NumberFomatter
 
 
         if (number >= 1_000_000_000)
-            return (number / 1_000_000_000f).ToString(format) + "B";
+            return (number / 1_000_000_000f).ToString(format, CultureInfo.InvariantCulture) + "B";
         else if (number >= 1_000_000)
-            return (number / 1_000_000f).ToString(format) + "M";
+            return (number / 1_000_000f).ToString(format, CultureInfo.InvariantCulture) + "M";
         else if (number >= 1_000)
-            return (number / 1_000f).ToString(format) + "K";
+            return (number / 1_000f).ToString(format, CultureInfo.InvariantCulture) + "K";
         else
             return number.ToString("0");
     }
