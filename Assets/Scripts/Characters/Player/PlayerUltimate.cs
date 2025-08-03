@@ -9,6 +9,10 @@ public class PlayerUltimate : MonoBehaviour
 
     private int ultimateHash;
 
+    [Header("Mana")]
+    public float mana;
+    public float maxMana;
+
     [Header("Basic player's stat")]
     public float basicDamagePlayer; // Damage dealt by the basic attack
     public float basicMaxHealthPlayer;
@@ -72,9 +76,7 @@ public class PlayerUltimate : MonoBehaviour
                 playerStat.bonusStatAtCurrentLevel = playerStat.bonusStatsLevel[currentLevelOfPlayer - 1]; // Set the bonus stats for the player at the current level
                 playerStat.SetUpStatAndSlider();
 
-                basicDamagePlayer = playerStat.damage; // Get the player's damage
-                basicMaxHealthPlayer = playerStat.maxHealth; // Get the player's max health
-                basicLifeStealPlayer = playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus; // Get the player's lifesteal percentage
+                SetUpBaseStatForPlayer(); // Set up the base stats for the player
 
                 player.GetComponent<Player>().ReturnStartPos();
                 CameraManager.instance.SetTargetForCam(player.transform);//call when change player
@@ -82,6 +84,13 @@ public class PlayerUltimate : MonoBehaviour
                 //AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
             }
         }
+    }
+
+    public void SetUpBaseStatForPlayer()
+    {
+        basicDamagePlayer = playerTransform.GetComponent<PlayerStat>().damage; // Get the player's damage
+        basicMaxHealthPlayer = playerTransform.GetComponent<PlayerStat>().maxHealth; // Get the player's max health
+        basicLifeStealPlayer = playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.lifeStealPercentBonus;
     }
 
     public void ResetPlayer()
@@ -98,6 +107,7 @@ public class PlayerUltimate : MonoBehaviour
         CameraManager.instance.ResetCamForPlayer();
         playerTransform.GetComponent<Player>().ReturnStartPos();
         playerTransform.GetComponent<Player>().SetUpBehaviourTree();
+        ResetUltiAndMana(false); // Reset ultimate and mana when resetting the player
 
     }
 
@@ -127,6 +137,42 @@ public class PlayerUltimate : MonoBehaviour
         }
     }
 
+    public void ResetUltiAndMana(bool isHavingSliderAnim)
+    {
+        mana = 0;
+        UIManager.instance.ultimateButton.gameObject.SetActive(false);
+        if (isHavingSliderAnim)
+        {
+            UIManager.instance.StartCoroutine(UIManager.instance.AppearManaSlider(0.2f)); // Update the mana slider and ultimate button in the UI
+        }
+        else
+        {
+            UIManager.instance.manaSlider.GetComponent<RectTransform>().anchoredPosition =
+                new Vector2(UIManager.instance.manaSlider.GetComponent<RectTransform>().anchoredPosition.x, 
+                UIManager.instance.startPosYManaSlider);
+            UIManager.instance.manaSlider.gameObject.SetActive(true); // Show the mana slider when resetting
+        }
+
+        //Reset slider mana in uimnager
+        UIManager.instance.manaSlider.value = 0; // Reset the mana slider to 0
+    }
+
+    public void AddMana(float amount)
+    {
+        if (mana >= maxMana)
+            return;
+
+        mana = Mathf.Min(mana + amount, maxMana);
+        UIManager.instance.StartCoroutine(UIManager.instance.IncreaseManaSliderValue(0.1f, mana)); // Update the mana slider in the UI
+
+        if (mana >= maxMana)
+        {
+            //UIManager.instance.ultimateButton.gameObject.SetActive(true); // Enable the ultimate button when mana is full
+            //UIManager.instance.manaSlider.gameObject.SetActive(false); // Show the mana slider when mana is full
+            UIManager.instance.StartCoroutine(UIManager.instance.ChangeManaSliderAndUltimateButton());
+        }
+    }
+
     public void Player1Ultimate()
     {
         isUltimateValid = true; // Set ultimate as valid
@@ -140,6 +186,8 @@ public class PlayerUltimate : MonoBehaviour
         StartCoroutine(PlayUltiVfx(2f)); // Start the coroutine to play ultimate visual effects
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2();
         StartCoroutine(Player1UltimateCoroutine()); // Start the coroutine for Player 1's ultimate
+
+        ResetUltiAndMana(true);
     }
 
     public IEnumerator Player1UltimateCoroutine()
@@ -172,6 +220,8 @@ public class PlayerUltimate : MonoBehaviour
 
         StartCoroutine(PlayUltiVfx(0.75f));
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2(); // Play the ultimate visual effect
+
+        ResetUltiAndMana(true);
     }
 
     public IEnumerator Player2UltimateCoroutine()
@@ -195,6 +245,8 @@ public class PlayerUltimate : MonoBehaviour
         isUltimateValid = false; // Reset ultimate validity after use
 
         StartCoroutine(PlayUltiVfx(1.5f));
+
+        ResetUltiAndMana(true);
     }
 
     public IEnumerator SpawnDebuffTakeDam()
