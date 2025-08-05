@@ -193,6 +193,8 @@ public class GameManager : MonoBehaviour
             //Reset game board
             GameBoard.Instance.ResetBoard();
             GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
+
+            UIManager.instance.DisplayCurrentLevel();
         }
 
         //Reset enemies and player

@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject mainMenuPanel;
 
+    public Text currentLevelDisplay;
+
     [Header("In Game")]
     public GameObject inGamePanel;
     public GameObject gameBoard;
@@ -37,6 +39,7 @@ public class UIManager : MonoBehaviour
     public Button ultimateButton;
     public Slider manaSlider;
     public float startPosYManaSlider;
+    public Text currentStageProgressionDisplay;
 
     [Header("Game Over")]
     public GameObject gameOverPanel;
@@ -75,6 +78,9 @@ public class UIManager : MonoBehaviour
         ShowMainMenuPanel();
 
         startPosYManaSlider = manaSlider.GetComponent<RectTransform>().anchoredPosition.y;
+
+        // Display the current level in the main menu
+        DisplayCurrentLevel();
     }
 
     // Update is called once per frame
@@ -97,6 +103,19 @@ public class UIManager : MonoBehaviour
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
     }
+
+    public void DisplayCurrentLevel()
+    {
+        if (LevelManager.instance.currentLevel != null)
+        {
+            currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
+        }
+        else
+        {
+            currentLevelDisplay.text = "Level Unknown";
+        }
+    }
+
     #endregion
 
     #region CURRENCY
