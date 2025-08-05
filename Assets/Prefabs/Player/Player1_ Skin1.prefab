@@ -945,6 +945,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OHS06PBR
       objectReference: {fileID: 0}
+    - target: {fileID: 3832907126045494399, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
+      propertyPath: m_TagString
+      value: PlayerHit
+      objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
