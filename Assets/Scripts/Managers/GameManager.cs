@@ -208,11 +208,11 @@ public class GameManager : MonoBehaviour
         SaveLoadManager.instance.loadingPanel.SetActive(false);
     }
 
-    public void Vibrate()
-    { 
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            Handheld.Vibrate(); // Vibrate the device
-        }
-    }
+    //public void Vibrate()
+    //{ 
+    //    if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+    //    {
+    //        Handheld.Vibrate(); // Vibrate the device
+    //    }
+    //}
 }
