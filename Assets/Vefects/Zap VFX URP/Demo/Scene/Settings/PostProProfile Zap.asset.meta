@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8ba92e2dd7f884a0f88b98fa2d235fe7
+guid: a6dff4a2b50ed6b48a85ec5d70cf4c2c
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
@@ -10,6 +10,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 303479
   packageName: Zap VFX - URP
-  packageVersion: 1.0
-  assetPath: Assets/Vefects/Zap VFX URP/Demo/Scene/Settings/PostProProfile.asset
-  uploadId: 712878
+  packageVersion: 1.0.2
+  assetPath: Assets/Vefects/Zap VFX URP/Demo/Scene/Settings/PostProProfile Zap.asset
+  uploadId: 776836
