@@ -35,7 +35,7 @@ public class UILineRenderer : MonoBehaviour
 
         Vector2 dir = point1 - point2;
         line.GetComponent<RectTransform>().rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
-        line.GetComponent<RectTransform>().localScale = new Vector3(2f, 0.3f, 1f);
+        line.GetComponent<RectTransform>().localScale = new Vector3(1.1f, 0.18f, 1f);
     }
 
     public void ClearLines()
