@@ -82,7 +82,8 @@ public class PlayerAnimEvent : MonoBehaviour
 
     public void TurnOnAndSetPosAtEnemyForHitVFX()
     {
-        hitVFX.gameObject.transform.position = LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position;
+        hitVFX.gameObject.transform.position = LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position 
+            + new Vector3(0, 0, 0);
         hitVFX.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);// Stop the hit VFX to reset it before playing again
         hitVFX.Play();
     }
