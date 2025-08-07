@@ -294,7 +294,25 @@ public class EnemyAttack : MonoBehaviour
     {
         int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpact.Play();
+        for (int i = 0; i < hitImpact.transform.childCount; i++)
+        {
+            ParticleSystem childParticle;
+            if (hitImpact.transform.GetChild(i).TryGetComponent<ParticleSystem>(out childParticle))
+            {
+                childParticle.Play();
+            }
+        }
+
         bloodSplash.Play();
+        for (int i = 0; i < bloodSplash.transform.childCount; i++)
+        {
+            ParticleSystem childParticle;
+            if (bloodSplash.transform.GetChild(i).TryGetComponent<ParticleSystem>(out childParticle))
+            { 
+                childParticle.Play();
+            }
+        }
+
         beingHitText[randomIndex].Play();
     }
 
