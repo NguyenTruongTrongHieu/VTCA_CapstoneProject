@@ -31,6 +31,10 @@ public class UIManager : MonoBehaviour
 
     public Text currentLevelDisplay;
 
+    [Header("CharacterAndSkin")]
+    public GameObject characterPanel;
+    public GameObject[] skinPanels;
+
     [Header("In Game")]
     public GameObject inGamePanel;
     public GameObject gameBoard;
