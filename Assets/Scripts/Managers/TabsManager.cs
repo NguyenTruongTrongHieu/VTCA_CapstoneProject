@@ -37,6 +37,7 @@ public class TabsManager : MonoBehaviour
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 1.25f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 1f));
             charactersTab.TurnOnCharacterTab(0); // Activate the character tab
+            UIManager.instance.SetUIInfoCurrentPlayer();
         }
         else
         {

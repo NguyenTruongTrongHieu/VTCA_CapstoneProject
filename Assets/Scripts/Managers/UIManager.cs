@@ -1,5 +1,6 @@
 ﻿using CartoonFX;
 using System.Collections;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -34,6 +35,11 @@ public class UIManager : MonoBehaviour
     [Header("CharacterAndSkin")]
     public GameObject characterPanel;
     public GameObject[] skinPanels;
+    public Text levelText;
+    public Text damTextInUI;
+    public Text healthTextInUI;
+    public Text ultiDescriptionText;
+    public Text ultiStatText;
 
     [Header("In Game")]
     public GameObject inGamePanel;
@@ -214,6 +220,70 @@ public class UIManager : MonoBehaviour
         }
         rectTransformCoinText.position = targetPos; // Set the final position
         Destroy(coinTextObject);
+    }
+
+    #endregion
+
+    #region  CHARACTER AND SKIN
+
+    public void SetUIInfoCurrentPlayer()
+    {
+        //Change color for dam text
+        string percentDamBonus;
+        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus > 0)
+        {
+            percentDamBonus = $"+{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            damTextInUI.color = Color.green;
+        }
+        else
+        {
+            percentDamBonus = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus < 0)
+            { 
+                damTextInUI.color = Color.red;
+            }
+        }
+
+        //Change color for health text
+        string percentHealthBonus;
+        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus > 0)
+        {
+            percentHealthBonus = $"+{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            healthTextInUI.color = Color.green;
+        }
+        else
+        {
+            percentHealthBonus = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus < 0)
+            { 
+                healthTextInUI.color = Color.red;
+            }
+        }
+
+
+        levelText.text = NumberFomatter.FormatIntToString(SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0);
+        damTextInUI.text = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().damage, 2)}" +
+            $" ({percentDamBonus})";
+        healthTextInUI.text = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().maxHealth, 2)}" +
+            $" ({percentHealthBonus})";
+
+        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 0)
+        {
+            ultiDescriptionText.text = "Ulti: Increase your lifesteal for 1 turn. Lifesteal can heal based on damage dealt. " +
+                "Throughout this turn, each attack restores a portion of lost health.";
+            ultiStatText.text = $"Lifesteal: +0.1";
+        }
+        else if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 1)
+        {
+            ultiDescriptionText.text = "Ulti: Increase your damage for 1 turn. This bonus damage based on your basic damage.";
+            ultiStatText.text = $"Increased damage: +(0.15 x basic damage)";
+        }
+        else if(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 2)
+        {
+            ultiDescriptionText.text = "Ulti: Randomly spawns a special item that increases the damage enemies take when used, " +
+                "last for 1 turn. Using this item does not end your current turn.";
+            ultiStatText.text = $"Damage taken: +10% for each connected fruit";
+        }
     }
 
     #endregion
