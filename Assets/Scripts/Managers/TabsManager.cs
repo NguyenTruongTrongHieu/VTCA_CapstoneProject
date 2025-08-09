@@ -3,8 +3,11 @@ using UnityEngine.UI;
 
 public class TabsManager : MonoBehaviour
 {
+    [Header("For menu tabs")]
     public TabsManager charactersTab; // Singleton instance
+    public Carousel carousel; // Reference to the carousel for character selection
 
+    [Header("For all tabs")]
     [SerializeField] private bool isTurnOnMenuAtStart;
     public GameObject[] tabs; // Array of tab GameObjects
     public Image[] tabButtons; // Array of tab button Images
@@ -37,6 +40,7 @@ public class TabsManager : MonoBehaviour
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 1.25f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 1f));
             charactersTab.TurnOnCharacterTab(0); // Activate the character tab
+            carousel.ActivateCurrentIndicatorByPlayerClass(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().playerClass);
             UIManager.instance.SetUIInfoCurrentPlayer();
         }
         else
