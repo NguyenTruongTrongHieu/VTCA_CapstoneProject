@@ -1,9 +1,25 @@
 ﻿using CartoonFX;
+using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+[Serializable]
+public class CharacterButton
+{
+    public int characterID;
+    public string characterName;
+    public Button characterButton;
+
+    public CharacterButton(int id, string name, Button button)
+    {
+        characterID = id;
+        characterName = name;
+        characterButton = button;
+    }
+}
 
 public class UIManager : MonoBehaviour
 {
@@ -32,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     public Text currentLevelDisplay;
 
-    [Header("CharacterAndSkin")]
+    [Header("Character And Skin")]
     public GameObject characterPanel;
     public GameObject[] skinPanels;
     public Text levelText;
@@ -40,6 +56,10 @@ public class UIManager : MonoBehaviour
     public Text healthTextInUI;
     public Text ultiDescriptionText;
     public Text ultiStatText;
+
+    [Space]
+    public CharacterButton[] characterButtons; // Array of character buttons
+    public CharacterButton currentChosenButton;
 
     [Header("In Game")]
     public GameObject inGamePanel;

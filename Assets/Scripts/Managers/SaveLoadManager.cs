@@ -4,6 +4,55 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public class OwnedCharacter
+{
+    public int characterID;
+    public int currentLevel;
+    public List<string> ownedSkins = new List<string>();
+
+    public OwnedCharacter(int id, string skinName)
+    { 
+        characterID = id;
+        currentLevel = 1; // Default level is 1
+        if (ownedSkins == null)
+        {
+            ownedSkins = new List<string> { skinName };
+        }
+        else
+        {
+            ownedSkins.Add(skinName);
+        }
+    }
+
+    public OwnedCharacter(int id, int level, string skinName)
+    {
+        characterID = id;
+        currentLevel = level;
+        if (ownedSkins == null)
+        {
+            ownedSkins = new List<string> { skinName };
+        }
+        else
+        {
+            ownedSkins.Add(skinName);
+        }
+    }
+
+    public OwnedCharacter(int id, int level, List<string> skins)
+    {
+        characterID = id;
+        currentLevel = level;
+        ownedSkins = skins;
+    }
+
+    public OwnedCharacter(int id, List<string> skins)
+    {
+        characterID = id;
+        currentLevel = 1;
+        ownedSkins = new List<string>();
+    }
+}
+
 public class SaveLoadManager : MonoBehaviour
 {
     public static SaveLoadManager instance;
@@ -19,8 +68,7 @@ public class SaveLoadManager : MonoBehaviour
     public int currentCoin;
     public int currentDiamond;
     public int currentGoldKey;
-    public List<string> unlockPlayerAndSkin;//saving name PlayerPrefab
-    public Dictionary<int, int> unlockPlayerAndPlayerCurrentLevel;//saving id player and current level of that player
+    public List<OwnedCharacter> ownedCharacters = new List<OwnedCharacter>();
 
     [Header("Loading UI")]
     public GameObject loadingPanel;
@@ -71,6 +119,11 @@ public class SaveLoadManager : MonoBehaviour
         currentLevelOfCurrentPlayer = 1;
 
         currentCoin = 0;
+
+        ownedCharacters = new List<OwnedCharacter>
+        {
+            new OwnedCharacter(1, 1, "Player2")
+        };
     }
 
     public IEnumerator LoadingSceneAsync()
