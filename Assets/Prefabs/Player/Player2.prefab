@@ -277,11 +277,10 @@ MonoBehaviour:
   currentHealth: 0
   damage: 0
   hpSlider: {fileID: 0}
-  mana: 0
-  maxMana: 0
   id: 1
   name: Player2
   playerClass: 0
+  isNormalSkin: 1
   bonusStatAtCurrentLevel:
     healthPercentBonus: 0
     damagePercentBonus: 0
