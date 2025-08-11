@@ -135,10 +135,10 @@ public class EnemyAttack : MonoBehaviour
         animator.SetBool(isVictoryHash, true);
         StartCoroutine(RotateToTarget(GameManager.instance.enemiesEndRotation));
 
-        CameraManager.instance.SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
-        StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
-        StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
-        StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
         UIManager.instance.ShowGameOverPanel(false);
     }

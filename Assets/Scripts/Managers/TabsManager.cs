@@ -5,10 +5,10 @@ public class TabsManager : MonoBehaviour
 {
     [Header("For menu tabs")]
     public TabsManager charactersTab; // Singleton instance
-    public Carousel carousel; // Reference to the carousel for character selection
     private int currentTabID = 0; // Current active tab ID
 
     [Header("For all tabs")]
+    public Carousel carousel; // Reference to the carousel for character selection
     [SerializeField] private bool isTurnOnMenuAtStart;
     public GameObject[] tabs; // Array of tab GameObjects
     public Image[] tabButtons; // Array of tab button Images
@@ -48,7 +48,6 @@ public class TabsManager : MonoBehaviour
             if (playerStat.isNormalSkin)
             {
                 charactersTab.TurnOnCharacterTab(0); // Activate the character tab
-                carousel.ActivateCurrentIndicatorByPlayerClass(playerStat.playerClass);
             }
             else
                 charactersTab.TurnOnSkinTab(1);
@@ -66,7 +65,7 @@ public class TabsManager : MonoBehaviour
                 if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().name != SaveLoadManager.instance.currentPlayerName)
                 {
                     PlayerUltimate.instance.TurnOffAllPlayersTransform();
-                    PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer);
+                    PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0.1f);
                 }
             }
         }
@@ -89,6 +88,9 @@ public class TabsManager : MonoBehaviour
         }
         tabButtons[TabID].sprite = activeTabBG; // Set the selected tab button to active background
         tabButtons[TabID].rectTransform.sizeDelta = activeButtonSize; // Set the selected tab button to active size
+
+        PlayerStat playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+        carousel.ActivateCurrentIndicatorByPlayerClass(playerStat.playerClass);
     }
 
 
