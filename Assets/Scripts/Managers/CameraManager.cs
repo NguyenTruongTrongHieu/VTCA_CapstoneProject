@@ -25,7 +25,7 @@ public class CameraManager : MonoBehaviour
 
     public void ResetCamForPlayer()
     {
-        SetTargetForCam(PlayerUltimate.instance.playerTransform);
+        StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
 
         StartCoroutine(SetHardLookAt(0.5f, 'Z', 0f));
         StartCoroutine(SetHardLookAt(0.5f, 'X', 0f));
@@ -37,8 +37,12 @@ public class CameraManager : MonoBehaviour
         StartCoroutine(SetVerticalFOV(35f, 0.5f)); // Reset vertical FOV to 35
     }
 
-    public void SetTargetForCam(Transform target)
+    public IEnumerator SetTargetForCam(Transform target, float waitTimeToSet)
     {
+        if(waitTimeToSet > 0f)
+        {
+            yield return new WaitForSeconds(waitTimeToSet);
+        }
         cineCam.Follow = target;
     }
 
@@ -312,7 +316,7 @@ public class CameraManager : MonoBehaviour
         float currentFollowOffsetZ = cineCam.GetComponent<CinemachineFollow>().FollowOffset.z;
         if (isPlayerDie)//Cam target to enemy
         {
-            SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
+            StartCoroutine(SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
             StartCoroutine(SetFollowOffset(0.1f, 'Z', followOffsetZ));
             yield return StartCoroutine(SetFollowOffset(0.1f, 'X', followOffsetX));
 
@@ -340,7 +344,7 @@ public class CameraManager : MonoBehaviour
         float currentLookAtOffsetZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
         float currentFOV = cineCam.Lens.FieldOfView;
 
-        SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform);
+        StartCoroutine(SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
         StartCoroutine(SetHardLookAt(50f, 'z', targetLookAtOffsetZ));
         yield return StartCoroutine(SetVerticalFOV(targetFOV, 0.1f));
 
@@ -353,7 +357,7 @@ public class CameraManager : MonoBehaviour
         }
         Time.timeScale = 1f; // Reset time scale to normal
 
-        SetTargetForCam(PlayerUltimate.instance.playerTransform);
+        StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
         StartCoroutine(SetHardLookAt(1f, 'z',currentLookAtOffsetZ));
         yield return StartCoroutine(SetVerticalFOV(currentFOV, 0.5f));
 

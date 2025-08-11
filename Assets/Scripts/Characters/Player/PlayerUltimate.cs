@@ -46,7 +46,7 @@ public class PlayerUltimate : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer); // Get the player transform for Player1
+        GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0f); // Get the player transform for Player1
         ultimateHash = Animator.StringToHash("Ultimate"); // Get the hash for the ultimate animation
     }
 
@@ -55,7 +55,7 @@ public class PlayerUltimate : MonoBehaviour
     {
     }
 
-    public void GetPlayerTransform(string playerName, int currentLevelOfPlayer)
+    public void GetPlayerTransform(string playerName, int currentLevelOfPlayer, float waitTimeToSetTargetCam)
     {
         int childCount = transform.childCount; // Get the number of child objects
         for (int i = 0; i < childCount; i++)
@@ -79,7 +79,7 @@ public class PlayerUltimate : MonoBehaviour
                 SetUpBaseStatForPlayer(); // Set up the base stats for the player
 
                 player.GetComponent<Player>().ReturnStartPos();
-                CameraManager.instance.SetTargetForCam(player.transform);//call when change player
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetTargetForCam(player.transform, waitTimeToSetTargetCam));//call when change player
                 player.GetComponent<Player>().SetUpBehaviourTree();
                 //AddUltimateToUltiButton(playerTransform.GetComponent<PlayerStat>().id);
             }

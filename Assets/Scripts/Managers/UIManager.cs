@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,13 +13,36 @@ public class CharacterButton
 {
     public int characterID;
     public string characterName;
-    public Button characterButton;
+    public GameObject changeCharacterObject;
+    public Text ownedText;
+    public Text buyText;
+    public Button chosenButton;
+    public Image chosenImage;
+    public Image lockImage;
+
+    public CharacterButton(int characterID, string characterName, GameObject changeCharacterObject)
+    {
+        this.characterID = characterID;
+        this.characterName = characterName;
+        this.changeCharacterObject = changeCharacterObject;
+    }
 
     public CharacterButton(int id, string name, Button button)
     {
         characterID = id;
         characterName = name;
-        characterButton = button;
+        chosenButton = button;
+    }
+
+    public CharacterButton(int id, string name, GameObject changeObject, Text ownedText, Text buyText, Button button, Image image)
+    {
+        characterID = id;
+        characterName = name;
+        changeCharacterObject = changeObject;
+        this.ownedText = ownedText;
+        this.buyText = buyText;
+        chosenButton = button;
+        chosenImage = image;
     }
 }
 
@@ -111,6 +135,26 @@ public class UIManager : MonoBehaviour
 
         // Display the current level in the main menu
         DisplayCurrentLevel();
+
+        // Set up the character buttons
+        foreach (CharacterButton button in characterButtons)
+        {
+            var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == button.characterID);
+            if (checkCharacter != null)//if found the same id in ownedCharacters list
+            {
+                foreach (var name in checkCharacter.ownedSkins)
+                {
+                    if (name == button.characterName)//if found the same name in ownedCharacters list
+                    {
+                        //Also used for buying
+                        button.ownedText.gameObject.SetActive(true);
+                        button.buyText.gameObject.SetActive(false);
+                        button.lockImage.gameObject.SetActive(false);//Turn off the lock image
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     // Update is called once per frame
@@ -348,7 +392,7 @@ public class UIManager : MonoBehaviour
 
         //Change character
         PlayerUltimate.instance.TurnOffAllPlayersTransform();
-        PlayerUltimate.instance.GetPlayerTransform(characterName, characterLevel);
+        PlayerUltimate.instance.GetPlayerTransform(characterName, characterLevel, 0.75f);
 
         //Set button
         SetCurrentChosenCharacterButton(id, characterName);
@@ -365,12 +409,14 @@ public class UIManager : MonoBehaviour
         foreach (CharacterButton button in characterButtons)
         {
             // Reset all buttons to not be chosen
-            button.characterButton.interactable = true;
+            button.chosenImage.gameObject.SetActive(false);
+            button.chosenButton.interactable = true; // Make all buttons interactable again
             if (button.characterID == id && button.characterName == characterName)
             {
                 currentChosenButton = button;
                 // Set the chosen button to be chosen
-                button.characterButton.interactable = false;
+                button.chosenImage.gameObject.SetActive(true);
+                button.chosenButton.interactable = false;
             }
         }
     }
