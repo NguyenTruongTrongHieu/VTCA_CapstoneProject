@@ -16,6 +16,7 @@ public class PlayerStat : Stats
     public int id;
     public string name; // Player's name
     public PlayerClass playerClass; // Player's class
+    public bool isNormalSkin;
 
     [Header("Percent bonus")]
     public BonusStatForPlayer bonusStatAtCurrentLevel;

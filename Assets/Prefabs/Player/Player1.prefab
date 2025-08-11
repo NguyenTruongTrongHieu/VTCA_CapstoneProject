@@ -192,6 +192,7 @@ MonoBehaviour:
   id: 0
   name: Player1
   playerClass: 1
+  isNormalSkin: 1
   bonusStatAtCurrentLevel:
     healthPercentBonus: 0
     damagePercentBonus: 0

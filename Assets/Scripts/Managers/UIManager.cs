@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -303,6 +304,74 @@ public class UIManager : MonoBehaviour
             ultiDescriptionText.text = "Ulti: Randomly spawns a special item that increases the damage enemies take when used, " +
                 "last for 1 turn. Using this item does not end your current turn.";
             ultiStatText.text = $"Damage taken: +10% for each connected fruit";
+        }
+    }
+
+    public void OnChangeCharacterOrSkin(string characterName)
+    {
+        int id = -1;
+        foreach (var button in characterButtons)
+        {
+            if (button.characterName == characterName)
+            { 
+                id = button.characterID;
+                break;
+            }
+        }
+
+        if (id == -1)
+        { 
+            Debug.LogError($"Character with name {characterName} not found in character buttons.");
+            return;
+        }
+
+        //Check if the character exists in the owned characters list
+        //Save the current player if the character is already owned
+        int characterLevel = 1;
+        var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == id);
+        if (checkCharacter != null)
+        {
+            foreach(var name in checkCharacter.ownedSkins)
+            {
+                if (name == characterName)
+                { 
+                    SaveLoadManager.instance.currentPlayerName = characterName;
+                    SaveLoadManager.instance.currentLevelOfCurrentPlayer = checkCharacter.currentLevel;
+                    characterLevel = checkCharacter.currentLevel;
+                    break;
+                }
+            }
+        }
+
+        //Setup info player
+        int previousCharacterID = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id;
+
+        //Change character
+        PlayerUltimate.instance.TurnOffAllPlayersTransform();
+        PlayerUltimate.instance.GetPlayerTransform(characterName, characterLevel);
+
+        //Set button
+        SetCurrentChosenCharacterButton(id, characterName);
+
+        //Setup info player
+        if (previousCharacterID != id)
+        {
+            SetUIInfoCurrentPlayer();
+        }
+    }
+
+    public void SetCurrentChosenCharacterButton(int id, string characterName)
+    {
+        foreach (CharacterButton button in characterButtons)
+        {
+            // Reset all buttons to not be chosen
+            button.characterButton.interactable = true;
+            if (button.characterID == id && button.characterName == characterName)
+            {
+                currentChosenButton = button;
+                // Set the chosen button to be chosen
+                button.characterButton.interactable = false;
+            }
         }
     }
 

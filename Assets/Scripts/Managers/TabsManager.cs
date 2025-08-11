@@ -6,6 +6,7 @@ public class TabsManager : MonoBehaviour
     [Header("For menu tabs")]
     public TabsManager charactersTab; // Singleton instance
     public Carousel carousel; // Reference to the carousel for character selection
+    private int currentTabID = 0; // Current active tab ID
 
     [Header("For all tabs")]
     [SerializeField] private bool isTurnOnMenuAtStart;
@@ -39,18 +40,38 @@ public class TabsManager : MonoBehaviour
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', -1f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 1.25f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 1f));
-            charactersTab.TurnOnCharacterTab(0); // Activate the character tab
-            carousel.ActivateCurrentIndicatorByPlayerClass(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().playerClass);
+
+            PlayerStat playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
             UIManager.instance.SetUIInfoCurrentPlayer();
+            UIManager.instance.SetCurrentChosenCharacterButton(playerStat.id, playerStat.name);
+
+            if (playerStat.isNormalSkin)
+            {
+                charactersTab.TurnOnCharacterTab(0); // Activate the character tab
+                carousel.ActivateCurrentIndicatorByPlayerClass(playerStat.playerClass);
+            }
+            else
+                charactersTab.TurnOnSkinTab(1);
         }
         else
         {
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.3f));
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', 0f));
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 0f));
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 2f));
+            if (currentTabID == 2)
+            {
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.3f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', 0f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 0f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 2f));
+
+                if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().name != SaveLoadManager.instance.currentPlayerName)
+                {
+                    PlayerUltimate.instance.TurnOffAllPlayersTransform();
+                    PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer);
+                }
+            }
         }
+
+        currentTabID = TabID; // Update the current tab ID
     }
 
     public void TurnOnCharacterTab(int TabID)

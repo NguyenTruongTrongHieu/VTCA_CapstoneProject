@@ -86,6 +86,23 @@ public class PlayerUltimate : MonoBehaviour
         }
     }
 
+    public void TurnOffAllPlayersTransform()
+    {
+        int childCount = transform.childCount; // Get the number of child objects
+        for (int i = 0; i < childCount; i++)
+        {
+            var player = transform.GetChild(i).gameObject; // Get each child object
+            PlayerStat playerStat;
+
+            if (!player.TryGetComponent<PlayerStat>(out playerStat))
+            {
+                continue;
+            }
+
+            player.SetActive(false); // Deactivate all player objects
+        }
+    }
+
     public void SetUpBaseStatForPlayer()
     {
         basicDamagePlayer = playerTransform.GetComponent<PlayerStat>().damage; // Get the player's damage
