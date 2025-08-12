@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public enum GameState
 {
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
 {
     const int BASEVALUE_DAMAGE = 10; // Increment value for damage level
     const int BASEVALUE_HEALTH = 100; // Increment value for health level
+    const int BASECOST_DAMAGE = 30; // Base cost for upgrading damage
+    const int BASECOST_HEALTH = 20; // Base cost for upgrading health
 
     public static GameManager instance;
 
@@ -25,7 +28,9 @@ public class GameManager : MonoBehaviour
     public int currentDamageLevel;
     public int currentHealthLevel;
     public float basicDamage = 10f; // Basic damage for the player
+    public int damCostToUpgrade = 30; // Cost to upgrade basic damage
     public float basicHealth = 100f; // Basic health for the player
+    public int healthCostToUpgrade = 20; // Cost to upgrade basic health
 
     [Header("Playing")]
     public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn; "None": not do attack; "Win": all enemies die; "Lose": player die
@@ -123,7 +128,9 @@ public class GameManager : MonoBehaviour
     public void SetUpBasicDamAndHP()
     {
         SetUpBasicDam();
+        GetCostToUpgradeBasicDam();
         SetUpBasicHP();
+        GetCostToUpgradeBasicHP();
     }
 
     public void SetUpBasicDam()
@@ -142,6 +149,32 @@ public class GameManager : MonoBehaviour
         basicDamage = BASEVALUE_DAMAGE + ((currentDamageLevel - 1) * incrementDamage);
     }
 
+    public int GetCostToUpgradeBasicDam()
+    {
+        float growthFactor = 1.15f;
+
+        if (currentDamageLevel <= 1)
+        {
+            damCostToUpgrade = BASECOST_DAMAGE;
+            return damCostToUpgrade;
+        }
+        else if (currentDamageLevel < 5)
+        {
+            growthFactor = 1.15f;
+        }
+        else if (currentDamageLevel < 10)
+        {
+            growthFactor = 1.3f; // Increase growth factor for levels 1-9
+        }
+        else if (currentDamageLevel < 20)
+        {
+            growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
+        }
+
+        damCostToUpgrade = (int)(BASECOST_DAMAGE * Mathf.Pow(growthFactor, currentDamageLevel - 0));
+        return damCostToUpgrade;
+    }
+
     public void SetUpBasicHP()
     {
         int incrementHealth = 0;
@@ -158,11 +191,38 @@ public class GameManager : MonoBehaviour
         basicHealth = BASEVALUE_HEALTH + ((currentHealthLevel - 1) * incrementHealth);
     }
 
+    public int GetCostToUpgradeBasicHP()
+    {
+        float growthFactor = 1.15f;
+
+        if (currentHealthLevel <= 1)
+        {
+            healthCostToUpgrade = BASECOST_HEALTH;
+            return healthCostToUpgrade;
+        }
+        else if (currentHealthLevel < 5)
+        {
+            growthFactor = 1.15f;
+        }
+        else if (currentHealthLevel < 10)
+        {
+            growthFactor = 1.3f; // Increase growth factor for levels 1-9
+        }
+        else if (currentHealthLevel < 20)
+        {
+            growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
+        }
+
+        healthCostToUpgrade = (int)(BASECOST_HEALTH * Mathf.Pow(growthFactor, currentHealthLevel - 0));
+        return healthCostToUpgrade;
+    }
+
     public void UpgradeDam()
     { 
         currentDamageLevel++;
         SaveLoadManager.instance.currentBasicDamageLevel = currentDamageLevel;
         SetUpBasicDam();
+        GetCostToUpgradeBasicDam();
 
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
     }
@@ -172,6 +232,7 @@ public class GameManager : MonoBehaviour
         currentHealthLevel++;
         SaveLoadManager.instance.currentBasicHealthLevel = currentHealthLevel;
         SetUpBasicHP();
+        GetCostToUpgradeBasicHP();
 
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
     }
@@ -203,6 +264,7 @@ public class GameManager : MonoBehaviour
         UIManager.instance.ultimateButton.onClick.RemoveAllListeners(); // Remove all listeners from the ultimate button
         PlayerUltimate.instance.ResetPlayer();
 
+        UIManager.instance.UpdateColorTextForUpgradeCost();
         UIManager.instance.ShowMainMenuPanel();
 
         SaveLoadManager.instance.loadingPanel.SetActive(false);

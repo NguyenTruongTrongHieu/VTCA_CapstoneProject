@@ -66,8 +66,8 @@ public class SaveLoadManager : MonoBehaviour
     public int currentLevelOfCurrentPlayer;
 
     public int currentCoin;
-    public int currentDiamond;
-    public int currentGoldKey;
+    public int currentCrystal;
+    public int currentStar;
     public List<OwnedCharacter> ownedCharacters = new List<OwnedCharacter>();
 
     [Header("Loading UI")]
@@ -99,6 +99,8 @@ public class SaveLoadManager : MonoBehaviour
         GameManager.instance.SetUpBasicDamAndHP();
 
         CurrencyManager.instance.coins = currentCoin;
+        CurrencyManager.instance.crystals = currentCrystal;
+        CurrencyManager.instance.stars = currentStar;
 
         StartCoroutine(LoadingSceneAsync());
     }
@@ -119,6 +121,8 @@ public class SaveLoadManager : MonoBehaviour
         currentLevelOfCurrentPlayer = 1;
 
         currentCoin = 0;
+        currentCrystal = 0;
+        currentStar = 0;
 
         ownedCharacters = new List<OwnedCharacter>
         {

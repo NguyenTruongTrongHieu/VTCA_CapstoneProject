@@ -18,10 +18,10 @@ public class CarouselIndicator : MonoBehaviour
         button.onClick.AddListener(_onClickAction);
     }
 
-    private void OnDestroy()
-    {
-        button.onClick.RemoveListener(_onClickAction);
-    }
+    //private void OnDestroy()
+    //{
+    //    button.onClick.RemoveListener(_onClickAction);
+    //}
 
     private void Reset()
     {

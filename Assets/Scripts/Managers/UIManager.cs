@@ -56,6 +56,10 @@ public class UIManager : MonoBehaviour
     [Header("Currency")]
     public GameObject coinPanel;
     public Text coinText;
+    public GameObject crystalPanel;
+    public Text crystalText;
+    public GameObject starPanel;
+    public Text starText;
 
     [Header("Main menu")]
     public Button playButton;
@@ -127,7 +131,10 @@ public class UIManager : MonoBehaviour
         // Set up the main menu
         SetUITextForUpgradeDamButton();
         SetUITextForUpgradeHealthButton();
+        UpdateColorTextForUpgradeCost();
         UpdateCoinText();
+        UpdateCrystalText();
+        UpdateStarText();
 
         ShowMainMenuPanel();
 
@@ -200,40 +207,54 @@ public class UIManager : MonoBehaviour
         coinText.text = NumberFomatter.FormatIntToString(CurrencyManager.instance.coins, 2);
     }
 
-    public IEnumerator CoinPanelZoomInAndZoomOut()
-    { 
+    public IEnumerator CurrencyPanelZoomInAndZoomOut(string currency)
+    {
+        Transform targetObject;
+        if(currency == "coin")
+        {
+            targetObject = coinPanel.transform;
+        }
+        else if (currency == "star")
+        {
+            targetObject = starPanel.transform;
+        }
+        else
+        {
+            targetObject = crystalPanel.transform;
+        }
+
         float elaspedTime = 0f;
-        Vector3 startScale = coinPanel.transform.localScale;
+        Vector3 startScale = targetObject.localScale;
         Vector3 targetScale = new Vector3(0.5f, 0.5f, 0.5f); // Zoom out scale
         while(elaspedTime < 0.05f)
         { 
             elaspedTime += Time.deltaTime;
-            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
             yield return null;
         }
-        coinPanel.transform.localScale = targetScale; // Set the final scale
+        targetObject.localScale = targetScale; // Set the final scale
 
         elaspedTime = 0f;
-        startScale = coinPanel.transform.localScale;
+        startScale = targetObject.localScale;
         targetScale = new Vector3(1.5f, 1.5f, 1.5f); // Zoom in scale
         while (elaspedTime < 0.1f)
         {
             elaspedTime += Time.deltaTime;
-            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
             yield return null;
         }
-        coinPanel.transform.localScale = targetScale; // Set the final scale
+        targetObject.localScale = targetScale; // Set the final scale
 
         elaspedTime = 0f;
-        startScale = coinPanel.transform.localScale;
+        startScale = targetObject.localScale;
         targetScale = new Vector3(1f, 1f, 1f); // Reset to original scale
         while (elaspedTime < 0.05f)
         {
             elaspedTime += Time.deltaTime;
-            coinPanel.transform.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
             yield return null;
         }
-        coinPanel.transform.localScale = targetScale; // Set the final scale
+        targetObject.localScale = targetScale; // Set the final scale
     }
 
     public IEnumerator SpawnCoinPrefabAndMoveToCoinPanel(Transform startTransform, int coinAmount)
@@ -285,6 +306,18 @@ public class UIManager : MonoBehaviour
         }
         rectTransformCoinText.position = targetPos; // Set the final position
         Destroy(coinTextObject);
+    }
+
+    //Crystal
+    public void UpdateCrystalText()
+    {
+        crystalText.text = NumberFomatter.FormatIntToString(CurrencyManager.instance.crystals, 2);
+    }
+
+    //Star
+    public void UpdateStarText()
+    {
+        starText.text = NumberFomatter.FormatIntToString(CurrencyManager.instance.stars, 2);
     }
 
     #endregion
@@ -426,6 +459,14 @@ public class UIManager : MonoBehaviour
     #region UPGRADE
     public void OnClickUpgradeDamButton()
     {
+        int cost = GameManager.instance.damCostToUpgrade;
+        //Subtract coin
+        if (CurrencyManager.instance.coins < cost)
+        {
+            return; // Not enough coins, exit the method
+        }
+        CurrencyManager.instance.SubtractCoins(cost);
+
         //Increase the damage level
         GameManager.instance.UpgradeDam();
         //Update Player ultimate
@@ -433,10 +474,19 @@ public class UIManager : MonoBehaviour
 
         //Set UIButton
         SetUITextForUpgradeDamButton();
+        UpdateColorTextForUpgradeCost();
     }
 
     public void OnClickUpgradeHealthButton()
     {
+        int cost = GameManager.instance.healthCostToUpgrade;
+        //Subtract coin
+        if (CurrencyManager.instance.coins < cost)
+        {
+            return; // Not enough coins, exit the method
+        }
+        CurrencyManager.instance.SubtractCoins(cost);
+
         //Increase the health level
         GameManager.instance.UpgradeHealth();
         //Update Player ultimate
@@ -444,20 +494,42 @@ public class UIManager : MonoBehaviour
 
         //Set UIButton
         SetUITextForUpgradeHealthButton();
+        UpdateColorTextForUpgradeCost();
     }
 
     public void SetUITextForUpgradeDamButton()
     {
-        damageLevelText.text = $"Damage LV.{GameManager.instance.currentDamageLevel}";
-        basicDamageText.text = $"{GameManager.instance.basicDamage}";
-        costToUpgradeDamText.text = $"0";//Đưa hàm tính giá tiền vào đây
+        damageLevelText.text = $"Damage LV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
+        basicDamageText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicDamage, 2)}";
+        costToUpgradeDamText.text = $"{NumberFomatter.FormatIntToString(GameManager.instance.damCostToUpgrade, 1)}";//Đưa hàm tính giá tiền vào đây
+    }
+
+    public void UpdateColorTextForUpgradeCost()
+    {
+        if (CurrencyManager.instance.coins < GameManager.instance.healthCostToUpgrade)
+        {
+            costToUpgradeHealthText.color = Color.red; // Change text color to red if not enough coins
+        }
+        else
+        {
+            costToUpgradeHealthText.color = Color.black; // Reset text color to white if enough coins
+        }
+
+        if (CurrencyManager.instance.coins < GameManager.instance.damCostToUpgrade)
+        {
+            costToUpgradeDamText.color = Color.red; // Change text color to red if not enough coins
+        }
+        else
+        {
+            costToUpgradeDamText.color = Color.black; // Reset text color to white if enough coins
+        }
     }
 
     public void SetUITextForUpgradeHealthButton()
     {
-        healthLevelText.text = $"Health LV.{GameManager.instance.currentHealthLevel}";
-        basicHealthText.text = $"{GameManager.instance.basicHealth}";
-        costToUpgradeHealthText.text = $"0";//Đưa hàm tính giá tiền vào đây
+        healthLevelText.text = $"Health LV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
+        basicHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicHealth, 2)}";
+        costToUpgradeHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.healthCostToUpgrade, 2)}";//Đưa hàm tính giá tiền vào đây
     }
     #endregion
 
@@ -588,15 +660,8 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentGameState = GameState.MainMenu;
         GameManager.instance.currentTurn = ""; // Reset the current turn
         GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
-        GameBoard.Instance.ResetBoard();
-        GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
 
-        LevelManager.instance.DeleteAllEnemy();
-        LevelManager.instance.SpawnEnemiesAtCurrentLevel();
-        ultimateButton.onClick.RemoveAllListeners();
-        PlayerUltimate.instance.ResetPlayer();
-
-        SaveLoadManager.instance.loadingPanel.SetActive(false);
+        GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
     }
     #endregion
 
