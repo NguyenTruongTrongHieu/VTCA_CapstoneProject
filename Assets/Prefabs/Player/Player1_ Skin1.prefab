@@ -192,26 +192,45 @@ MonoBehaviour:
   id: 0
   name: Player1_ Skin1
   playerClass: 1
+  isNormalSkin: 0
   bonusStatAtCurrentLevel:
     healthPercentBonus: 0
     damagePercentBonus: 0
     lifeStealPercentBonus: 0
+    coinCost: 0
+    starCost: 0
+    crystalCost: 0
   bonusStatsLevel:
   - healthPercentBonus: 0
     damagePercentBonus: 0
     lifeStealPercentBonus: 0
+    coinCost: 0
+    starCost: 50
+    crystalCost: 10
   - healthPercentBonus: 0.05
     damagePercentBonus: -0.05
     lifeStealPercentBonus: 0
+    coinCost: 50000
+    starCost: 5
+    crystalCost: 0
   - healthPercentBonus: 0.06
     damagePercentBonus: -0.04
     lifeStealPercentBonus: 0
+    coinCost: 100000
+    starCost: 10
+    crystalCost: 0
   - healthPercentBonus: 0.07
     damagePercentBonus: -0.03
     lifeStealPercentBonus: 0
+    coinCost: 300000
+    starCost: 30
+    crystalCost: 0
   - healthPercentBonus: 0.08
     damagePercentBonus: -0.02
     lifeStealPercentBonus: 0
+    coinCost: 500000
+    starCost: 45
+    crystalCost: 0
 --- !u!1001 &843445498080600997
 PrefabInstance:
   m_ObjectHideFlags: 0

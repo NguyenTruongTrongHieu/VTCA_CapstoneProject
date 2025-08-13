@@ -42,8 +42,8 @@ public class TabsManager : MonoBehaviour
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 1f));
 
             PlayerStat playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
-            UIManager.instance.SetUIInfoCurrentPlayer();
             UIManager.instance.SetCurrentChosenCharacterButton(playerStat.id, playerStat.name);
+            UIManager.instance.SetUIInfoCurrentPlayer();
 
             if (playerStat.isNormalSkin)
             {
@@ -61,6 +61,12 @@ public class TabsManager : MonoBehaviour
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 2f));
+
+                //TurnOff buy and upgrade panel if it's active
+                UIManager.instance.BuyCharacterPanel.SetActive(false);
+                UIManager.instance.UpgradeCharacterPanel.SetActive(false);
+                UIManager.instance.WarningNotEnoughCostPanel.SetActive(false);
+                UIManager.instance.buyAndUpgradeCharacterPanel.SetActive(false);
 
                 if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().name != SaveLoadManager.instance.currentPlayerName)
                 {
