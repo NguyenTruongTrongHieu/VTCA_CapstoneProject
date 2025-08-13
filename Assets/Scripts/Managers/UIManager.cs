@@ -557,6 +557,7 @@ public class UIManager : MonoBehaviour
 
 
         //Add character to owned characters
+        PlayerUltimate.instance.SetUltimateAnimPlayer();
         if (playerStat.isNormalSkin)
         {
             SaveLoadManager.instance.ownedCharacters.Add(new OwnedCharacter(playerStat.id, playerStat.name));
