@@ -128,6 +128,11 @@ public class PlayerUltimate : MonoBehaviour
 
     }
 
+    public void SetUltimateAnimPlayer()
+    {
+        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
+    }
+
     public void FindPlayerTransform()
     {
         playerTransform = GameObject.FindWithTag("Player").transform;
@@ -193,7 +198,7 @@ public class PlayerUltimate : MonoBehaviour
     public void Player1Ultimate()
     {
         isUltimateValid = true; // Set ultimate as valid
-        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
+        SetUltimateAnimPlayer();
 
         lifeStealPercent = basicLifeStealPlayer + 0.1f;
         playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.lifeStealPercentBonus = lifeStealPercent; 
@@ -226,7 +231,7 @@ public class PlayerUltimate : MonoBehaviour
     public void Player2Ultimate()
     {
         isUltimateValid = true; // Set ultimate as valid
-        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash); // Trigger the ultimate animation
+        SetUltimateAnimPlayer();
 
         ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 0.15f); 
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
@@ -255,7 +260,7 @@ public class PlayerUltimate : MonoBehaviour
     public void Player3Ultimate()
     { 
         isUltimateValid = true;
-        playerTransform.GetComponent<Player>().animator.SetTrigger(ultimateHash);
+        SetUltimateAnimPlayer();
 
         StartCoroutine(SpawnDebuffTakeDam());
 
