@@ -117,17 +117,16 @@ public class SaveLoadManager : MonoBehaviour
         currentBasicDamageLevel = 1;
         currentBasicHealthLevel = 1;
 
-        currentPlayerName = "Player1_ Skin1";
+        currentPlayerName = "Player2";
         currentLevelOfCurrentPlayer = 1;
 
-        currentCoin = 0;
-        currentCrystal = 0;
-        currentStar = 0;
+        currentCoin = 109000;
+        currentCrystal = 1000;
+        currentStar = 1000;
 
         ownedCharacters = new List<OwnedCharacter>
         {
-            new OwnedCharacter(0, 2, new List<string>{ "Player1", "Player1_ Skin1"}),
-            new OwnedCharacter(2, 1, "Player3"),
+            new OwnedCharacter(1, 2, new List<string>{ "Player2"}),
         };
     }
 

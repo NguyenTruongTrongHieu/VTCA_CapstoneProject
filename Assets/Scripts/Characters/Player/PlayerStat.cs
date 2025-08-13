@@ -53,4 +53,7 @@ public class BonusStatForPlayer
     public float healthPercentBonus; // Bonus health percentage
     public float damagePercentBonus; // Bonus damage percentage
     public float lifeStealPercentBonus; // Bonus lifesteal percentage
+    public int coinCost; // Cost in coins to buy this level
+    public int starCost; // Cost in stars to buy this level
+    public int crystalCost; // Cost in crystals to buy this level
 }

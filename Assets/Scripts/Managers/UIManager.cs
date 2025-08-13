@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,12 +20,14 @@ public class CharacterButton
     public Button chosenButton;
     public Image chosenImage;
     public Image lockImage;
+    public bool isOwned = false;
 
     public CharacterButton(int characterID, string characterName, GameObject changeCharacterObject)
     {
         this.characterID = characterID;
         this.characterName = characterName;
         this.changeCharacterObject = changeCharacterObject;
+        isOwned = false;
     }
 
     public CharacterButton(int id, string name, Button button)
@@ -32,6 +35,7 @@ public class CharacterButton
         characterID = id;
         characterName = name;
         chosenButton = button;
+        isOwned = false;
     }
 
     public CharacterButton(int id, string name, GameObject changeObject, Text ownedText, Text buyText, Button button, Image image)
@@ -43,6 +47,7 @@ public class CharacterButton
         this.buyText = buyText;
         chosenButton = button;
         chosenImage = image;
+        isOwned = false;
     }
 }
 
@@ -85,6 +90,31 @@ public class UIManager : MonoBehaviour
     public Text healthTextInUI;
     public Text ultiDescriptionText;
     public Text ultiStatText;
+    public Button buyCharacterButton;
+    public Button upgradeCharacterButton;
+
+    [Space]
+    public GameObject buyAndUpgradeCharacterPanel;
+
+    public GameObject BuyCharacterPanel;
+    public Text titleBuyCharacterText;
+    public Button useCoinToBuyCharacterButton;
+    public Button useCrystalToBuyCharacterButton;
+    public Button useStarToBuyCharacterButton;
+    public Text useCoinToBuyCharacterText;
+    public Text useCrystalToBuyCharacterText;
+    public Text useStarToBuyCharacterText;
+    public GameObject quitBuyCharacterPanelButton;
+
+    [Space]
+    public GameObject UpgradeCharacterPanel;
+    public Text titleUpgradeCharacterText;
+    public Text coinToUpgradeText;
+    public Text starToUpgradeText;
+    public GameObject quitUpgradeCharacterPanelButton;
+
+    public GameObject WarningNotEnoughCostPanel;
+    public Text warningNotEnoughCostText;
 
     [Space]
     public CharacterButton[] characterButtons; // Array of character buttons
@@ -154,6 +184,7 @@ public class UIManager : MonoBehaviour
                     if (name == button.characterName)//if found the same name in ownedCharacters list
                     {
                         //Also used for buying
+                        button.isOwned = true; // Set the button as owned
                         button.ownedText.gameObject.SetActive(true);
                         button.buyText.gameObject.SetActive(false);
                         button.lockImage.gameObject.SetActive(false);//Turn off the lock image
@@ -324,19 +355,37 @@ public class UIManager : MonoBehaviour
 
     #region  CHARACTER AND SKIN
 
+    public void SetBuyAndUpgradeCharacterButtonBasedOnCurrentChosenButton()
+    {
+        //Check if player already owned the character
+        if (currentChosenButton.isOwned)
+        {
+            buyCharacterButton.gameObject.SetActive(false);
+            upgradeCharacterButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            buyCharacterButton.gameObject.SetActive(true);
+            upgradeCharacterButton.gameObject.SetActive(false);
+        }
+    }
+
     public void SetUIInfoCurrentPlayer()
     {
+        var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+        SetBuyAndUpgradeCharacterButtonBasedOnCurrentChosenButton();
+
         //Change color for dam text
         string percentDamBonus;
-        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus > 0)
+        if (playerStat.bonusStatAtCurrentLevel.damagePercentBonus > 0)
         {
-            percentDamBonus = $"+{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            percentDamBonus = $"+{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
             damTextInUI.color = Color.green;
         }
         else
         {
-            percentDamBonus = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
-            if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.damagePercentBonus < 0)
+            percentDamBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            if (playerStat.bonusStatAtCurrentLevel.damagePercentBonus < 0)
             { 
                 damTextInUI.color = Color.red;
             }
@@ -344,15 +393,15 @@ public class UIManager : MonoBehaviour
 
         //Change color for health text
         string percentHealthBonus;
-        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus > 0)
+        if (playerStat.bonusStatAtCurrentLevel.healthPercentBonus > 0)
         {
-            percentHealthBonus = $"+{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            percentHealthBonus = $"+{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
             healthTextInUI.color = Color.green;
         }
         else
         {
-            percentHealthBonus = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
-            if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.healthPercentBonus < 0)
+            percentHealthBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            if (playerStat.bonusStatAtCurrentLevel.healthPercentBonus < 0)
             { 
                 healthTextInUI.color = Color.red;
             }
@@ -360,26 +409,26 @@ public class UIManager : MonoBehaviour
 
 
         levelText.text = NumberFomatter.FormatIntToString(SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0);
-        damTextInUI.text = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().damage, 2)}" +
+        damTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.damage, 2)}" +
             $" ({percentDamBonus})";
-        healthTextInUI.text = $"{NumberFomatter.FormatFloatToString(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().maxHealth, 2)}" +
+        healthTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.maxHealth, 2)}" +
             $" ({percentHealthBonus})";
 
-        if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 0)
+        if (playerStat.id == 0)
         {
             ultiDescriptionText.text = "Ulti: Increase your lifesteal for 1 turn. Lifesteal can heal based on damage dealt. " +
                 "Throughout this turn, each attack restores a portion of lost health.";
             ultiStatText.text = $"Lifesteal: +0.1";
         }
-        else if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 1)
+        else if (playerStat.id == 1)
         {
             ultiDescriptionText.text = "Ulti: Increase your damage for 1 turn. This bonus damage based on your basic damage.";
             ultiStatText.text = $"Increased damage: +(0.15 x basic damage)";
         }
-        else if(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id == 2)
+        else if(playerStat.id == 2)
         {
-            ultiDescriptionText.text = "Ulti: Randomly spawns a special item that increases the damage enemies take when used, " +
-                "last for 1 turn. Using this item does not end your current turn.";
+            ultiDescriptionText.text = "Ulti: A special item randomly appears, increasing damage to enemies for 1 turn. " +
+                "Using it doesn’t end your turn.";
             ultiStatText.text = $"Damage taken: +10% for each connected fruit";
         }
     }
@@ -435,6 +484,7 @@ public class UIManager : MonoBehaviour
         {
             SetUIInfoCurrentPlayer();
         }
+        SetBuyAndUpgradeCharacterButtonBasedOnCurrentChosenButton();
     }
 
     public void SetCurrentChosenCharacterButton(int id, string characterName)
@@ -452,6 +502,86 @@ public class UIManager : MonoBehaviour
                 button.chosenButton.interactable = false;
             }
         }
+    }
+
+    public void OnClickBuyCharacter(string currency)
+    {
+        var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+
+        //Check if it's a skin
+        if (!playerStat.isNormalSkin)
+        {
+            //Check if the player already owned the character
+            var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == playerStat.id);
+            if (checkCharacter == null)
+            {
+                //Show panel to waring player, they need to buy character first
+                titleBuyCharacterText.text = "You need to buy the character first before buying this skin!";
+                titleBuyCharacterText.color = Color.red;
+                return;
+            }
+        }
+
+        if (currency == "coin")
+        {
+            //Check if the player not have enough coins
+            if (CurrencyManager.instance.coins < playerStat.bonusStatsLevel[0].coinCost)
+            {
+                ShowWarningNotEnoughCostPanel();
+                return;
+            }
+
+            //Subtract coin
+            CurrencyManager.instance.SubtractCoins(playerStat.bonusStatsLevel[0].coinCost);
+        }
+        else if (currency == "star")
+        {
+            if (CurrencyManager.instance.stars < playerStat.bonusStatsLevel[0].starCost)
+            {
+                ShowWarningNotEnoughCostPanel();
+                return;
+            }
+
+            CurrencyManager.instance.SubtractStar(playerStat.bonusStatsLevel[0].starCost);
+        }
+        else
+        {
+            if (CurrencyManager.instance.crystals < playerStat.bonusStatsLevel[0].crystalCost)
+            {
+                ShowWarningNotEnoughCostPanel();
+                return;
+            }
+
+            CurrencyManager.instance.SubtractCrystal(playerStat.bonusStatsLevel[0].crystalCost);
+        }
+
+
+        //Add character to owned characters
+        if (playerStat.isNormalSkin)
+        {
+            SaveLoadManager.instance.ownedCharacters.Add(new OwnedCharacter(playerStat.id, playerStat.name));
+        }
+        else
+        {
+            var ownedCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == playerStat.id);
+            if (ownedCharacter != null)
+            {
+                ownedCharacter.ownedSkins.Add(playerStat.name);
+            }
+            else
+                Debug.LogError($"Character with ID {playerStat.id} not found in owned characters.");
+        }
+
+        //Setup UI
+        currentChosenButton.isOwned = true; // Set the button as owned
+        currentChosenButton.ownedText.gameObject.SetActive(true);
+        currentChosenButton.buyText.gameObject.SetActive(false);
+        currentChosenButton.lockImage.gameObject.SetActive(false);//Turn off the lock image
+
+        buyCharacterButton.gameObject.SetActive(false);
+        upgradeCharacterButton.gameObject.SetActive(true);
+
+        HideBuyCharacterPanel();
     }
 
     #endregion
@@ -673,10 +803,10 @@ public class UIManager : MonoBehaviour
         ultimateButton.gameObject.SetActive(false);
         manaSlider.gameObject.SetActive(true);
         inGamePanel.SetActive(true);
-        foreach (Image tabsButtons in tabsManager.tabButtons)
-        {
-            tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
-        }
+        //foreach (Image tabsButtons in tabsManager.tabButtons)
+        //{
+        //    tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
+        //}
     }
 
     public void ShowGameOverPanel(bool isPlayerWin)
@@ -692,11 +822,129 @@ public class UIManager : MonoBehaviour
         inGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
 
-        foreach (Image tabsButtons in tabsManager.tabButtons)
-        {
-            tabsButtons.gameObject.SetActive(true); // Hide all tab buttons
-        }
+        //foreach (Image tabsButtons in tabsManager.tabButtons)
+        //{
+        //    tabsButtons.gameObject.SetActive(true); // Hide all tab buttons
+        //}
     }
+
+    public IEnumerator ShowPanelWithZoomInAnim(GameObject panel, float duration)
+    { 
+        float elapsedTime = 0f;
+        Vector3 startScale = panel.transform.localScale;
+        Vector3 targetScale = Vector3.one; // Zoom in scale
+        panel.SetActive(true); // Ensure the panel is active before starting the animation
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            panel.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+            yield return null;
+        }
+        panel.transform.localScale = targetScale; // Set the final scale
+    }
+
+    public IEnumerator HidePanelWithZoomOutAnim(GameObject panel, float duration)
+    {
+        float elapsedTime = 0f;
+        Vector3 startScale = panel.transform.localScale;
+        Vector3 targetScale = Vector3.zero; // Zoom out scale
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            panel.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+            yield return null;
+        }
+        panel.transform.localScale = targetScale; // Set the final scale
+        panel.SetActive(false); // Hide the panel after the animation
+    }
+
+    public void HideBuyAndUpgradeCharacterPanel()
+    {
+        buyAndUpgradeCharacterPanel.SetActive(false); // Hide the buy and upgrade character panel
+    }
+
+    public void ShowBuyCharacterPanel()
+    { 
+        var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+
+        if (playerStat.isNormalSkin)
+        {
+            titleBuyCharacterText.text = "You want to buy this character?";
+            titleBuyCharacterText.color = Color.white;
+        }
+        else
+        {
+            titleBuyCharacterText.text = "You want to buy this skin?";
+            titleBuyCharacterText.color = Color.white;
+        }
+
+        // Set the text for buying character
+        if (playerStat.bonusStatsLevel[0].coinCost <= 0)
+        { 
+            useCoinToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
+        }
+        else
+        {
+            useCoinToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
+            useCoinToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.coinCost, 2)}";
+        }
+
+        if (playerStat.bonusStatsLevel[0].crystalCost <= 0)
+        { 
+            useCrystalToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
+        }
+        else
+        {
+            useCrystalToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
+            useCrystalToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.crystalCost, 2)}";
+        }
+
+        if (playerStat.bonusStatsLevel[0].starCost <= 0)
+        { 
+            useStarToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
+        }
+        else
+        {
+            useStarToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
+            useStarToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.starCost, 2)}";
+        }
+
+        buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
+        StartCoroutine(ShowPanelWithZoomInAnim(BuyCharacterPanel, 0.2f));
+    }
+
+    public void ShowUpgradeCharacterPanel()
+    { 
+        buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
+        StartCoroutine(ShowPanelWithZoomInAnim(UpgradeCharacterPanel, 0.2f));
+    }
+
+    public void ShowWarningNotEnoughCostPanel()
+    { 
+        quitBuyCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the buy character panel
+        quitUpgradeCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the upgrade character panel
+        StartCoroutine(ShowPanelWithZoomInAnim(WarningNotEnoughCostPanel, 0.2f));
+    }
+
+    public void HideBuyCharacterPanel()
+    { 
+        StartCoroutine(HidePanelWithZoomOutAnim(BuyCharacterPanel, 0.2f));
+        Invoke(nameof(HideBuyAndUpgradeCharacterPanel), 0.2f); // Hide the buy and upgrade character panel after the animation
+    }
+
+    public void HideUpgradeCharacterPanel()
+    { 
+        StartCoroutine(HidePanelWithZoomOutAnim(UpgradeCharacterPanel, 0.2f));
+        Invoke(nameof(HideBuyAndUpgradeCharacterPanel), 0.2f); // Hide the buy and upgrade character panel after the animation
+    }
+
+    public void HideWarningNotEnoughCostPanel()
+    {
+        quitBuyCharacterPanelButton.gameObject.SetActive(true); // Show the quit button in the buy character panel
+        quitUpgradeCharacterPanelButton.gameObject.SetActive(true); // Show the quit button in the upgrade character panel
+        StartCoroutine(HidePanelWithZoomOutAnim(WarningNotEnoughCostPanel, 0.2f));
+    }
+
     #endregion
 
     #region GAME OVER
