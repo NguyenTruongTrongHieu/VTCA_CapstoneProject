@@ -230,7 +230,7 @@ public class PlayerAttack : MonoBehaviour
                 float dam = NumberFomatter.RoundFloatToTwoDecimalPlaces(enemyStat.damage);
 
                 playerStat.TakeDamage(dam);
-                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
                 DisplayDamageText(dam); // Display damage text
                 BeingAttactk(); 
 

@@ -186,7 +186,7 @@ public class EnemyAttack : MonoBehaviour
                 //UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
                 playerStat.Healing(heal);
                 DisplayDamageText(dam);
-                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
                 BeingAttactk();
 
                 if (enemyStat.CheckIfObjectDead())
@@ -247,7 +247,7 @@ public class EnemyAttack : MonoBehaviour
                 DisplayDamageText(dam);
                 BeingAttackSpecial();
 
-                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(5f, 5f, 0.5f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
                 if (enemyStat.enemyType == EnemyType.normal)
                 {
                     CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.35f, 24f));
