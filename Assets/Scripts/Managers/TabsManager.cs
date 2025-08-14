@@ -43,7 +43,7 @@ public class TabsManager : MonoBehaviour
 
             PlayerStat playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
             UIManager.instance.SetCurrentChosenCharacterButton(playerStat.id, playerStat.name);
-            UIManager.instance.SetUIInfoCurrentPlayer();
+            UIManager.instance.SetUIInfoCurrentPlayer(SaveLoadManager.instance.currentLevelOfCurrentPlayer);
 
             if (playerStat.isNormalSkin)
             {
