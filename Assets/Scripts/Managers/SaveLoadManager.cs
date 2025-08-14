@@ -118,10 +118,10 @@ public class SaveLoadManager : MonoBehaviour
         currentBasicHealthLevel = 1;
 
         currentPlayerName = "Player2";
-        currentLevelOfCurrentPlayer = 1;
+        currentLevelOfCurrentPlayer = 2;
 
         currentCoin = 109000;
-        currentCrystal = 1000;
+        currentCrystal = 0;
         currentStar = 1000;
 
         ownedCharacters = new List<OwnedCharacter>

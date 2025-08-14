@@ -109,10 +109,15 @@ public class UIManager : MonoBehaviour
     [Space]
     public GameObject UpgradeCharacterPanel;
     public Text titleUpgradeCharacterText;
+    public Text upgradeDamStatText;
+    public Text upgradeDamStatAtNewLevelText;
+    public Text upgradeHealthStatText;
+    public Text upgradeHealthStatAtNewLevelText;
     public Text coinToUpgradeText;
     public Text starToUpgradeText;
     public GameObject quitUpgradeCharacterPanelButton;
 
+    [Space]
     public GameObject WarningNotEnoughCostPanel;
     public Text warningNotEnoughCostText;
 
@@ -361,7 +366,14 @@ public class UIManager : MonoBehaviour
         if (currentChosenButton.isOwned)
         {
             buyCharacterButton.gameObject.SetActive(false);
-            upgradeCharacterButton.gameObject.SetActive(true);
+            if(SaveLoadManager.instance.currentLevelOfCurrentPlayer >= PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatsLevel.Length)
+            {
+                upgradeCharacterButton.gameObject.SetActive(false); // Hide the upgrade button if the player has reached the max level
+            }
+            else
+            {
+                upgradeCharacterButton.gameObject.SetActive(true); // Show the upgrade button if the player can still upgrade
+            }
         }
         else
         {
@@ -408,7 +420,7 @@ public class UIManager : MonoBehaviour
         }
 
 
-        levelText.text = NumberFomatter.FormatIntToString(SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0);
+        levelText.text = $"{NumberFomatter.FormatIntToString(SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0)}/{playerStat.bonusStatsLevel.Length}";
         damTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.damage, 2)}" +
             $" ({percentDamBonus})";
         healthTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.maxHealth, 2)}" +
@@ -561,6 +573,9 @@ public class UIManager : MonoBehaviour
         if (playerStat.isNormalSkin)
         {
             SaveLoadManager.instance.ownedCharacters.Add(new OwnedCharacter(playerStat.id, playerStat.name));
+            //Set character to current character
+            SaveLoadManager.instance.currentPlayerName = playerStat.name;
+            SaveLoadManager.instance.currentLevelOfCurrentPlayer = 1;
         }
         else
         {
@@ -568,6 +583,8 @@ public class UIManager : MonoBehaviour
             if (ownedCharacter != null)
             {
                 ownedCharacter.ownedSkins.Add(playerStat.name);
+                //Set character to current character
+                SaveLoadManager.instance.currentPlayerName = playerStat.name;
             }
             else
                 Debug.LogError($"Character with ID {playerStat.id} not found in owned characters.");
@@ -887,7 +904,15 @@ public class UIManager : MonoBehaviour
         else
         {
             useCoinToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
-            useCoinToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.coinCost, 2)}";
+            useCoinToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatsLevel[0].coinCost, 2)}";
+            if (CurrencyManager.instance.coins < playerStat.bonusStatsLevel[0].coinCost)
+            { 
+                useCoinToBuyCharacterText.color = Color.red; // Change text color to red if not enough coins
+            }
+            else
+            {
+                useCoinToBuyCharacterText.color = Color.white; // Reset text color to white if enough coins
+            }
         }
 
         if (playerStat.bonusStatsLevel[0].crystalCost <= 0)
@@ -897,7 +922,15 @@ public class UIManager : MonoBehaviour
         else
         {
             useCrystalToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
-            useCrystalToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.crystalCost, 2)}";
+            useCrystalToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatsLevel[0].crystalCost, 2)}";
+            if (CurrencyManager.instance.crystals < playerStat.bonusStatsLevel[0].crystalCost)
+            {
+                useCrystalToBuyCharacterText.color = Color.red; // Change text color to red if not enough coins
+            }
+            else
+            {
+                useCrystalToBuyCharacterText.color = Color.white; // Reset text color to white if enough coins
+            }
         }
 
         if (playerStat.bonusStatsLevel[0].starCost <= 0)
@@ -907,7 +940,15 @@ public class UIManager : MonoBehaviour
         else
         {
             useStarToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
-            useStarToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatAtCurrentLevel.starCost, 2)}";
+            useStarToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatsLevel[0].starCost, 2)}";
+            if (CurrencyManager.instance.stars < playerStat.bonusStatsLevel[0].starCost)
+            {
+                useStarToBuyCharacterText.color = Color.red; // Change text color to red if not enough coins
+            }
+            else
+            {
+                useStarToBuyCharacterText.color = Color.white; // Reset text color to white if enough coins
+            }
         }
 
         buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
@@ -916,6 +957,67 @@ public class UIManager : MonoBehaviour
 
     public void ShowUpgradeCharacterPanel()
     { 
+        var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+        var nextBonusStat = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer];// Get the next bonus stat based on the current level
+
+        //Set title for upgrade character panel
+        titleUpgradeCharacterText.text = $"Upgrade {playerStat.name}";
+
+        //Change color for dam text
+        string currentPercentDamBonus;
+        string newPercentDamBonus;
+        if (playerStat.bonusStatAtCurrentLevel.damagePercentBonus > 0)
+        {
+            currentPercentDamBonus = $"+{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            newPercentDamBonus = $"+{NumberFomatter.FormatFloatToString(nextBonusStat.damagePercentBonus, 2)}";
+        }
+        else
+        {
+            currentPercentDamBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
+            newPercentDamBonus = $"{NumberFomatter.FormatFloatToString(nextBonusStat.damagePercentBonus, 2)}";
+        }
+
+        //Change color for health text
+        string currentPercentHealthBonus;
+        string newPercentHealthBonus;
+        if (playerStat.bonusStatAtCurrentLevel.healthPercentBonus > 0)
+        {
+            currentPercentHealthBonus = $"+{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            newPercentHealthBonus = $"+{NumberFomatter.FormatFloatToString(nextBonusStat.healthPercentBonus, 2)}";
+        }
+        else
+        {
+            currentPercentHealthBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
+            newPercentHealthBonus = $"{NumberFomatter.FormatFloatToString(nextBonusStat.healthPercentBonus, 2)}";
+        }
+
+        //Set upgrade info
+        upgradeDamStatText.text = $"Damage: {currentPercentDamBonus}";
+        upgradeDamStatAtNewLevelText.text = $"{newPercentDamBonus}";
+        upgradeHealthStatText.text = $"Health: {currentPercentHealthBonus}";
+        upgradeHealthStatAtNewLevelText.text = $"{newPercentHealthBonus}";
+
+        //Set cost and button cost
+        starToUpgradeText.text = $"{NumberFomatter.FormatIntToString(nextBonusStat.starCost, 2)}";
+        if (CurrencyManager.instance.stars < nextBonusStat.starCost)
+        {
+            starToUpgradeText.color = Color.red; // Change text color to red if not enough coins
+        }
+        else
+        {
+            starToUpgradeText.color = Color.white; // Reset text color to white if enough coins
+        }
+
+        coinToUpgradeText.text = $"{NumberFomatter.FormatIntToString(nextBonusStat.coinCost, 2)}";
+        if (CurrencyManager.instance.coins < nextBonusStat.coinCost)
+        {
+            coinToUpgradeText.color = Color.red; // Change text color to red if not enough coins
+        }
+        else
+        {
+            coinToUpgradeText.color = Color.white; // Reset text color to white if enough coins
+        }
+
         buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
         StartCoroutine(ShowPanelWithZoomInAnim(UpgradeCharacterPanel, 0.2f));
     }
