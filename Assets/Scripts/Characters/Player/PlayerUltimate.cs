@@ -162,6 +162,7 @@ public class PlayerUltimate : MonoBehaviour
     public void ResetUltiAndMana(bool isHavingSliderAnim)
     {
         mana = 0;
+        UIManager.instance.ultimateButtonAndEffectObject.SetActive(false);
         UIManager.instance.ultimateButton.gameObject.SetActive(false);
         if (isHavingSliderAnim)
         {

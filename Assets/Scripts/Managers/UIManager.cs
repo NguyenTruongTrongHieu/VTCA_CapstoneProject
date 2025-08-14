@@ -3,8 +3,6 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
-using UnityEditor.ShaderGraph.Internal;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -129,6 +127,7 @@ public class UIManager : MonoBehaviour
     public GameObject inGamePanel;
     public GameObject gameBoard;
     public GameObject disableMatching;
+    public GameObject ultimateButtonAndEffectObject;
     public Button ultimateButton;
     public Slider manaSlider;
     public float startPosYManaSlider;
@@ -838,6 +837,7 @@ public class UIManager : MonoBehaviour
     public IEnumerator ShowUltimateButtonAnim(float duration)
     { 
         ultimateButton.transform.localScale = Vector3.zero; // Start with the button hidden
+        ultimateButtonAndEffectObject.SetActive(true); // Ensure the ultimate button and effect object is active
         ultimateButton.gameObject.SetActive(true); // Ensure the button is active
         float elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -875,6 +875,7 @@ public class UIManager : MonoBehaviour
     public void ShowInGamePanel()
     {
         mainMenuPanel.SetActive(false);
+        ultimateButtonAndEffectObject.SetActive(false);
         ultimateButton.gameObject.SetActive(false);
         manaSlider.gameObject.SetActive(true);
         inGamePanel.SetActive(true);
