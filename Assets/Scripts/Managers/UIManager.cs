@@ -382,7 +382,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetUIInfoCurrentPlayer()
+    public void SetUIInfoCurrentPlayer(int currentLevel)
     {
         var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
         SetBuyAndUpgradeCharacterButtonBasedOnCurrentChosenButton();
@@ -398,8 +398,12 @@ public class UIManager : MonoBehaviour
         {
             percentDamBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.damagePercentBonus, 2)}";
             if (playerStat.bonusStatAtCurrentLevel.damagePercentBonus < 0)
-            { 
+            {
                 damTextInUI.color = Color.red;
+            }
+            else
+            {
+                damTextInUI.color = Color.white;
             }
         }
 
@@ -417,10 +421,14 @@ public class UIManager : MonoBehaviour
             { 
                 healthTextInUI.color = Color.red;
             }
+            else
+            {
+                healthTextInUI.color = Color.white;
+            }
         }
 
 
-        levelText.text = $"{NumberFomatter.FormatIntToString(SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0)}/{playerStat.bonusStatsLevel.Length}";
+        levelText.text = $"{NumberFomatter.FormatIntToString(currentLevel, 0)}/{playerStat.bonusStatsLevel.Length}";
         damTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.damage, 2)}" +
             $" ({percentDamBonus})";
         healthTextInUI.text = $"{NumberFomatter.FormatFloatToString(playerStat.maxHealth, 2)}" +
@@ -494,7 +502,7 @@ public class UIManager : MonoBehaviour
         //Setup info player
         if (previousCharacterID != id)
         {
-            SetUIInfoCurrentPlayer();
+            SetUIInfoCurrentPlayer(characterLevel);
         }
         SetBuyAndUpgradeCharacterButtonBasedOnCurrentChosenButton();
     }
@@ -539,7 +547,7 @@ public class UIManager : MonoBehaviour
             //Check if the player not have enough coins
             if (CurrencyManager.instance.coins < playerStat.bonusStatsLevel[0].coinCost)
             {
-                ShowWarningNotEnoughCostPanel();
+                ShowWarningNotEnoughCostPanel("coin");
                 return;
             }
 
@@ -550,7 +558,7 @@ public class UIManager : MonoBehaviour
         {
             if (CurrencyManager.instance.stars < playerStat.bonusStatsLevel[0].starCost)
             {
-                ShowWarningNotEnoughCostPanel();
+                ShowWarningNotEnoughCostPanel("star");
                 return;
             }
 
@@ -560,7 +568,7 @@ public class UIManager : MonoBehaviour
         {
             if (CurrencyManager.instance.crystals < playerStat.bonusStatsLevel[0].crystalCost)
             {
-                ShowWarningNotEnoughCostPanel();
+                ShowWarningNotEnoughCostPanel("crystal");
                 return;
             }
 
@@ -600,6 +608,55 @@ public class UIManager : MonoBehaviour
         upgradeCharacterButton.gameObject.SetActive(true);
 
         HideBuyCharacterPanel();
+    }
+
+    public void OnClickUpgradeCharacter()
+    { 
+        var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
+        var nextBonusStat = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer];// Get the next bonus stat based on the current level
+
+        //Check if the player not have enough stars
+        if (CurrencyManager.instance.stars < nextBonusStat.starCost)
+        {
+            ShowWarningNotEnoughCostPanel("star");
+            return;
+        }
+        //Check if the player not have enough coins
+        if (CurrencyManager.instance.coins < nextBonusStat.coinCost)
+        {
+            ShowWarningNotEnoughCostPanel("coin");
+            return;
+        }
+
+        //Subtract star and coin
+        CurrencyManager.instance.SubtractStar(nextBonusStat.starCost);
+        CurrencyManager.instance.SubtractCoins(nextBonusStat.coinCost);
+
+        //Increase the level of the character
+        if (SaveLoadManager.instance.currentLevelOfCurrentPlayer == playerStat.bonusStatsLevel.Length)
+        {
+            Debug.LogError("You have reached the max level of this character, cannot upgrade anymore!");
+            return;
+        }
+        var ownedCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == playerStat.id);
+        if (ownedCharacter != null)
+        {
+            ownedCharacter.currentLevel++;
+            SaveLoadManager.instance.currentLevelOfCurrentPlayer = ownedCharacter.currentLevel;
+        }
+        else
+        {
+            Debug.LogError($"Character with ID {playerStat.id} not found in owned characters.");
+            return;
+        }
+
+        playerStat.bonusStatAtCurrentLevel = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer - 1]; // Set the bonus stats for the player at the current level
+        playerStat.SetUpStatAndSlider();
+        PlayerUltimate.instance.SetUpBaseStatForPlayer();
+
+        //Setup UI
+        SetUIInfoCurrentPlayer(SaveLoadManager.instance.currentLevelOfCurrentPlayer);
+        HideUpgradeCharacterPanel();
     }
 
     #endregion
@@ -1022,8 +1079,20 @@ public class UIManager : MonoBehaviour
         StartCoroutine(ShowPanelWithZoomInAnim(UpgradeCharacterPanel, 0.2f));
     }
 
-    public void ShowWarningNotEnoughCostPanel()
-    { 
+    public void ShowWarningNotEnoughCostPanel(string currency)
+    {
+        if (currency == "coin")
+        {
+            warningNotEnoughCostText.text = "You don't have enough coins to buy this character!";
+        }
+        else if (currency == "star")
+        {
+            warningNotEnoughCostText.text = "You don't have enough stars to buy this character!";
+        }
+        else
+        { 
+            warningNotEnoughCostText.text = "You don't have enough crystals to buy this character!";
+        }
         quitBuyCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the buy character panel
         quitUpgradeCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the upgrade character panel
         StartCoroutine(ShowPanelWithZoomInAnim(WarningNotEnoughCostPanel, 0.2f));
