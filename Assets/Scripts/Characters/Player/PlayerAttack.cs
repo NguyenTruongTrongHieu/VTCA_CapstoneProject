@@ -17,9 +17,10 @@ public class PlayerAttack : MonoBehaviour
     public ParticleSystem ultiVFX2;//Use for vfx dot ulti
     public ParticleSystem hitImpact;
     public ParticleSystem bloodSplash;
-    public ParticleSystem[] beingHitText;
-    public ParticleSystem damageDisplay;
-    private CFXR_ParticleText particleDamagePrefab;
+    public Transform displayDealtDamTransform; // Transform to display dealt damage text
+    //public ParticleSystem[] beingHitText;
+    //public ParticleSystem damageDisplay;
+    //private CFXR_ParticleText particleDamagePrefab;
 
     private List<int> attackHashes = new List<int>();//Trigger
     private int specialAttackHash;//Trigger
@@ -41,7 +42,7 @@ public class PlayerAttack : MonoBehaviour
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
         }
 
-        particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
+        //particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
     }
 
     // Update is called once per frame
@@ -231,7 +232,8 @@ public class PlayerAttack : MonoBehaviour
 
                 playerStat.TakeDamage(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
-                DisplayDamageText(dam); // Display damage text
+                UIManager.instance.DisplayDamageText(bloodSplash.transform, displayDealtDamTransform, dam); // Display damage text
+                //DisplayDamageText(dam); // Display damage text
                 BeingAttactk(); 
 
                 if (playerStat.CheckIfObjectDead())
@@ -262,16 +264,14 @@ public class PlayerAttack : MonoBehaviour
 
     public void BeingAttactk()
     {
-        int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpact.Play();
         bloodSplash.Play();
-        beingHitText[randomIndex].Play();
     }
 
-    public void DisplayDamageText(float damage)
-    {
-        string damageText = "-" + NumberFomatter.FormatFloatToString(damage, 2);
-        particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
-        damageDisplay.Play(); // Play the damage display effect
-    }
+    //public void DisplayDamageText(float damage)
+    //{
+    //    string damageText = "-" + NumberFomatter.FormatFloatToString(damage, 2);
+    //    //particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
+    //    //damageDisplay.Play(); // Play the damage display effect
+    //}
 }
