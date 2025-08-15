@@ -11,6 +11,10 @@ TagManager:
   - EnemyHit
   - Enemy
   - ListPlayer
+  - FxTemporaire
+  - Mission_des_1
+  - Mission_des_2
+  - Mission_des_3
   layers:
   - Default
   - TransparentFX

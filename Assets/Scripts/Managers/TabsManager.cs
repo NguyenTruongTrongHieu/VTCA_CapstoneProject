@@ -33,6 +33,12 @@ public class TabsManager : MonoBehaviour
             tabButtons[TabID].sprite = activeTabBG; // Set the selected tab button to active background
             tabButtons[TabID].rectTransform.sizeDelta = activeButtonSize; // Set the selected tab button to active size
 
+        if (TabID == 1)
+        {
+           Debug.Log("Missions Tab"); // Debug log for Missions tab
+        }
+
+
         if (TabID == 2)
         {
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.3f));
