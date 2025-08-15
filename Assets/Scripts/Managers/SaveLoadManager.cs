@@ -91,7 +91,7 @@ public class SaveLoadManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex - 1].sceneName);
+        LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex - 1].sceneName, LevelManager.instance.levels[currentLevelIndex - 1].havingBoss);
         LevelManager.instance.AddStateAndLockCellToCurrentLevel();
 
         GameManager.instance.currentDamageLevel = currentBasicDamageLevel;
