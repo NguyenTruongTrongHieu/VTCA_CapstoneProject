@@ -40,6 +40,30 @@ public class Mission
         CreateMission("Kill " + targetAmount + " Monster", reward);
     }
 
+    public void RandomMissionType()
+    {
+        // Randomly assign a mission type
+        int randomType = Random.Range(0, 5);
+        switch (randomType)
+        {
+            case 0:
+                missionType = MissionType.KillEnemy;
+                break;
+            case 1:
+                missionType = MissionType.FruitMatching;
+                break;
+            case 2:
+                missionType = MissionType.UpgradeStats;
+                break;
+            case 3:
+                missionType = MissionType.ReachLevel;
+                break;
+            case 4:
+                missionType = MissionType.UsePowerUp;
+                break;
+        }
+    }
+
     //public void CompleteMission()
     //{
     //    isCompleted = true;

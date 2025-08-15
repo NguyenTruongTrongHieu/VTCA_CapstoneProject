@@ -35,7 +35,7 @@ public class TabsManager : MonoBehaviour
 
         if (TabID == 1)
         {
-            MissionsManager._instance.SetMissionDescription(); // Update mission descriptions
+           Debug.Log("Missions Tab"); // Debug log for Missions tab
         }
 
 
