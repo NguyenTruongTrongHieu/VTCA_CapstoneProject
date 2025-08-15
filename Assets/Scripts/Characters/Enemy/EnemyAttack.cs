@@ -37,6 +37,8 @@ public class EnemyAttack : MonoBehaviour
 
     private int specialAttackHash;//Trigger, maybe use in the future
 
+    public Mission mission;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -194,6 +196,7 @@ public class EnemyAttack : MonoBehaviour
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
                     CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f)));
+                    
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -214,6 +217,17 @@ public class EnemyAttack : MonoBehaviour
                             
                             Destroy(gameObject, 1f);
                         }
+                    }
+
+
+                    if (mission != null && mission.isActive)
+                    {
+                        mission.goal.EnemyKilled();
+                        if (mission.goal.isReached())
+                        {
+                            mission.isComplete();
+                        }
+                        MissionsManager._instance.SetMissionDescription();
                     }
                 }
                 if (!animator.GetBool(isDeadHash))
