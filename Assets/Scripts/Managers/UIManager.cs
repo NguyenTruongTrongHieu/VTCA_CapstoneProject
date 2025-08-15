@@ -78,7 +78,9 @@ public class UIManager : MonoBehaviour
 
     public GameObject mainMenuPanel;
 
+    [Space]
     public Text currentLevelDisplay;
+    public Image skullImage;
 
     [Header("Character And Skin")]
     public GameObject characterPanel;
@@ -225,6 +227,15 @@ public class UIManager : MonoBehaviour
         if (LevelManager.instance.currentLevel != null)
         {
             currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
+
+            if (LevelManager.instance.currentLevel.havingBoss)
+            {
+                skullImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                skullImage.gameObject.SetActive(false);
+            }
         }
         else
         {
