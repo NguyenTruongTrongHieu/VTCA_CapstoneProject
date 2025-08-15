@@ -10,8 +10,6 @@ public class EnemyAttack : MonoBehaviour
 
     public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
-    public Transform targetPosToDisplayDamText;
-
     [Header("VFX")]
     public ParticleSystem dropCoinNormalVFX;
     public ParticleSystem dropCoinSpecialVFX;
@@ -19,9 +17,10 @@ public class EnemyAttack : MonoBehaviour
     public ParticleSystem hitImpact;
     public ParticleSystem hitImpactSpecial;
     public ParticleSystem bloodSplash;
-    public ParticleSystem[] beingHitText;
-    public ParticleSystem damageDisplay;
-    private CFXR_ParticleText particleDamagePrefab;
+    public Transform displayDealtDamTransform; // Transform to display dealt damage text
+    //public ParticleSystem[] beingHitText;
+    //public ParticleSystem damageDisplay;
+    //private CFXR_ParticleText particleDamagePrefab;
 
     [Header("Count turn")]
     public int enemyDebuffTurn;
@@ -50,7 +49,7 @@ public class EnemyAttack : MonoBehaviour
             attackHashes.Add(Animator.StringToHash(attackAnimations[i]));
         }
 
-        particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
+        //particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
     }
 
     // Update is called once per frame
@@ -183,9 +182,8 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                //UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, displayDealtDamTransform, dam);
                 playerStat.Healing(heal);
-                DisplayDamageText(dam);
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
                 BeingAttactk();
 
@@ -242,9 +240,8 @@ public class EnemyAttack : MonoBehaviour
                 float heal = NumberFomatter.RoundFloatToTwoDecimalPlaces(dam * playerStat.bonusStatAtCurrentLevel.lifeStealPercentBonus);
 
                 enemyStat.TakeDamage(dam);
-                //UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, targetPosToDisplayDamText, dam);
+                UIManager.instance.DisplayDamageText(dropCoinNormalVFX.transform, displayDealtDamTransform, dam);
                 playerStat.Healing(heal);
-                DisplayDamageText(dam);
                 BeingAttackSpecial();
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
@@ -292,42 +289,25 @@ public class EnemyAttack : MonoBehaviour
 
     public void BeingAttactk()
     {
-        int randomIndex = Random.Range(0, beingHitText.Length);
+        //int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpact.Play();
-        for (int i = 0; i < hitImpact.transform.childCount; i++)
-        {
-            ParticleSystem childParticle;
-            if (hitImpact.transform.GetChild(i).TryGetComponent<ParticleSystem>(out childParticle))
-            {
-                childParticle.Play();
-            }
-        }
-
         bloodSplash.Play();
-        for (int i = 0; i < bloodSplash.transform.childCount; i++)
-        {
-            ParticleSystem childParticle;
-            if (bloodSplash.transform.GetChild(i).TryGetComponent<ParticleSystem>(out childParticle))
-            { 
-                childParticle.Play();
-            }
-        }
 
-        beingHitText[randomIndex].Play();
+        //beingHitText[randomIndex].Play();
     }
 
     public void BeingAttackSpecial()
     {
-        int randomIndex = Random.Range(0, beingHitText.Length);
+        //int randomIndex = Random.Range(0, beingHitText.Length);
         hitImpactSpecial.Play();
         bloodSplash.Play();
-        beingHitText[randomIndex].Play();
+        //beingHitText[randomIndex].Play();
     }
 
-    public void DisplayDamageText(float damage)
-    {
-        string damageText = "-" +NumberFomatter.FormatFloatToString(damage, 2);
-        particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
-        damageDisplay.Play(); // Play the damage display effect
-    }
+    //public void DisplayDamageText(float damage)
+    //{
+    //    string damageText = "-" +NumberFomatter.FormatFloatToString(damage, 2);
+    //    particleDamagePrefab.UpdateText(damageText); // Update the text in the prefab
+    //    damageDisplay.Play(); // Play the damage display effect
+    //}
 }
