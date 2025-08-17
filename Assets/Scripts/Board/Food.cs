@@ -67,21 +67,21 @@ public class Food : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StartCoroutine(FallAnim());
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StartCoroutine(ChoosenAnim());
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            StartCoroutine(MoveToTarget(0.5f, true, "Multiple"));
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.D))
+    //    {
+    //        StartCoroutine(FallAnim());
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.A))
+    //    {
+    //        StartCoroutine(ChoosenAnim());
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.W))
+    //    {
+    //        StartCoroutine(MoveToTarget(0.5f, true, "Multiple"));
+    //    }
+    //}
 
     public void SetMultipleScore(int multipleScore)
     {
