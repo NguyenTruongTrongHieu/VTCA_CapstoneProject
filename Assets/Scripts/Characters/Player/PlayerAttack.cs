@@ -45,22 +45,22 @@ public class PlayerAttack : MonoBehaviour
         //particleDamagePrefab = damageDisplay.GetComponent<CFXR_ParticleText>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (GameManager.instance.currentTurn == "Player")
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                StartCoroutine(PlayAttackSequence(1, false));
-            }
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    if (GameManager.instance.currentTurn == "Player")
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.E))
+    //        {
+    //            StartCoroutine(PlayAttackSequence(1, false));
+    //        }
 
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                StartCoroutine(PlayAttackSequence(4, true));
-            }
-        }
-    }
+    //        if (Input.GetKeyDown(KeyCode.F))
+    //        {
+    //            StartCoroutine(PlayAttackSequence(4, true));
+    //        }
+    //    }
+    //}
 
     public IEnumerator PlayAttackSequence(int totalHits, bool isHavingSpecialAttack)
     {
