@@ -181,6 +181,9 @@ public class PlayerIdle : NodeBehaviourTree
 
         if (playerSelf.animator.GetBool(playerSelf.isMovingHash))//Gọi ngay khi player vừa di chuyển đến enemy
         {
+            LevelManager.instance.currentLevel.enemiesAtLevel
+                [GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().SetHPSlider(false); // Set enemy HP slider when player is close enough to the enemy
+
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
             Debug.Log(" Player Idle");
             playerSelf.rb.isKinematic = false; // Disable physics interactions for smooth movement

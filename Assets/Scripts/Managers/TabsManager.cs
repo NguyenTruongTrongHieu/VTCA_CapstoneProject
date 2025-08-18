@@ -57,6 +57,8 @@ public class TabsManager : MonoBehaviour
             }
             else
                 charactersTab.TurnOnSkinTab(1);
+
+            UIManager.instance.HideCurrentLevelText(); 
         }
         else
         {
@@ -79,6 +81,8 @@ public class TabsManager : MonoBehaviour
                     PlayerUltimate.instance.TurnOffAllPlayersTransform();
                     PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0.1f);
                 }
+
+                UIManager.instance.ShowCurrentLevelText();
             }
         }
 

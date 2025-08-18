@@ -141,6 +141,7 @@ public class EnemyAttack : MonoBehaviour
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
+        UIManager.instance.HideAllHUD();
         UIManager.instance.ShowGameOverPanel(false);
     }
 
@@ -282,6 +283,7 @@ public class EnemyAttack : MonoBehaviour
                             StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+
                             Destroy(gameObject, 1f);
                         }
                     }

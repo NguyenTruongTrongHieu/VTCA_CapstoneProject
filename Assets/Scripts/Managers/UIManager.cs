@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -135,6 +136,14 @@ public class UIManager : MonoBehaviour
     public float startPosYManaSlider;
     public Text currentStageProgressionDisplay;
 
+    [Header("HUD")]
+    public Slider playerHPSlider;
+    public Slider enemyHPSlider;
+    private Vector2 startPlayerHPSliderPosition;
+    private Vector2 startEnemyHPSliderPosition;
+    private Vector2 endPlayerHPSliderPosition;
+    private Vector2 endEnemyHPSliderPosition;
+
     [Header("Game Over")]
     public GameObject gameOverPanel;
     public Button returnMenuButton;
@@ -175,6 +184,12 @@ public class UIManager : MonoBehaviour
         ShowMainMenuPanel();
 
         startPosYManaSlider = manaSlider.GetComponent<RectTransform>().anchoredPosition.y;
+
+        //Set start and end pos for HUD
+        startPlayerHPSliderPosition = playerHPSlider.GetComponent<RectTransform>().anchoredPosition;
+        startEnemyHPSliderPosition = enemyHPSlider.GetComponent<RectTransform>().anchoredPosition;
+        endPlayerHPSliderPosition = new Vector2(-startPlayerHPSliderPosition.x,startPlayerHPSliderPosition.y);
+        endEnemyHPSliderPosition = new Vector2(-startEnemyHPSliderPosition.x, startEnemyHPSliderPosition.y);
 
         // Display the current level in the main menu
         DisplayCurrentLevel();
@@ -220,6 +235,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
+        PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetHPSlider(true);
     }
 
     public void DisplayCurrentLevel()
@@ -714,7 +730,7 @@ public class UIManager : MonoBehaviour
 
     public void SetUITextForUpgradeDamButton()
     {
-        damageLevelText.text = $"Damage LV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
+        damageLevelText.text = $"Damage\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
         basicDamageText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicDamage, 2)}";
         costToUpgradeDamText.text = $"{NumberFomatter.FormatIntToString(GameManager.instance.damCostToUpgrade, 1)}";//Đưa hàm tính giá tiền vào đây
     }
@@ -742,7 +758,7 @@ public class UIManager : MonoBehaviour
 
     public void SetUITextForUpgradeHealthButton()
     {
-        healthLevelText.text = $"Health LV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
+        healthLevelText.text = $"Health\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
         basicHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicHealth, 2)}";
         costToUpgradeHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.healthCostToUpgrade, 2)}";//Đưa hàm tính giá tiền vào đây
     }
@@ -866,6 +882,67 @@ public class UIManager : MonoBehaviour
         StartCoroutine(ShowUltimateButtonAnim(0.1f)); // Show the ultimate button
     }
 
+    public IEnumerator AppearHPSlider(bool isPlayer, float duration)
+    {
+        float elapsedTime = 0f;
+        if (isPlayer)
+        {
+            playerHPSlider.gameObject.SetActive(true); // Ensure the player HP slider is active
+            while (elapsedTime < duration)
+            {
+                playerHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(endPlayerHPSliderPosition, startPlayerHPSliderPosition, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            playerHPSlider.GetComponent<RectTransform>().anchoredPosition = startPlayerHPSliderPosition; // Set the final position
+        }
+        else
+        { 
+            enemyHPSlider.gameObject.SetActive(true); // Ensure the enemy HP slider is active
+            while (elapsedTime < duration)
+            {
+                enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(endEnemyHPSliderPosition, startEnemyHPSliderPosition, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = startEnemyHPSliderPosition; // Set the final position
+        }
+    }
+
+    public IEnumerator HideHPSlider(bool isPlayer, float duration)
+    {
+        float elapsedTime = 0f;
+        if (isPlayer)
+        {
+            while (elapsedTime < duration)
+            {
+                playerHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startPlayerHPSliderPosition, endPlayerHPSliderPosition, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            playerHPSlider.GetComponent<RectTransform>().anchoredPosition = endPlayerHPSliderPosition; // Set the final position
+            playerHPSlider.gameObject.SetActive(false); // Hide the player HP slider after the animation
+        }
+        else
+        {
+            while (elapsedTime < duration)
+            {
+                enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startEnemyHPSliderPosition,endEnemyHPSliderPosition, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = endEnemyHPSliderPosition; // Set the final position
+            enemyHPSlider.gameObject.SetActive(false); // Hide the enemy HP slider after the animation
+        }
+
+    }
+
+    public void HideAllHUD()
+    {
+        StartCoroutine(HideHPSlider(true, 0.3f));
+        StartCoroutine(HideHPSlider(false, 0.3f));
+    }
+
     #endregion
 
     #region SETTING
@@ -882,6 +959,16 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region SHOW PANEL
+
+    public void HideCurrentLevelText()
+    { 
+        currentLevelDisplay.gameObject.SetActive(false); // Hide the current level text
+    }
+
+    public void ShowCurrentLevelText()
+    { 
+        currentLevelDisplay.gameObject.SetActive(true); // Show the current level text
+    }
 
     public void ShowInGamePanel()
     {
@@ -900,7 +987,7 @@ public class UIManager : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
-        inGamePanel.SetActive(false);
+        //inGamePanel.SetActive(false);
     }
 
     public void ShowMainMenuPanel()
