@@ -6572,6 +6572,8 @@ MonoBehaviour:
   manaSlider: {fileID: 4855247472802279168}
   startPosYManaSlider: 0
   currentStageProgressionDisplay: {fileID: 5243882134000667420}
+  playerHPSlider: {fileID: 6882340141729443754}
+  enemyHPSlider: {fileID: 8933024382073022466}
   gameOverPanel: {fileID: 621530273230333154}
   returnMenuButton: {fileID: 3067675496669766151}
   damageText: {fileID: 2484180374567475607, guid: 4df89ff13fabc564bbe91179b49c6795, type: 3}
@@ -19578,15 +19580,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 110555323624592375, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 110555323624592375, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4714559839804323356, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Name
       value: PlayerHPSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714559839804323356, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5827402370157156688, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Pivot.x
@@ -19670,11 +19676,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.201
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7703815860384158566, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_LocalScale.x
@@ -19703,6 +19709,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5827402370157156688, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
   m_PrefabInstance: {fileID: 706701824752914504}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6882340141729443754 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6218431452891414498, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+  m_PrefabInstance: {fileID: 706701824752914504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &728801116691763793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24374,11 +24391,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110555323624592375, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 110555323624592375, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1016938216230763772, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Direction
@@ -24387,6 +24404,10 @@ PrefabInstance:
     - target: {fileID: 4714559839804323356, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Name
       value: EnemyHPSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714559839804323356, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5827402370157156688, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Pivot.x
@@ -24474,15 +24495,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.799
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -24490,6 +24511,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+--- !u!114 &8933024382073022466 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6218431452891414498, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+  m_PrefabInstance: {fileID: 3293314595777206240}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &9037356357855235760 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5827402370157156688, guid: b22e52ab1071270409a73680fc4a5543, type: 3}

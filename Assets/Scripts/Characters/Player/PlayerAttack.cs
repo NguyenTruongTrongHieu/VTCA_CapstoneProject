@@ -1,6 +1,7 @@
 ﻿using CartoonFX;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -126,6 +127,8 @@ public class PlayerAttack : MonoBehaviour
             GameManager.instance.currentTurn = "None";
             GameManager.instance.GoToNextEnemy(); // Go to next enemy
             GetComponent<Player>().SetUpBehaviourTree();
+            //Turn off hp slider
+            UIManager.instance.StartCoroutine(UIManager.instance.HideHPSlider(false, 0.3f));
         }
         else
         {
@@ -143,6 +146,7 @@ public class PlayerAttack : MonoBehaviour
         StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
         StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
+        UIManager.instance.HideAllHUD();
         UIManager.instance.ShowGameOverPanel(true);
     }
 
@@ -245,6 +249,7 @@ public class PlayerAttack : MonoBehaviour
                         {
                             Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger the dead animation
+
                             CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 3, -8f));
                         }
                         else

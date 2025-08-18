@@ -58,7 +58,7 @@ public class HPSlider : MonoBehaviour
 
         currentValue = currentHP;
         redSlider.value = currentValue;
-        StartCoroutine(SetSlider(yellowSlider, currentValue, 0.5f, 0.3f)); // Smoothly update the yellow slider over 0.5 seconds
+        StartCoroutine(SetSlider(yellowSlider, currentValue, 0.3f, 0.3f)); // Smoothly update the yellow slider over 0.5 seconds
     }
 
     public void PlusValue(float currentHP, float heal)
@@ -76,7 +76,7 @@ public class HPSlider : MonoBehaviour
         }
 
         currentValue = currentHP;
-        StartCoroutine(SetSlider(redSlider, currentValue, 0.5f, 0f)); // Smoothly update the yellow slider over 0.5 seconds
+        StartCoroutine(SetSlider(redSlider, currentValue, 0.3f, 0f)); // Smoothly update the yellow slider over 0.5 seconds
         StartCoroutine(DisplayHealingText(heal));
     }
 
@@ -110,6 +110,7 @@ public class HPSlider : MonoBehaviour
         Text healText = healingTextObject.GetComponent<Text>();
         RectTransform rectTransformHealText = healingTextObject.GetComponent<RectTransform>();
 
+        healText.text = "+" + text; // Set the healing text
 
         //Animation Text Move Up
         //float elaspedTime = 0f;
