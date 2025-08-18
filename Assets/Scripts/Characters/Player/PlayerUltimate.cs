@@ -126,6 +126,8 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<Player>().SetUpBehaviourTree();
         ResetUltiAndMana(false); // Reset ultimate and mana when resetting the player
 
+        totalRound = 0; // Reset the total rounds for the ultimate ability
+        isUltimateValid = false; // Reset ultimate validity
     }
 
     public void SetUltimateAnimPlayer()

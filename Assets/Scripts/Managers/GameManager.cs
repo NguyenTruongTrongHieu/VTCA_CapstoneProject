@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToNextEnemy()
     {
+        UIManager.instance.SetCurrentProgress(true);
         currentEnemyIndex++;
     }
 
