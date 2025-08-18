@@ -1,9 +1,7 @@
 ﻿using CartoonFX;
 using System;
 using System.Collections;
-using System.Text.RegularExpressions;
-using System.Xml.Schema;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -56,7 +54,7 @@ public class UIManager : MonoBehaviour
 
     public TabsManager tabsManager;
 
-   
+
     [Header("Currency")]
     public GameObject coinPanel;
     public Text coinText;
@@ -139,10 +137,17 @@ public class UIManager : MonoBehaviour
     [Header("HUD")]
     public Slider playerHPSlider;
     public Slider enemyHPSlider;
+    public GameObject progressPanel;
+    public GameObject[] gameProgress;
+    public List<GameObject> usedProgress = new List<GameObject>();
+
     private Vector2 startPlayerHPSliderPosition;
     private Vector2 startEnemyHPSliderPosition;
     private Vector2 endPlayerHPSliderPosition;
     private Vector2 endEnemyHPSliderPosition;
+    private Vector2 startProgressPanelPosition;
+    private Vector2 endProgressPanelPosition;
+
 
     [Header("Game Over")]
     public GameObject gameOverPanel;
@@ -188,8 +193,10 @@ public class UIManager : MonoBehaviour
         //Set start and end pos for HUD
         startPlayerHPSliderPosition = playerHPSlider.GetComponent<RectTransform>().anchoredPosition;
         startEnemyHPSliderPosition = enemyHPSlider.GetComponent<RectTransform>().anchoredPosition;
-        endPlayerHPSliderPosition = new Vector2(-startPlayerHPSliderPosition.x,startPlayerHPSliderPosition.y);
+        endPlayerHPSliderPosition = new Vector2(-startPlayerHPSliderPosition.x, startPlayerHPSliderPosition.y);
         endEnemyHPSliderPosition = new Vector2(-startEnemyHPSliderPosition.x, startEnemyHPSliderPosition.y);
+        startProgressPanelPosition = progressPanel.GetComponent<RectTransform>().anchoredPosition;
+        endProgressPanelPosition = new Vector2(startProgressPanelPosition.x, startProgressPanelPosition.y + 286f);
 
         // Display the current level in the main menu
         DisplayCurrentLevel();
@@ -236,6 +243,8 @@ public class UIManager : MonoBehaviour
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetHPSlider(true);
+        StartCoroutine(ShowProgressPanel(0.3f));
+        SetUsedProgress();
     }
 
     public void DisplayCurrentLevel()
@@ -272,7 +281,7 @@ public class UIManager : MonoBehaviour
     public IEnumerator CurrencyPanelZoomInAndZoomOut(string currency)
     {
         Transform targetObject;
-        if(currency == "coin")
+        if (currency == "coin")
         {
             targetObject = coinPanel.transform;
         }
@@ -288,24 +297,24 @@ public class UIManager : MonoBehaviour
         float elaspedTime = 0f;
         Vector3 startScale = targetObject.localScale;
         Vector3 targetScale = new Vector3(0.5f, 0.5f, 0.5f); // Zoom out scale
-        while(elaspedTime < 0.05f)
-        { 
-            elaspedTime += Time.deltaTime;
-            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
-            yield return null;
-        }
-        targetObject.localScale = targetScale; // Set the final scale
-
-        elaspedTime = 0f;
-        startScale = targetObject.localScale;
-        targetScale = new Vector3(1.5f, 1.5f, 1.5f); // Zoom in scale
-        while (elaspedTime < 0.1f)
+        while (elaspedTime < 0.05f)
         {
             elaspedTime += Time.deltaTime;
             targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
             yield return null;
         }
         targetObject.localScale = targetScale; // Set the final scale
+
+        //elaspedTime = 0f;
+        //startScale = targetObject.localScale;
+        //targetScale = new Vector3(1.5f, 1.5f, 1.5f); // Zoom in scale
+        //while (elaspedTime < 0.1f)
+        //{
+        //    elaspedTime += Time.deltaTime;
+        //    targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+        //    yield return null;
+        //}
+        //targetObject.localScale = targetScale; // Set the final scale
 
         elaspedTime = 0f;
         startScale = targetObject.localScale;
@@ -392,7 +401,7 @@ public class UIManager : MonoBehaviour
         if (currentChosenButton.isOwned)
         {
             buyCharacterButton.gameObject.SetActive(false);
-            if(SaveLoadManager.instance.currentLevelOfCurrentPlayer >= PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatsLevel.Length)
+            if (SaveLoadManager.instance.currentLevelOfCurrentPlayer >= PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().bonusStatsLevel.Length)
             {
                 upgradeCharacterButton.gameObject.SetActive(false); // Hide the upgrade button if the player has reached the max level
             }
@@ -444,7 +453,7 @@ public class UIManager : MonoBehaviour
         {
             percentHealthBonus = $"{NumberFomatter.FormatFloatToString(playerStat.bonusStatAtCurrentLevel.healthPercentBonus, 2)}";
             if (playerStat.bonusStatAtCurrentLevel.healthPercentBonus < 0)
-            { 
+            {
                 healthTextInUI.color = Color.red;
             }
             else
@@ -471,7 +480,7 @@ public class UIManager : MonoBehaviour
             ultiDescriptionText.text = "Ulti: Increase your damage for 1 turn. This bonus damage based on your basic damage.";
             ultiStatText.text = $"Increased damage: +(0.15 x basic damage)";
         }
-        else if(playerStat.id == 2)
+        else if (playerStat.id == 2)
         {
             ultiDescriptionText.text = "Ulti: A special item randomly appears, increasing damage to enemies for 1 turn. " +
                 "Using it doesn’t end your turn.";
@@ -485,14 +494,14 @@ public class UIManager : MonoBehaviour
         foreach (var button in characterButtons)
         {
             if (button.characterName == characterName)
-            { 
+            {
                 id = button.characterID;
                 break;
             }
         }
 
         if (id == -1)
-        { 
+        {
             Debug.LogError($"Character with name {characterName} not found in character buttons.");
             return;
         }
@@ -503,10 +512,10 @@ public class UIManager : MonoBehaviour
         var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == id);
         if (checkCharacter != null)
         {
-            foreach(var name in checkCharacter.ownedSkins)
+            foreach (var name in checkCharacter.ownedSkins)
             {
                 if (name == characterName)
-                { 
+                {
                     SaveLoadManager.instance.currentPlayerName = characterName;
                     SaveLoadManager.instance.currentLevelOfCurrentPlayer = checkCharacter.currentLevel;
                     characterLevel = checkCharacter.currentLevel;
@@ -637,7 +646,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void OnClickUpgradeCharacter()
-    { 
+    {
         var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
         var nextBonusStat = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer];// Get the next bonus stat based on the current level
 
@@ -767,7 +776,7 @@ public class UIManager : MonoBehaviour
     #region IN GAME
 
     public void DisplayDamageText(Transform startTransform, Transform targetTransform, float dam)
-    { 
+    {
         string text = NumberFomatter.FormatFloatToString(dam, 2);
         Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
 
@@ -786,7 +795,7 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator DisplayText(Vector3 startPos, Vector3 targetPos, RectTransform text)
-    { 
+    {
         float elaspedTime = 0f;
         Vector3 startScale = text.localScale;
         Vector3 targetScale = Vector3.one;
@@ -800,7 +809,7 @@ public class UIManager : MonoBehaviour
 
         elaspedTime = 0f;
         while (elaspedTime < 0.2f)//Chạy anim này trong vòng 0.2s
-        { 
+        {
             elaspedTime += Time.deltaTime;
             text.position = Vector3.Lerp(startPos, targetPos, elaspedTime / 0.2f);
             yield return null;
@@ -830,7 +839,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator HideManaSlider(float duration)
-    { 
+    {
         RectTransform rectTransform = manaSlider.GetComponent<RectTransform>();
         float elapsedTime = 0f;
         Vector2 startPos = rectTransform.anchoredPosition;
@@ -862,7 +871,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator ShowUltimateButtonAnim(float duration)
-    { 
+    {
         ultimateButton.transform.localScale = Vector3.zero; // Start with the button hidden
         ultimateButtonAndEffectObject.SetActive(true); // Ensure the ultimate button and effect object is active
         ultimateButton.gameObject.SetActive(true); // Ensure the button is active
@@ -877,7 +886,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator ChangeManaSliderAndUltimateButton()
-    { 
+    {
         yield return StartCoroutine(HideManaSlider(0.2f)); // Show the mana slider
         StartCoroutine(ShowUltimateButtonAnim(0.1f)); // Show the ultimate button
     }
@@ -887,6 +896,7 @@ public class UIManager : MonoBehaviour
         float elapsedTime = 0f;
         if (isPlayer)
         {
+            playerHPSlider.GetComponent<RectTransform>().anchoredPosition = endPlayerHPSliderPosition; // Start from the end position
             playerHPSlider.gameObject.SetActive(true); // Ensure the player HP slider is active
             while (elapsedTime < duration)
             {
@@ -897,7 +907,8 @@ public class UIManager : MonoBehaviour
             playerHPSlider.GetComponent<RectTransform>().anchoredPosition = startPlayerHPSliderPosition; // Set the final position
         }
         else
-        { 
+        {
+            enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = endEnemyHPSliderPosition; // Start from the end position
             enemyHPSlider.gameObject.SetActive(true); // Ensure the enemy HP slider is active
             while (elapsedTime < duration)
             {
@@ -927,7 +938,7 @@ public class UIManager : MonoBehaviour
         {
             while (elapsedTime < duration)
             {
-                enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startEnemyHPSliderPosition,endEnemyHPSliderPosition, elapsedTime / duration);
+                enemyHPSlider.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startEnemyHPSliderPosition, endEnemyHPSliderPosition, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
@@ -937,10 +948,101 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void SetProgressAtStart()
+    {
+        usedProgress.Clear();
+
+        int amountOfProgress = LevelManager.instance.currentLevel.enemiesAtLevel.Count;
+        if (!LevelManager.instance.currentLevel.havingBoss)
+        {
+            for (int i = 0; i < gameProgress.Length; i++)
+            {
+                if (i < amountOfProgress)
+                {
+                    gameProgress[i].gameObject.SetActive(true); // Ensure the progress indicators are active
+                    usedProgress.Add(gameProgress[i]);
+                }
+                else
+                {
+                    gameProgress[i].gameObject.SetActive(false); // Hide the progress indicators that are not needed
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < gameProgress.Length - 1; i++)
+            {
+                if (i < amountOfProgress - 1)
+                {
+                    gameProgress[i].gameObject.SetActive(true); // Ensure the progress indicators are active
+                    usedProgress.Add(gameProgress[i]);
+                }
+                else
+                {
+                    gameProgress[i].gameObject.SetActive(false); // Hide the progress indicators that are not needed
+                }
+            }
+            gameProgress[gameProgress.Length - 1].gameObject.SetActive(true); // Ensure the boss progress indicator is active
+            usedProgress.Add(gameProgress[gameProgress.Length - 1]); // Add the boss progress indicator to the used list
+        }
+    }
+
+    public void SetUsedProgress()
+    {
+        Color defaultColor = Color.black;
+        defaultColor.a = 0.6f;
+        foreach (var progress in usedProgress)
+        {
+            progress.GetComponent<Image>().color = defaultColor;
+        }
+    }
+
+    public void SetCurrentProgress(bool isDone)
+    {
+        if (isDone)
+        {
+            usedProgress[GameManager.instance.currentEnemyIndex].GetComponent<Image>().color = Color.green; // Set the color to green if the progress is done
+        }
+        else
+        {
+            Color doingColor = Color.red;
+            doingColor.a = 1f; // Set the alpha to 0.6f for the doing color
+            usedProgress[GameManager.instance.currentEnemyIndex].GetComponent<Image>().color = doingColor;
+        }
+    }
+
+    public IEnumerator ShowProgressPanel(float duration)
+    { 
+        float elapsedTime = 0f;
+        progressPanel.GetComponent<RectTransform>().anchoredPosition = endProgressPanelPosition; // Start from the end position
+        progressPanel.SetActive(true);
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            progressPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(endProgressPanelPosition, startProgressPanelPosition, elapsedTime / duration);
+            yield return null;
+        }
+        progressPanel.GetComponent<RectTransform>().anchoredPosition = startProgressPanelPosition; // Set the final position
+    }
+
+    public IEnumerator HideProgressPanel(float duration)
+    { 
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            progressPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startProgressPanelPosition, endProgressPanelPosition, elapsedTime / duration);
+            yield return null;
+        }
+        progressPanel.GetComponent<RectTransform>().anchoredPosition = endProgressPanelPosition; // Set the final position
+        progressPanel.SetActive(false); // Hide the progress panel after the animation
+    }
+
     public void HideAllHUD()
     {
         StartCoroutine(HideHPSlider(true, 0.3f));
         StartCoroutine(HideHPSlider(false, 0.3f));
+        StartCoroutine(HideProgressPanel(0.3f)); // Hide the progress panel
     }
 
     #endregion
@@ -995,6 +1097,7 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.SetActive(true);
         inGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+        SetProgressAtStart();
 
         //foreach (Image tabsButtons in tabsManager.tabButtons)
         //{

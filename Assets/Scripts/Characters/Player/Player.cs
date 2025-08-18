@@ -183,6 +183,7 @@ public class PlayerIdle : NodeBehaviourTree
         {
             LevelManager.instance.currentLevel.enemiesAtLevel
                 [GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().SetHPSlider(false); // Set enemy HP slider when player is close enough to the enemy
+            UIManager.instance.SetCurrentProgress(false); // Hide progress bar when player is close enough to the enemy
 
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
             Debug.Log(" Player Idle");

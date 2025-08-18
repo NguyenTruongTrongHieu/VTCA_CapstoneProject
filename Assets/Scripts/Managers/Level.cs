@@ -8,6 +8,7 @@ public class Level
     public int index;
     public List<GameObject> enemiesAtLevel;
     public string sceneName;
+    public int rewardCoin;
     public bool havingBoss; // Flag to indicate if the level has a boss
 
     public List<Vector2Int> statesInBoard; // List to store the states in the board
@@ -51,7 +52,7 @@ public class Level
         havingBoss = false; // Default value for havingBoss
     }
 
-    public Level(int index, string sceneName, bool havingBoss)
+    public Level(int index, string sceneName, bool havingBoss, int rewardCoin)
     {
         this.index = index;
         this.enemiesAtLevel = new List<GameObject>();
@@ -59,5 +60,6 @@ public class Level
         statesInBoard = new List<Vector2Int>();
         lockCellInBoard = new List<Vector2Int>();
         this.havingBoss = havingBoss;
+        this.rewardCoin = rewardCoin;
     }
 }
