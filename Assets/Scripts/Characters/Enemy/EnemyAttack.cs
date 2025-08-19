@@ -36,8 +36,6 @@ public class EnemyAttack : MonoBehaviour
 
     private int specialAttackHash;//Trigger, maybe use in the future
 
-    public Mission mission;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -219,14 +217,12 @@ public class EnemyAttack : MonoBehaviour
                     }
 
 
-                    if (mission != null && mission.isActive)
+                    if (MissionsManager._instance.missions != null)
                     {
-                        mission.goal.EnemyKilled();
-                        if (mission.goal.isReached())
-                        {
-                            mission.isComplete();
-                        }
-                        MissionsManager._instance.SetMissionDescription();
+                      
+                            MissionsManager._instance.EnemyKilled();
+                            return;
+                        
                     }
                 }
                 if (!animator.GetBool(isDeadHash))
