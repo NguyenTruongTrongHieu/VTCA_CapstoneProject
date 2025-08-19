@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -42,25 +43,16 @@ public class Mission
 
     public void RandomMissionType()
     {
-        // Randomly assign a mission type
-        int randomType = Random.Range(0, 5);
-        switch (randomType)
+        // Randomly select a mission type from the list of available mission types
+        if (MissionsManager._instance.missionTypes.Count> 0)
         {
-            case 0:
-                missionType = MissionType.KillEnemy;
-                break;
-            case 1:
-                missionType = MissionType.FruitMatching;
-                break;
-            case 2:
-                missionType = MissionType.UpgradeStats;
-                break;
-            case 3:
-                missionType = MissionType.ReachLevel;
-                break;
-            case 4:
-                missionType = MissionType.UsePowerUp;
-                break;
+            int randomIndex = Random.Range(0, MissionsManager._instance.missionTypes.Count);
+            missionType = MissionsManager._instance.missionTypes[randomIndex];
+            MissionsManager._instance.missionTypes.RemoveAt(randomIndex); // Remove the selected type to avoid duplicates in the same mission
+        }
+        else
+        {
+            Debug.LogWarning("No mission types available to select from.");
         }
     }
 
