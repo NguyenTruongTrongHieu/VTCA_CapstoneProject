@@ -165,6 +165,15 @@ public class UIManager : MonoBehaviour
     [Header("Missions")]
     public Text[] missionsDescriptionTexts;
 
+    [Header("ChestBox")]
+    public GameObject openChestBoxPanel;
+    public Image chestBoxImage;
+
+    [Space]
+    public GameObject crystalBonusPrefab;
+    public GameObject starBonusPrefab;
+    public GameObject coinBonusPrefab;
+
     private void Awake()
     {
         if (instance == null)
@@ -1411,5 +1420,11 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region CHEST BOX
+
+
+
     #endregion
 }

@@ -31,7 +31,6 @@ public class ChestManager : MonoBehaviour
     public ItemLevel[] itemLevelsInChest;
     public int[] dropItemRate;
     public ItemType[] itemTypesInChest;
-    public GameObject itemUIPrefab;
 
     private void Start()
     {
