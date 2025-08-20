@@ -3,7 +3,6 @@
 
 public enum ItemLevel
 {
-    white,
     green,
     blue,
     purple,

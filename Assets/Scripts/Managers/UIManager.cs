@@ -167,12 +167,24 @@ public class UIManager : MonoBehaviour
 
     [Header("ChestBox")]
     public GameObject openChestBoxPanel;
+    public GameObject itemParent;
+    public GameObject currencyParent;
     public Image chestBoxImage;
+    public Sprite chestBoxClosedSprite;
+    public Sprite chestBoxOpenedSprite;
 
     [Space]
     public GameObject crystalBonusPrefab;
     public GameObject starBonusPrefab;
     public GameObject coinBonusPrefab;
+    public GameObject itemBonusPrefab;
+
+    [Space]
+    [SerializeField] private int pressCount;
+    private List<Item> itemRewardsInChestBox = new List<Item>();//used as item class
+    private int crystalsInChestBox;
+    private int coinsInChestBox;
+    private int starsInChestBox;
 
     private void Awake()
     {

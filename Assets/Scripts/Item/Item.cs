@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public ItemLevel itemLevel;
+    public ItemType itemType;
 
-    // Update is called once per frame
-    void Update()
+    public Item(ItemLevel itemLevel, ItemType itemType)
     {
-        
+        this.itemLevel = itemLevel;
+        this.itemType = itemType;
     }
 }
