@@ -28,15 +28,21 @@ public class CurrencyManager : MonoBehaviour
     }
 
     #region UPDATE COIN
+
+    public void AddCoinsDontHaveAnim(int amount)
+    {
+        coins += amount;
+        SaveLoadManager.instance.currentCoin = coins; // Update the current coin count in SaveLoadManager
+        UIManager.instance.UpdateCoinText();
+    }
+
     public IEnumerator AddCoins(Transform startPos, int amount)
     {
         //Play anim spawn coins
         yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCoinPrefabAndMoveToCoinPanel(startPos, amount));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin"));
 
-        coins += amount;
-        SaveLoadManager.instance.currentCoin = coins; // Update the current coin count in SaveLoadManager
-        UIManager.instance.UpdateCoinText();
+        AddCoinsDontHaveAnim(amount); // Update the coin count without animation
     }
 
     public void SubtractCoins(int amount)
@@ -52,6 +58,14 @@ public class CurrencyManager : MonoBehaviour
     #endregion
 
     #region UPDATE CRYSTAL
+
+    public void AddCrystalsDontHaveAnim (int amount)
+    {
+        crystals += amount;
+        SaveLoadManager.instance.currentCrystal = crystals; // Update the current crystal count in SaveLoadManager
+        UIManager.instance.UpdateCrystalText();
+    }
+
     public void SubtractCrystal(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal"));
@@ -63,6 +77,14 @@ public class CurrencyManager : MonoBehaviour
     #endregion
 
     #region UPDATE STAR
+
+    public void AddStarsDontHaveAnim(int amount)
+    {
+        stars += amount;
+        SaveLoadManager.instance.currentStar = stars; // Update the current star count in SaveLoadManager
+        UIManager.instance.UpdateStarText();
+    }
+
     public void SubtractStar(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star"));
