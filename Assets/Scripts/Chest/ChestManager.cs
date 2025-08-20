@@ -16,14 +16,16 @@ public class ChestManager : MonoBehaviour
     public ChestType chestType;
     [Header("Rewards in chest box after open")]
     public int amountOfItemRewards;
-    public List<string> itemRewardsInChestBox = new List<string>();//used as item class
+    public List<Item> itemRewardsInChestBox = new List<Item>();//used as item class
     public int crystals;
     public int coins;
     public int stars;
 
     [Header("All rewards in chest box")]
     [Header("Currency rewards")]
-    public int minCrystal, maxCrystal;
+
+    public int minCrystal;
+    public int maxCrystal;
     public int minCoin, maxCoin;
     public int minStar, maxStar;
 
@@ -40,8 +42,9 @@ public class ChestManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O)) // For testing purposes, press 'O' to open the chest
+        if(Input.GetKeyDown(KeyCode.LeftAlt)) // For testing purposes
         {
+            Debug.Log("Opening Chest Box");
             OpenChest();
         }
     }
@@ -63,7 +66,7 @@ public class ChestManager : MonoBehaviour
 
         foreach (var itemReward in itemRewardsInChestBox)
         {
-            Debug.Log($"Reward Item: {itemReward}");
+            Debug.Log($"Reward Item: {itemReward.itemLevel} - {itemReward.itemType}");
         }
 
         SetRewardForChestBox();
@@ -124,11 +127,12 @@ public class ChestManager : MonoBehaviour
             if(rate <= dropItemRate[i])
             {
                 ItemLevel itemLevel = itemLevelsInChest[i];
-                ItemType itemType = itemTypesInChest[i];
+                int randomItemTypeIndex = Random.Range(0, itemTypesInChest.Length);
+                ItemType itemType = itemTypesInChest[randomItemTypeIndex];
 
                 //Add itemLEvel and ItemType to itemRewardsInChestBox
-                string itemClass = $"{itemLevel}_{itemType}";
-                itemRewardsInChestBox.Add(itemClass);
+                Item item = new Item(itemLevel, itemType);
+                itemRewardsInChestBox.Add(item);
                 break;
             }
         }
