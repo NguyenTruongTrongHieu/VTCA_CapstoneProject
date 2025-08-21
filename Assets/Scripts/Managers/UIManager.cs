@@ -1467,8 +1467,8 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
-            yield return new WaitForSeconds(0.5f); // Wait for a short duration before starting the animation
-            chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
+            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.5f));
+            yield return StartCoroutine(OpenChestBoxAnim(1f)); // Start the chest box opening animation
             yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
         }
 
@@ -1518,9 +1518,64 @@ public class UIManager : MonoBehaviour
             itemRewardPrefab.transform.SetParent(currencyParent.transform); // Set the parent to the reward target position for crystal, star, or coin rewards
             itemRewardPrefab.GetComponent<RectTransform>().localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
+            if (pressCount == itemRewardsInChestBox.Count + 2)
+            {
+                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.2f));
+            }
         }
 
         isShowRewardRunning = false; // Reset the flag to indicate that the reward display is done
+    }
+
+    public IEnumerator OpenChestBoxAnim(float time)
+    {
+        float countTimer = 0f;
+        float elapsedTime = 0f;
+        float duration = time/10;
+
+        RectTransform chestBoxRect = chestBoxImage.GetComponent<RectTransform>();
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            // Rotate the chest box image to create an opening animation by angling it slightly
+            chestBoxRect.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, -10, elapsedTime / (duration/2) ));
+
+            countTimer += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+        chestBoxRect.localRotation = Quaternion.Euler(0, 0, -10); // Ensure the final rotation is set
+
+        while (countTimer < time)
+        {
+            elapsedTime = 0f; // Reset elapsed time for the next iteration
+            while(elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                // Rotate the chest box image to create an opening animation by angling it slightly
+                chestBoxRect.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(-10, 10, elapsedTime / duration));
+
+                countTimer += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+            chestBoxRect.localRotation = Quaternion.Euler(0, 0, 10); // Ensure the final rotation is set
+
+            elapsedTime = 0f; // Reset elapsed time for the next iteration
+            // Rotate back to the opposite angle 
+            while(elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                chestBoxRect.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(10, -10, elapsedTime / duration));
+
+                countTimer += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+            chestBoxRect.localRotation = Quaternion.Euler(0, 0, -10); // Ensure the final rotation is set
+            Debug.Log(countTimer);
+        }
+
+        chestBoxRect.localRotation = Quaternion.Euler(0, 0, 0); // Reset the rotation to the original position
+        chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
     }
 
     public void OnClickClaimButton()
@@ -1544,6 +1599,7 @@ public class UIManager : MonoBehaviour
 
         //Return the chest box to the begin form
         chestBoxImage.sprite = chestBoxClosedSprite;
+        chestBoxImage.gameObject.SetActive(false);
     }
 
     #endregion
