@@ -1467,6 +1467,7 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
+            yield return new WaitForSeconds(0.5f); // Wait for a short duration before starting the animation
             chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
             yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
         }

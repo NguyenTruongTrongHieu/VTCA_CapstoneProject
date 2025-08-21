@@ -7517,8 +7517,8 @@ MonoBehaviour:
   currencyParent: {fileID: 8999298049282110536}
   rewardTargetPos: {fileID: 7428308353759061483}
   chestBoxImage: {fileID: 7039638621746271488}
-  chestBoxClosedSprite: {fileID: 21300000, guid: d0f51b1902dccdf4eb7e526146bc56d5, type: 3}
-  chestBoxOpenedSprite: {fileID: 21300000, guid: 2ff71568a307315448fa0fb068a718b7, type: 3}
+  chestBoxClosedSprite: {fileID: 21300000, guid: 2ff71568a307315448fa0fb068a718b7, type: 3}
+  chestBoxOpenedSprite: {fileID: 21300000, guid: d0f51b1902dccdf4eb7e526146bc56d5, type: 3}
   claimRewardButton: {fileID: 1300605248989388840}
   crystalBonusPrefab: {fileID: 8637568547887263626, guid: 26f3fd77e81e53e408ba808548b64f60, type: 3}
   starBonusPrefab: {fileID: 6725438063008543311, guid: 60c1966430a6bda408c929cf974bc27c, type: 3}
