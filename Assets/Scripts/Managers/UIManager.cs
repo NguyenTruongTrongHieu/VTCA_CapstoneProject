@@ -169,9 +169,11 @@ public class UIManager : MonoBehaviour
     public GameObject openChestBoxPanel;
     public GameObject itemParent;
     public GameObject currencyParent;
+    public GameObject rewardTargetPos;
     public Image chestBoxImage;
     public Sprite chestBoxClosedSprite;
     public Sprite chestBoxOpenedSprite;
+    public Button claimRewardButton;
 
     [Space]
     public GameObject crystalBonusPrefab;
@@ -181,6 +183,7 @@ public class UIManager : MonoBehaviour
 
     [Space]
     [SerializeField] private int pressCount;
+    private bool isShowRewardRunning;
     private List<Item> itemRewardsInChestBox = new List<Item>();//used as item class
     private int crystalsInChestBox;
     private int coinsInChestBox;
@@ -1041,7 +1044,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator ShowProgressPanel(float duration)
-    { 
+    {
         float elapsedTime = 0f;
         progressPanel.GetComponent<RectTransform>().anchoredPosition = endProgressPanelPosition; // Start from the end position
         progressPanel.SetActive(true);
@@ -1055,7 +1058,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator HideProgressPanel(float duration)
-    { 
+    {
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -1078,7 +1081,7 @@ public class UIManager : MonoBehaviour
 
     #region SETTING
     public void OnCLickReturnMenuButton()
-    { 
+    {
         SaveLoadManager.instance.loadingPanel.SetActive(true);
 
         GameManager.instance.currentGameState = GameState.MainMenu;
@@ -1092,12 +1095,12 @@ public class UIManager : MonoBehaviour
     #region SHOW PANEL
 
     public void HideCurrentLevelText()
-    { 
+    {
         currentLevelDisplay.gameObject.SetActive(false); // Hide the current level text
     }
 
     public void ShowCurrentLevelText()
-    { 
+    {
         currentLevelDisplay.gameObject.SetActive(true); // Show the current level text
     }
 
@@ -1135,8 +1138,9 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator ShowPanelWithZoomInAnim(GameObject panel, float duration)
-    { 
+    {
         float elapsedTime = 0f;
+        panel.transform.localScale = Vector3.zero; // Start with the panel hidden
         Vector3 startScale = panel.transform.localScale;
         Vector3 targetScale = Vector3.one; // Zoom in scale
         panel.SetActive(true); // Ensure the panel is active before starting the animation
@@ -1170,7 +1174,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowBuyCharacterPanel()
-    { 
+    {
         var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
 
         if (playerStat.isNormalSkin)
@@ -1186,7 +1190,7 @@ public class UIManager : MonoBehaviour
 
         // Set the text for buying character
         if (playerStat.bonusStatsLevel[0].coinCost <= 0)
-        { 
+        {
             useCoinToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
         }
         else
@@ -1194,7 +1198,7 @@ public class UIManager : MonoBehaviour
             useCoinToBuyCharacterButton.gameObject.SetActive(true); // Show the button if cost is greater than 0
             useCoinToBuyCharacterText.text = $"{NumberFomatter.FormatIntToString(playerStat.bonusStatsLevel[0].coinCost, 2)}";
             if (CurrencyManager.instance.coins < playerStat.bonusStatsLevel[0].coinCost)
-            { 
+            {
                 useCoinToBuyCharacterText.color = Color.red; // Change text color to red if not enough coins
             }
             else
@@ -1204,7 +1208,7 @@ public class UIManager : MonoBehaviour
         }
 
         if (playerStat.bonusStatsLevel[0].crystalCost <= 0)
-        { 
+        {
             useCrystalToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
         }
         else
@@ -1222,7 +1226,7 @@ public class UIManager : MonoBehaviour
         }
 
         if (playerStat.bonusStatsLevel[0].starCost <= 0)
-        { 
+        {
             useStarToBuyCharacterButton.gameObject.SetActive(false); // Hide the button if cost is 0
         }
         else
@@ -1244,7 +1248,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowUpgradeCharacterPanel()
-    { 
+    {
         var playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
         var nextBonusStat = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer];// Get the next bonus stat based on the current level
 
@@ -1321,7 +1325,7 @@ public class UIManager : MonoBehaviour
             warningNotEnoughCostText.text = "You don't have enough stars to buy this character!";
         }
         else
-        { 
+        {
             warningNotEnoughCostText.text = "You don't have enough crystals to buy this character!";
         }
         quitBuyCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the buy character panel
@@ -1330,13 +1334,13 @@ public class UIManager : MonoBehaviour
     }
 
     public void HideBuyCharacterPanel()
-    { 
+    {
         StartCoroutine(HidePanelWithZoomOutAnim(BuyCharacterPanel, 0.2f));
         Invoke(nameof(HideBuyAndUpgradeCharacterPanel), 0.2f); // Hide the buy and upgrade character panel after the animation
     }
 
     public void HideUpgradeCharacterPanel()
-    { 
+    {
         StartCoroutine(HidePanelWithZoomOutAnim(UpgradeCharacterPanel, 0.2f));
         Invoke(nameof(HideBuyAndUpgradeCharacterPanel), 0.2f); // Hide the buy and upgrade character panel after the animation
     }
@@ -1436,7 +1440,110 @@ public class UIManager : MonoBehaviour
 
     #region CHEST BOX
 
+    public void ShowChestBoxPanel(List<Item> itemRewards, int crystals, int stars, int coins)
+    {
+        pressCount = 0;
+        itemRewardsInChestBox = itemRewards;
+        crystalsInChestBox = crystals;
+        starsInChestBox = stars;
+        coinsInChestBox = coins;
 
+        openChestBoxPanel.SetActive(true); // Show the chest box panel
+        StartCoroutine(ShowRewardInChestBox());
+    }
+
+    public void OnClickOpenChestBoxPanel()
+    {
+        if(isShowRewardRunning) return; // If the reward display is already running, do not allow another click
+
+        pressCount++;
+        StartCoroutine(ShowRewardInChestBox()); // Start showing the rewards in the chest box panel
+    }
+
+    public IEnumerator ShowRewardInChestBox()
+    {
+        isShowRewardRunning = true; // Set the flag to indicate that the reward display is running
+
+        if (pressCount == 0)
+        {
+            //anim open chest
+            chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
+            yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
+        }
+
+        // Show the rewards in the chest box panel
+        GameObject itemRewardPrefab = null;
+        if (itemRewardsInChestBox != null && itemRewardsInChestBox.Count > 0 && pressCount < itemRewardsInChestBox.Count)
+        {
+            itemRewardPrefab = Instantiate(itemBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab.GetComponent<UIRewardInChestBox>().SetUI(itemRewardsInChestBox[pressCount].itemLevel, itemRewardsInChestBox[pressCount].itemType);
+        }
+        else if (crystalsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count)
+        {
+            itemRewardPrefab = Instantiate(crystalBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(crystalsInChestBox, 2)}"; // Set the text for crystal amount
+        }
+        else if (starsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 1)
+        {
+            itemRewardPrefab = Instantiate(starBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(starsInChestBox, 2)}"; // Set the text for star amount
+        }
+        else if (coinsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 2)
+        {
+            itemRewardPrefab = Instantiate(coinBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(coinsInChestBox, 2)}"; // Set the text for coin amount
+        }
+        else
+        {
+            if (!claimRewardButton.gameObject.activeSelf)
+            {
+                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.2f));
+            }
+
+            isShowRewardRunning = false; // Reset the flag to indicate that the reward display is done
+            yield break; // Exit the coroutine if there are no more rewards to show
+        }
+
+        itemRewardPrefab.GetComponent<RectTransform>().localScale = Vector3.one; // Start with the item reward prefab hidden
+        yield return new WaitForSeconds(1f); // Wait for a short duration before showing the next reward
+
+        if (pressCount < itemRewardsInChestBox.Count)
+        {
+            itemRewardPrefab.transform.SetParent(itemParent.transform);
+            itemRewardPrefab.GetComponent<RectTransform>().localScale = new Vector3(0.6f, 0.6f, 0.6f); 
+        }
+        else
+        {
+            itemRewardPrefab.transform.SetParent(currencyParent.transform); // Set the parent to the reward target position for crystal, star, or coin rewards
+            itemRewardPrefab.GetComponent<RectTransform>().localScale = new Vector3(0.6f, 0.6f, 0.6f);
+
+        }
+
+        isShowRewardRunning = false; // Reset the flag to indicate that the reward display is done
+    }
+
+    public void OnClickClaimButton()
+    {
+        if(isShowRewardRunning) return; // If the reward display is still running, do not allow claiming rewards
+
+        pressCount = 0;
+
+        openChestBoxPanel.SetActive(false); // Hide the chest box panel
+        claimRewardButton.gameObject.SetActive(false); // Hide the claim reward button
+        //Clear child in itemParent and currencyParent
+        for (int i = itemParent.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(itemParent.transform.GetChild(i).gameObject);
+        }
+
+        for (int i = currencyParent.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(currencyParent.transform.GetChild(i).gameObject);
+        }
+
+        //Return the chest box to the begin form
+        chestBoxImage.sprite = chestBoxClosedSprite;
+    }
 
     #endregion
 }

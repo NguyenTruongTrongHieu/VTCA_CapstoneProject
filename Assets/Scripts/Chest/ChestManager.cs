@@ -69,6 +69,8 @@ public class ChestManager : MonoBehaviour
             Debug.Log($"Reward Item: {itemReward.itemLevel} - {itemReward.itemType}");
         }
 
+        UIManager.instance.ShowChestBoxPanel(itemRewardsInChestBox, crystals, stars, coins);
+
         SetRewardForChestBox();
     }
     public void SetRewardForChestBox()
