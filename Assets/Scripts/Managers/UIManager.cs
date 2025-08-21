@@ -1467,7 +1467,7 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
-            yield return new WaitForSeconds(0.5f);
+            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.5f));
             yield return StartCoroutine(OpenChestBoxAnim(1f)); // Start the chest box opening animation
             yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
         }
@@ -1599,6 +1599,7 @@ public class UIManager : MonoBehaviour
 
         //Return the chest box to the begin form
         chestBoxImage.sprite = chestBoxClosedSprite;
+        chestBoxImage.gameObject.SetActive(false);
     }
 
     #endregion
