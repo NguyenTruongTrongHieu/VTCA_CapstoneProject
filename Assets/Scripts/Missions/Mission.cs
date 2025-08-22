@@ -12,7 +12,11 @@ public class Mission
     public int reward;
     public bool isCompleted;
 
+    // List of available mission types that can be assigned to a mission
+
+
     public MissionType missionType; // The type of the mission, e.g., KillEnemy, FruitMatching, etc.
+
     public MissionsGoal goal; // The goal that needs to be achieved to complete the mission
     
 
@@ -22,33 +26,17 @@ public class Mission
         isCompleted = true; // Mark the mission as completed
     }
 
-
-    public Mission( )
-    {
-        
-    }
-
-    public void CreateMission(string description, int reward)
-    {
-        this.description = description;
-        this.reward = reward;
-        isActive = true; // Set the mission as active when created
-        isCompleted = false; // Initially, the mission is not completed
-    }
-
-    public void KillMissionCreated(int targetAmount, int reward)
-    {
-        CreateMission("Kill " + targetAmount + " Monster", reward);
-    }
-
     public void RandomMissionType()
     {
         // Randomly select a mission type from the list of available mission types
-        if (MissionsManager._instance.missionTypes.Count> 0)
+        if (MissionsManager._instance.missionTypes.Count > 0)
         {
             int randomIndex = Random.Range(0, MissionsManager._instance.missionTypes.Count);
             missionType = MissionsManager._instance.missionTypes[randomIndex];
             MissionsManager._instance.missionTypes.RemoveAt(randomIndex); // Remove the selected type to avoid duplicates in the same mission
+
+            //Debug.Log("Selected Mission Type: " + missionType.ToString());
+            Debug.Log("Mission Types count " + MissionsManager._instance.missionTypes.Count);
         }
         else
         {
