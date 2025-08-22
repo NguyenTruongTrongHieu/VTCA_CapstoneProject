@@ -222,7 +222,7 @@ public class UIManager : MonoBehaviour
         UpdateCoinText();
         UpdateCrystalText();
         UpdateStarText();
-        SetUpMissions();
+        SetUpMissionsDescription();
 
         ShowMainMenuPanel();
 
@@ -1384,51 +1384,37 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region MISSIONS
-    void SetUpMissions()
+    void SetUpMissionsDescription()
     {
         for (int i = 0; i < missionsDescriptionTexts.Length; i++)
         {
-            MissionsManager._instance.missions[i].goal = new MissionsGoal(); // Initialize the goal for each mission
-            //MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
-            MissionsManager._instance.missions[i].goal.currentAmount = 0; // Initialize current amount to 0
-            MissionsManager._instance.missions[i].isActive = true; // Set the mission as active
-            MissionsManager._instance.missions[i].RandomMissionType();
-
-
             if (MissionsManager._instance.missions[i].isActive && !MissionsManager._instance.missions[i].isCompleted)
             {
                 // Set the description based on the mission type
                 if (MissionsManager._instance.missions[i].missionType == MissionType.KillEnemy)
                 {
-                    MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
-                    MissionsManager._instance.missions[i].description = "Kill " + MissionsManager._instance.missions[i].goal.targetAmount + " Monsters";
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                     Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.FruitMatching)
                 {
-                    MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(50, 100); // Set a random target amount for the goal
-                    MissionsManager._instance.missions[i].description = "Match " + MissionsManager._instance.missions[i].goal.targetAmount + " Fruits";
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                     Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeStats)
                 {
-                    MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(5, 10); // Set a random target amount for the goal
-                    MissionsManager._instance.missions[i].description = "Upgrade your stats " + MissionsManager._instance.missions[i].goal.targetAmount + " times";
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                    Debug.Log("Stats Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.ReachLevel)
                 {
-                    MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(5, 10); // Set a random target amount for the goal
-                    MissionsManager._instance.missions[i].description = "Reach Level " + MissionsManager._instance.missions[i].goal.targetAmount;
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                    Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UsePowerUp)
                 {
-                    MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
-                    MissionsManager._instance.missions[i].description = "Use Power Up " + MissionsManager._instance.missions[i].goal.targetAmount + " times";
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                    Debug.Log("Power Up Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
             }
