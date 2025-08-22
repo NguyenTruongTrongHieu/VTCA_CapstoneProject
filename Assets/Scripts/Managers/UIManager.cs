@@ -1384,7 +1384,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region MISSIONS
-    void SetUpMissionsDescription()
+    public void SetUpMissionsDescription()
     {
         for (int i = 0; i < missionsDescriptionTexts.Length; i++)
         {
@@ -1401,10 +1401,15 @@ public class UIManager : MonoBehaviour
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                     Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
-                else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeStats)
+                else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Stats Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                    Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                }
+                else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeHealthStats)
+                {
+                    missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                    Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.ReachLevel)
                 {
@@ -1420,7 +1425,7 @@ public class UIManager : MonoBehaviour
             }
             else if (MissionsManager._instance.missions[i].isCompleted)
             {
-                missionsDescriptionTexts[i].text = "Mission Completed: ";
+                missionsDescriptionTexts[i].text = "Mission Completed: " + MissionsManager._instance.missions[i].description;
             }
             else
             {

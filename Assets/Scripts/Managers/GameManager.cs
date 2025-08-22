@@ -225,6 +225,11 @@ public class GameManager : MonoBehaviour
         SetUpBasicDam();
         GetCostToUpgradeBasicDam();
 
+        if (MissionsManager._instance.missions != null)
+        {
+           MissionsManager._instance.UpgradeDamageStats();
+        }
+
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
     }
 
@@ -234,6 +239,11 @@ public class GameManager : MonoBehaviour
         SaveLoadManager.instance.currentBasicHealthLevel = currentHealthLevel;
         SetUpBasicHP();
         GetCostToUpgradeBasicHP();
+
+        if (MissionsManager._instance.missions != null)
+        {
+            MissionsManager._instance.UpgradeHealthStats();
+        }
 
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetUpStatAndSlider();
     }
