@@ -1483,27 +1483,27 @@ public class UIManager : MonoBehaviour
         GameObject itemRewardPrefab = null;
         if (itemRewardsInChestBox != null && itemRewardsInChestBox.Count > 0 && pressCount < itemRewardsInChestBox.Count)
         {
-            itemRewardPrefab = Instantiate(itemBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(itemBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.GetComponent<UIRewardInChestBox>().SetUI(itemRewardsInChestBox[pressCount].itemLevel, itemRewardsInChestBox[pressCount].itemType);
         }
         else if (crystalsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count)
         {
-            itemRewardPrefab = Instantiate(crystalBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(crystalBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(crystalsInChestBox, 2)}"; // Set the text for crystal amount
         }
         else if (starsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 1)
         {
-            itemRewardPrefab = Instantiate(starBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(starBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(starsInChestBox, 2)}"; // Set the text for star amount
         }
         else if (coinsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 2)
         {
-            itemRewardPrefab = Instantiate(coinBonusPrefab, rewardTargetPos.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(coinBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(coinsInChestBox, 2)}"; // Set the text for coin amount
         }
         else
         {
-            if (!claimRewardButton.gameObject.activeSelf)
+            if (!claimRewardButton.gameObject.activeSelf && pressCount >= itemRewardsInChestBox.Count + 2)
             {
                 StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.2f));
             }
@@ -1512,18 +1512,16 @@ public class UIManager : MonoBehaviour
             yield break; // Exit the coroutine if there are no more rewards to show
         }
 
-        itemRewardPrefab.GetComponent<RectTransform>().localScale = Vector3.one; // Start with the item reward prefab hidden
-        yield return new WaitForSeconds(1f); // Wait for a short duration before showing the next reward
+        yield return StartCoroutine(ShowOneReward(itemRewardPrefab, 0.25f));
+        yield return new WaitForSeconds(0.75f); // Wait for a short duration before showing the next reward
 
         if (pressCount < itemRewardsInChestBox.Count)
         {
-            itemRewardPrefab.transform.SetParent(itemParent.transform);
-            itemRewardPrefab.GetComponent<RectTransform>().localScale = new Vector3(0.6f, 0.6f, 0.6f); 
+            StartCoroutine(HideOneReward(itemRewardPrefab, 0.2f, new Vector3(0.6f, 0.6f, 0.6f), itemParent.transform)); // Hide the item reward prefab with zoom out animation
         }
         else
         {
-            itemRewardPrefab.transform.SetParent(currencyParent.transform); // Set the parent to the reward target position for crystal, star, or coin rewards
-            itemRewardPrefab.GetComponent<RectTransform>().localScale = new Vector3(0.6f, 0.6f, 0.6f);
+            StartCoroutine(HideOneReward(itemRewardPrefab, 0.2f, new Vector3(0.6f, 0.6f, 0.6f), currencyParent.transform)); // Hide the currency reward prefab with zoom out animation
 
             if (pressCount == itemRewardsInChestBox.Count + 2)
             {
@@ -1532,6 +1530,43 @@ public class UIManager : MonoBehaviour
         }
 
         isShowRewardRunning = false; // Reset the flag to indicate that the reward display is done
+    }
+
+    public IEnumerator ShowOneReward(GameObject rewardObject, float duration)
+    {
+        Vector3 startScale = rewardObject.transform.localScale;
+        Vector3 targetScale = Vector3.one; // Zoom in scale
+        Vector3 startPos = rewardObject.transform.position;
+        Vector3 targetPos = rewardTargetPos.transform.position; // Target position for the reward
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            rewardObject.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+            rewardObject.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / duration);
+            yield return null; // Wait for the next frame
+        }
+        rewardObject.transform.localScale = targetScale; // Set the final scale
+        rewardObject.transform.position = targetPos; // Set the final position
+    }
+
+    public IEnumerator HideOneReward(GameObject rewardObject, float duration, Vector3 targetScale, Transform parent)
+    {
+        Vector3 startScale = rewardObject.transform.localScale;
+        Vector3 startPos = rewardObject.transform.position;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            rewardObject.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+            rewardObject.transform.position = Vector3.Lerp(startPos, parent.position, elapsedTime / duration);
+            yield return null; // Wait for the next frame
+        }
+        rewardObject.transform.localScale = targetScale; // Set the final scale
+        rewardObject.transform.position = parent.position; // Set the final position
+        rewardObject.transform.SetParent(parent); // Set the parent to the target parent after the animation
     }
 
     public IEnumerator OpenChestBoxAnim(float time)
