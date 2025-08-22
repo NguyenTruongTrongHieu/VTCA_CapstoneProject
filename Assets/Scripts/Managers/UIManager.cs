@@ -170,10 +170,16 @@ public class UIManager : MonoBehaviour
     public GameObject itemParent;
     public GameObject currencyParent;
     public GameObject rewardTargetPos;
+
+    [Space]
     public Image chestBoxImage;
     public Sprite chestBoxClosedSprite;
     public Sprite chestBoxOpenedSprite;
     public Button claimRewardButton;
+
+    [Space]
+    public ParticleSystem lightChestBoxVFX;
+    public ParticleSystem smokeChestBoxVFX;
 
     [Space]
     public GameObject crystalBonusPrefab;
@@ -1467,7 +1473,8 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
-            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.5f));
+            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.15f));
+            yield return new WaitForSeconds(0.35f);
             yield return StartCoroutine(OpenChestBoxAnim(1f)); // Start the chest box opening animation
             yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
         }
@@ -1571,11 +1578,12 @@ public class UIManager : MonoBehaviour
                 yield return null; // Wait for the next frame
             }
             chestBoxRect.localRotation = Quaternion.Euler(0, 0, -10); // Ensure the final rotation is set
-            Debug.Log(countTimer);
         }
 
         chestBoxRect.localRotation = Quaternion.Euler(0, 0, 0); // Reset the rotation to the original position
+        smokeChestBoxVFX.Play(); // Play the smoke effect when the chest box is opened
         chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
+        lightChestBoxVFX.Play(); // Play the light effect when the chest box is opened
     }
 
     public void OnClickClaimButton()
@@ -1599,6 +1607,7 @@ public class UIManager : MonoBehaviour
 
         //Return the chest box to the begin form
         chestBoxImage.sprite = chestBoxClosedSprite;
+        lightChestBoxVFX.Stop();
         chestBoxImage.gameObject.SetActive(false);
     }
 
