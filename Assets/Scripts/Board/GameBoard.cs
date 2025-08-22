@@ -1038,7 +1038,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         if (hasMatchedFoods.Count >= 2)
         {
             StartCoroutine(OnDeletedMatchFood(havingSpecialFood, isFoodMoveToPlayer, specialTypeTmp)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
-            MissionsManager._instance.FruitMatching(hasMatchedFoods.Count); // cập nhật tiến độ nhiệm vụ nếu có
+
+            if (MissionsManager._instance.missions != null)
+                    {
+                MissionsManager._instance.FruitMatching(hasMatchedFoods.Count); // cập nhật tiến độ nhiệm vụ nếu có
+                    }
+            
         }
         else
         {

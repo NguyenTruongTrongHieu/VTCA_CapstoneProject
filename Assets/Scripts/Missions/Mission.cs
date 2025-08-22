@@ -31,6 +31,7 @@ public class Mission
         // Randomly select a mission type from the list of available mission types
         if (MissionsManager._instance.missionTypes.Count > 0)
         {
+
             int randomIndex = Random.Range(0, MissionsManager._instance.missionTypes.Count);
             missionType = MissionsManager._instance.missionTypes[randomIndex];
             MissionsManager._instance.missionTypes.RemoveAt(randomIndex); // Remove the selected type to avoid duplicates in the same mission

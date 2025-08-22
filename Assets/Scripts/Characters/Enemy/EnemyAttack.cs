@@ -211,18 +211,14 @@ public class EnemyAttack : MonoBehaviour
                             {
                                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 5, -6));
                             }
-                            
+
+                            if (MissionsManager._instance.missions != null)
+                            {
+                                MissionsManager._instance.EnemyKilled();
+                            }
+
                             Destroy(gameObject, 1f);
                         }
-                    }
-
-
-                    if (MissionsManager._instance.missions != null)
-                    {
-                      
-                            MissionsManager._instance.EnemyKilled();
-                            return;
-                        
                     }
                 }
                 if (!animator.GetBool(isDeadHash))
@@ -279,6 +275,11 @@ public class EnemyAttack : MonoBehaviour
                             StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+
+                            if (MissionsManager._instance.missions != null)
+                            {
+                                MissionsManager._instance.EnemyKilled();
+                            }
 
                             Destroy(gameObject, 1f);
                         }

@@ -17,7 +17,8 @@ public enum MissionType
 {
     KillEnemy,
    FruitMatching,
-    UpgradeStats,
+    UpgradeDamageStats,
+    UpgradeHealthStats,
     ReachLevel,
     UsePowerUp
 }

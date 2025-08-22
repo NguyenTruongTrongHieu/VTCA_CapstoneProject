@@ -74,6 +74,11 @@ public class LevelManager : MonoBehaviour
         {
             currentLevel = new Level(currentLevelIndex + 1, levels[currentLevelIndex].sceneName, levels[currentLevelIndex].havingBoss, levels[currentLevelIndex].rewardCoin); // Set the next level
             AddStateAndLockCellToCurrentLevel(); // Add states and lock cells to the new level
+
+            if (MissionsManager._instance.missions != null)
+            {
+                MissionsManager._instance.ReachLevel(currentLevel.index); // Update missions with the new level
+            }
         }
         else
         {

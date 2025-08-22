@@ -213,6 +213,11 @@ public class PlayerUltimate : MonoBehaviour
         StartCoroutine(Player1UltimateCoroutine()); // Start the coroutine for Player 1's ultimate
 
         ResetUltiAndMana(true);
+
+        if (MissionsManager._instance.missions != null)
+        {
+            MissionsManager._instance.UsePowerUp();
+        }
     }
 
     public IEnumerator Player1UltimateCoroutine()
@@ -247,6 +252,11 @@ public class PlayerUltimate : MonoBehaviour
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2(); // Play the ultimate visual effect
 
         ResetUltiAndMana(true);
+
+        if (MissionsManager._instance.missions != null)
+        {
+            MissionsManager._instance.UsePowerUp();
+        }
     }
 
     public IEnumerator Player2UltimateCoroutine()
@@ -272,6 +282,11 @@ public class PlayerUltimate : MonoBehaviour
         StartCoroutine(PlayUltiVfx(1.5f));
 
         ResetUltiAndMana(true);
+
+        if (MissionsManager._instance.missions != null)
+        {
+            MissionsManager._instance.UsePowerUp();
+        }
     }
 
     public IEnumerator SpawnDebuffTakeDam()
