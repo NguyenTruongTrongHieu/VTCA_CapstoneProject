@@ -78,7 +78,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 8850737333377022892}
   m_HandleRect: {fileID: 0}
@@ -328,7 +328,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 6506626961457000553}
   m_HandleRect: {fileID: 0}
@@ -4806,6 +4806,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 9046602361548846690}
+        m_TargetAssemblyTypeName: ChestManager, Assembly-CSharp
+        m_MethodName: OpenChest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1759450771929034034
 GameObject:
   m_ObjectHideFlags: 0
@@ -8740,10 +8752,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a630f6032d902ef4da1c85b1e3b6735d, type: 3}
-    m_FontSize: 82
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 5
     m_MaxSize: 157
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -14008,7 +14020,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 4202793171257384822}
   m_HandleRect: {fileID: 0}
@@ -14393,10 +14405,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a630f6032d902ef4da1c85b1e3b6735d, type: 3}
-    m_FontSize: 82
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 5
     m_MaxSize: 157
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -14483,7 +14495,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 561513648578925218}
   m_HandleRect: {fileID: 0}
@@ -14637,10 +14649,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a630f6032d902ef4da1c85b1e3b6735d, type: 3}
-    m_FontSize: 82
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 5
     m_MaxSize: 157
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -15560,7 +15572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
+  m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
 --- !u!1 &6408297783367958900
 GameObject:
@@ -28289,6 +28301,18 @@ PrefabInstance:
     - target: {fileID: 6218431452891414498, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Direction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6825338401755222850, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6825338401755222850, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0.09743981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6825338401755222850, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0.9547169
       objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
