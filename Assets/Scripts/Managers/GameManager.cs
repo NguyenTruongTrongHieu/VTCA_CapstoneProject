@@ -253,16 +253,19 @@ public class GameManager : MonoBehaviour
         //LoadScene
         if (LevelManager.instance.currentLevel.sceneName != SceneManager.GetActiveScene().name)
         {
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
+            //AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
 
-            while (!asyncOperation.isDone)
-            {
-                yield return null; // Wait for the next frame
-            }
+            //while (!asyncOperation.isDone)
+            //{
+            //    yield return null; // Wait for the next frame
+            //}
+            yield return StartCoroutine(SaveLoadManager.instance.LoadingSceneAsync(false, 0.75f));
+            //StartCoroutine(SaveLoadManager.instance.WaitingLoadingScene(0.75f));
         }
         else
         {
             //Reset game board
+            StartCoroutine(SaveLoadManager.instance.WaitingLoadingScene(0.75f));
             GameBoard.Instance.ResetBoard();
             GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
 
@@ -278,7 +281,7 @@ public class GameManager : MonoBehaviour
         UIManager.instance.UpdateColorTextForUpgradeCost();
         UIManager.instance.ShowMainMenuPanel();
 
-        SaveLoadManager.instance.loadingPanel.SetActive(false);
+        //SaveLoadManager.instance.loadingPanel.SetActive(false);
     }
 
     //public void Vibrate()

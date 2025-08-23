@@ -73,6 +73,9 @@ public class SaveLoadManager : MonoBehaviour
     [Header("Loading UI")]
     public GameObject loadingPanel;
     public Slider loadingSlider;
+    public Image backGroundImage;
+    public Sprite[] backGround;
+    public Text loadingText;
 
     private void Awake()
     {
@@ -103,7 +106,7 @@ public class SaveLoadManager : MonoBehaviour
         CurrencyManager.instance.crystals = currentCrystal;
         CurrencyManager.instance.stars = currentStar;
 
-        StartCoroutine(LoadingSceneAsync());
+        StartCoroutine(LoadingSceneAsync(true, 1f));
     }
 
     // Update is called once per frame
@@ -131,15 +134,50 @@ public class SaveLoadManager : MonoBehaviour
         };
     }
 
-    public IEnumerator LoadingSceneAsync()
+    public IEnumerator LoadingSceneAsync(bool isSetActiveLoadingPanel, float waitingTime)
     {
+        backGroundImage.sprite = backGround[Random.Range(0, backGround.Length)];
+        loadingText.text = "Loading...";
+        loadingSlider.value = 0f; // Reset the slider value to 0
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
-        loadingPanel.SetActive(true);
+        if (isSetActiveLoadingPanel)
+        {
+            loadingPanel.SetActive(true);
+        }
 
         while (!asyncOperation.isDone)
         { 
+            loadingSlider.value = asyncOperation.progress;
             yield return null; // Wait for the next frame
         }
+        loadingSlider.value = 1f; // Ensure the slider is full when loading is complete
+
+        if(waitingTime > 0)
+        {
+            StartCoroutine(WaitingLoadingScene(waitingTime));
+        }
+        else
+        {
+            if (isSetActiveLoadingPanel)
+                loadingPanel.SetActive(false);
+
+            loadingSlider.value = 0f;
+        }
+    }
+
+    public IEnumerator WaitingLoadingScene(float waitingTime)
+    {
+        loadingText.text = "Let's go!";
+        float elapsedTime = 0f;
+        while (elapsedTime < waitingTime)
+        {
+            elapsedTime += Time.deltaTime;
+            loadingSlider.value = Mathf.Lerp(0f, 1f, elapsedTime / waitingTime);
+            yield return null; // Wait for the next frame
+        }
+        yield return new WaitForSeconds(0.3f);
+
         loadingPanel.SetActive(false);
+        loadingSlider.value = 0f;
     }
 }
