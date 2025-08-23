@@ -1396,23 +1396,6 @@ public class UIManager : MonoBehaviour
     #region GAME OVER
     public void OnClickOverGameButton()
     {
-        SaveLoadManager.instance.ResetLoadingPanelPos();
-        SaveLoadManager.instance.loadingPanel.SetActive(true);
-
-        //Reset level or get new level
-        if (GameManager.instance.currentTurn == "Win")
-        {
-            LevelManager.instance.SetNextLevel(); // Set the next level
-        }
-        else if (GameManager.instance.currentTurn == "Lose")
-        {
-        }
-
-        //Basic reset
-        GameManager.instance.currentGameState = GameState.MainMenu;
-        GameManager.instance.currentTurn = ""; // Reset the current turn
-        GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
-
         GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
     }
     #endregion

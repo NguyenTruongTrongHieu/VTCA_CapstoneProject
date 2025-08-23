@@ -250,6 +250,23 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator LoadNewLevel()
     {
+        SaveLoadManager.instance.loadingPanel.SetActive(true);
+        yield return StartCoroutine(SaveLoadManager.instance.MoveUpLoadingPanel());
+
+        //Reset level or get new level
+        if (currentTurn == "Win")
+        {
+            LevelManager.instance.SetNextLevel(); // Set the next level
+        }
+        else if (currentTurn == "Lose")
+        {
+        }
+
+        //Basic reset
+        currentGameState = GameState.MainMenu;
+        currentTurn = ""; // Reset the current turn
+        currentEnemyIndex = 0; // Reset the current enemy index
+
         //LoadScene
         if (LevelManager.instance.currentLevel.sceneName != SceneManager.GetActiveScene().name)
         {

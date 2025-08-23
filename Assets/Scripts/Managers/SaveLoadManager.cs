@@ -194,7 +194,15 @@ public class SaveLoadManager : MonoBehaviour
     public IEnumerator MoveDownLoadingPanel()
     {
         yield return StartCoroutine(UIManager.instance.SlidePanel(loadingPanel.GetComponent<RectTransform>(), originalOffsetMinLoadingPanel,
-            originalOffsetMaxLoadingPanel, originalOffsetMinLoadingPanel - new Vector2(0, 1920f), originalOffsetMaxLoadingPanel - new Vector2(0, 1920f), 0.5f));
+            originalOffsetMaxLoadingPanel, originalOffsetMinLoadingPanel - new Vector2(0, 1920f), 
+            originalOffsetMaxLoadingPanel - new Vector2(0, 1920f), 0.5f));
+    }
+
+    public IEnumerator MoveUpLoadingPanel()
+    {
+        yield return StartCoroutine(UIManager.instance.SlidePanel(loadingPanel.GetComponent<RectTransform>(), loadingPanel.GetComponent<RectTransform>().offsetMin,
+            loadingPanel.GetComponent<RectTransform>().offsetMax, originalOffsetMinLoadingPanel, 
+            originalOffsetMaxLoadingPanel, 0.5f));
     }
 
     public void ResetLoadingPanelPos()
