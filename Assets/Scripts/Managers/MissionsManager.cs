@@ -193,10 +193,10 @@ public class MissionsManager : MonoBehaviour
 
     public void SetUpMissionsInfo()
     {
+        missionCompletedCount = 0; // Reset the count of completed missions at the start
+
         for (int i = 0; i < missions.Length; i++)
         {
-            missionCompletedCount = 0; // Reset the count of completed missions at the start
-
             missions[i].goal = new MissionsGoal(); // Initialize the goal for each mission
             //MissionsManager._instance.missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
             missions[i].goal.currentAmount = 0; // Initialize current amount to 0

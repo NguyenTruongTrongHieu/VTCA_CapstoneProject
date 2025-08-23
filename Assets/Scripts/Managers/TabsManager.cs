@@ -18,25 +18,28 @@ public class TabsManager : MonoBehaviour
 
     public void SwitchToTabs(int TabID)
     {
-            foreach (GameObject tab in tabs)
-            {
-                tab.SetActive(false); // Deactivate all tabs
-            }
-            tabs[TabID].SetActive(true); // Activate the selected tab
-
-            foreach (Image image in tabButtons)
-            {
-                image.sprite = inActiveTabBG; // Set all tab buttons to inactive background
-                image.rectTransform.sizeDelta = inActiveButtonSize; // Set all tab buttons to inactive size
-            }
-
-            tabButtons[TabID].sprite = activeTabBG; // Set the selected tab button to active background
-            tabButtons[TabID].rectTransform.sizeDelta = activeButtonSize; // Set the selected tab button to active size
-
+        foreach (GameObject tab in tabs)
+        {
+            tab.SetActive(false); // Deactivate all tabs
+        }
         if (TabID == 1)
         {
-           Debug.Log("Missions Tab"); // Debug log for Missions tab
+            Debug.Log("Missions Tab"); // Debug log for Missions tab
+            StartCoroutine(UIManager.instance.ShowPanelWithZoomInAnim(tabs[TabID], 0.2f));// Show Missions panel with zoom-in animation
         }
+        else
+            tabs[TabID].SetActive(true); // Activate the selected tab
+
+
+        foreach (Image image in tabButtons)
+        {
+            image.sprite = inActiveTabBG; // Set all tab buttons to inactive background
+            image.rectTransform.sizeDelta = inActiveButtonSize; // Set all tab buttons to inactive size
+        }
+
+        tabButtons[TabID].sprite = activeTabBG; // Set the selected tab button to active background
+        tabButtons[TabID].rectTransform.sizeDelta = activeButtonSize; // Set the selected tab button to active size
+
 
 
         if (TabID == 2)
