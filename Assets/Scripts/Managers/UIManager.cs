@@ -76,6 +76,8 @@ public class UIManager : MonoBehaviour
     public Text costToUpgradeHealthText;
 
     public GameObject mainMenuPanel;
+    private Vector2 originaloffsetMinMenuPanel;
+    private Vector2 originaloffsetMaxMenuPanel;
 
     [Space]
     public Text currentLevelDisplay;
@@ -194,6 +196,9 @@ public class UIManager : MonoBehaviour
     private int crystalsInChestBox;
     private int coinsInChestBox;
     private int starsInChestBox;
+    private bool isClaimCrystal = false;
+    private bool isClaimCoin = false;
+    private bool isClaimStar = false;
 
     private void Awake()
     {
@@ -223,6 +228,9 @@ public class UIManager : MonoBehaviour
         UpdateCrystalText();
         UpdateStarText();
         SetUpMissionsDescription();
+
+        originaloffsetMinMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMin;
+        originaloffsetMaxMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMax;
 
         ShowMainMenuPanel();
 
@@ -273,7 +281,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentGameState = GameState.Playing;
         GameManager.instance.currentTurn = "None"; // Set the current turn to None
 
-        ShowInGamePanel();
+        StartCoroutine(ShowInGamePanel());
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
@@ -316,7 +324,7 @@ public class UIManager : MonoBehaviour
         coinText.text = NumberFomatter.FormatIntToString(CurrencyManager.instance.coins, 2);
     }
 
-    public IEnumerator CurrencyPanelZoomInAndZoomOut(string currency)
+    public IEnumerator CurrencyPanelZoomInAndZoomOut(string currency, float duration)
     {
         Transform targetObject;
         if (currency == "coin")
@@ -335,10 +343,10 @@ public class UIManager : MonoBehaviour
         float elaspedTime = 0f;
         Vector3 startScale = targetObject.localScale;
         Vector3 targetScale = new Vector3(0.5f, 0.5f, 0.5f); // Zoom out scale
-        while (elaspedTime < 0.05f)
+        while (elaspedTime < duration)
         {
             elaspedTime += Time.deltaTime;
-            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / duration);
             yield return null;
         }
         targetObject.localScale = targetScale; // Set the final scale
@@ -357,10 +365,10 @@ public class UIManager : MonoBehaviour
         elaspedTime = 0f;
         startScale = targetObject.localScale;
         targetScale = new Vector3(1f, 1f, 1f); // Reset to original scale
-        while (elaspedTime < 0.05f)
+        while (elaspedTime < duration)
         {
             elaspedTime += Time.deltaTime;
-            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.2f);
+            targetObject.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / duration);
             yield return null;
         }
         targetObject.localScale = targetScale; // Set the final scale
@@ -1110,13 +1118,17 @@ public class UIManager : MonoBehaviour
         currentLevelDisplay.gameObject.SetActive(true); // Show the current level text
     }
 
-    public void ShowInGamePanel()
+    public IEnumerator ShowInGamePanel()
     {
+        yield return StartCoroutine(SlidePanel( mainMenuPanel.GetComponent<RectTransform>(), originaloffsetMinMenuPanel, 
+            originaloffsetMaxMenuPanel, originaloffsetMinMenuPanel - new Vector2(0, 1920f), originaloffsetMaxMenuPanel - new Vector2(0, 1920f), 0.2f));
         mainMenuPanel.SetActive(false);
         ultimateButtonAndEffectObject.SetActive(false);
         ultimateButton.gameObject.SetActive(false);
         manaSlider.gameObject.SetActive(true);
+        gameBoard.SetActive(false);
         inGamePanel.SetActive(true);
+        StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.2f));
         //foreach (Image tabsButtons in tabsManager.tabButtons)
         //{
         //    tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
@@ -1132,7 +1144,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowMainMenuPanel()
     {
+        // Reset the main menu panel position to its original state
+        mainMenuPanel.GetComponent<RectTransform>().offsetMin = originaloffsetMinMenuPanel; // Reset the offsetMin
+        mainMenuPanel.GetComponent<RectTransform>().offsetMax = originaloffsetMaxMenuPanel; // Reset the offsetMax
         mainMenuPanel.SetActive(true);
+        //StartCoroutine(SlidePanel(mainMenuPanel.GetComponent<RectTransform>(), mainMenuPanel.GetComponent<RectTransform>().offsetMin,
+        //    mainMenuPanel.GetComponent<RectTransform>().offsetMax, originaloffsetMinMenuPanel, originaloffsetMaxMenuPanel, 1f));
         inGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
         SetProgressAtStart();
@@ -1172,6 +1189,22 @@ public class UIManager : MonoBehaviour
         }
         panel.transform.localScale = targetScale; // Set the final scale
         panel.SetActive(false); // Hide the panel after the animation
+    }
+
+    public IEnumerator SlidePanel(RectTransform panel, Vector2 StartMin, Vector2 startMax, Vector2 targetMin, Vector2 targetMax , float duration)
+    { 
+        float elapsedTime = 0f;
+        panel.offsetMin = StartMin; // Start from the initial position
+        panel.offsetMax = startMax; // Start from the initial position
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            panel.offsetMin = Vector2.Lerp(StartMin, targetMin, elapsedTime / duration);
+            panel.offsetMax = Vector2.Lerp(startMax, targetMax, elapsedTime / duration);
+            yield return null;
+        }
+        panel.offsetMin = targetMin; // Set the final position
+        panel.offsetMax = targetMax; // Set the final position
     }
 
     public void HideBuyAndUpgradeCharacterPanel()
@@ -1363,6 +1396,7 @@ public class UIManager : MonoBehaviour
     #region GAME OVER
     public void OnClickOverGameButton()
     {
+        SaveLoadManager.instance.ResetLoadingPanelPos();
         SaveLoadManager.instance.loadingPanel.SetActive(true);
 
         //Reset level or get new level
@@ -1481,16 +1515,19 @@ public class UIManager : MonoBehaviour
         {
             itemRewardPrefab = Instantiate(crystalBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(crystalsInChestBox, 2)}"; // Set the text for crystal amount
+            isClaimCrystal = true; // Set the flag to indicate that crystals are being claimed
         }
         else if (starsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 1)
         {
             itemRewardPrefab = Instantiate(starBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(starsInChestBox, 2)}"; // Set the text for star amount
+            isClaimStar = true;
         }
         else if (coinsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 2)
         {
             itemRewardPrefab = Instantiate(coinBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(coinsInChestBox, 2)}"; // Set the text for coin amount
+            isClaimCoin = true;
         }
         else
         {
@@ -1635,6 +1672,23 @@ public class UIManager : MonoBehaviour
         chestBoxImage.sprite = chestBoxClosedSprite;
         lightChestBoxVFX.Stop();
         chestBoxImage.gameObject.SetActive(false);
+
+        //Currency anim
+        if (isClaimCrystal)
+        {
+            StartCoroutine(CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
+            isClaimCrystal = false;
+        }
+        if (isClaimStar)
+        {
+            StartCoroutine(CurrencyPanelZoomInAndZoomOut("star", 0.1f));
+            isClaimStar = false;
+        }
+        if (isClaimCoin)
+        {
+            StartCoroutine(CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
+            isClaimCoin = false;
+        }
     }
 
     #endregion

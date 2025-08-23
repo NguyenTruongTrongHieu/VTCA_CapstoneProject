@@ -72,6 +72,8 @@ public class SaveLoadManager : MonoBehaviour
 
     [Header("Loading UI")]
     public GameObject loadingPanel;
+    private Vector2 originalOffsetMinLoadingPanel;
+    private Vector2 originalOffsetMaxLoadingPanel;
     public Slider loadingSlider;
     public Image backGroundImage;
     public Sprite[] backGround;
@@ -94,6 +96,9 @@ public class SaveLoadManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        originalOffsetMinLoadingPanel = loadingPanel.GetComponent<RectTransform>().offsetMin;
+        originalOffsetMaxLoadingPanel = loadingPanel.GetComponent<RectTransform>().offsetMax;
+
         LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex - 1].sceneName, 
             LevelManager.instance.levels[currentLevelIndex - 1].havingBoss, LevelManager.instance.levels[currentLevelIndex - 1].rewardCoin);
         LevelManager.instance.AddStateAndLockCellToCurrentLevel();
@@ -142,6 +147,7 @@ public class SaveLoadManager : MonoBehaviour
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
         if (isSetActiveLoadingPanel)
         {
+            ResetLoadingPanelPos();
             loadingPanel.SetActive(true);
         }
 
@@ -159,7 +165,10 @@ public class SaveLoadManager : MonoBehaviour
         else
         {
             if (isSetActiveLoadingPanel)
+            {
+                yield return StartCoroutine(MoveDownLoadingPanel());
                 loadingPanel.SetActive(false);
+            }
 
             loadingSlider.value = 0f;
         }
@@ -177,7 +186,21 @@ public class SaveLoadManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.3f);
 
+        yield return StartCoroutine(MoveDownLoadingPanel());
         loadingPanel.SetActive(false);
         loadingSlider.value = 0f;
+    }
+
+    public IEnumerator MoveDownLoadingPanel()
+    {
+        yield return StartCoroutine(UIManager.instance.SlidePanel(loadingPanel.GetComponent<RectTransform>(), originalOffsetMinLoadingPanel,
+            originalOffsetMaxLoadingPanel, originalOffsetMinLoadingPanel - new Vector2(0, 1920f), originalOffsetMaxLoadingPanel - new Vector2(0, 1920f), 0.5f));
+    }
+
+    public void ResetLoadingPanelPos()
+    {
+        //Reset the loading panel position
+        loadingPanel.GetComponent<RectTransform>().offsetMin = originalOffsetMinLoadingPanel;
+        loadingPanel.GetComponent<RectTransform>().offsetMax = originalOffsetMaxLoadingPanel;
     }
 }
