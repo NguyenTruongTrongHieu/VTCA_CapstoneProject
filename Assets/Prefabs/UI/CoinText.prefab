@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 8337245283899067427}
   - component: {fileID: 7332333671870903100}
   - component: {fileID: 2566447147305169297}
+  - component: {fileID: 1895585374233439199}
   m_Layer: 5
   m_Name: CoinText
   m_TagString: Untagged
@@ -154,4 +155,19 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 1
+--- !u!114 &1895585374233439199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384053807997518815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.6485439, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
