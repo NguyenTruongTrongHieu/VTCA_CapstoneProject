@@ -152,7 +152,18 @@ public class UIManager : MonoBehaviour
 
 
     [Header("Game Over")]
+    public GameObject parentObject;
     public GameObject gameOverPanel;
+    public GameObject rewardPanel;
+    public Image gameOverPanelImage;
+    public Image resultImage;
+    public Sprite winPanelSprite;
+    public Sprite losePanelSprite;
+    public Sprite winResultSprite;
+    public Sprite loseResultSprite;
+    public Sprite winButtonSprite;
+    public Sprite loseButtonSprite;
+    public Text rewardCoinText;
     public Button returnMenuButton;
 
     [Header("DamText Prefabs")]
@@ -374,10 +385,18 @@ public class UIManager : MonoBehaviour
         targetObject.localScale = targetScale; // Set the final scale
     }
 
-    public IEnumerator SpawnCoinPrefabAndMoveToCoinPanel(Transform startTransform, int coinAmount)
+    public IEnumerator SpawnCoinPrefabAndMoveToCoinPanel(Transform startTransform, int coinAmount, bool needChangeTransformFromWordToScreen)
     {
         string text = NumberFomatter.FormatIntToString(coinAmount, 2);
-        Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
+        Vector3 startPos;
+        if (needChangeTransformFromWordToScreen)
+        {
+            startPos = Camera.main.WorldToScreenPoint(startTransform.position);
+        }
+        else
+        {
+            startPos = startTransform.position;
+        }
 
         GameObject coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
         Text coinText = coinTextObject.GetComponent<Text>();
@@ -1121,14 +1140,14 @@ public class UIManager : MonoBehaviour
     public IEnumerator ShowInGamePanel()
     {
         yield return StartCoroutine(SlidePanel( mainMenuPanel.GetComponent<RectTransform>(), originaloffsetMinMenuPanel, 
-            originaloffsetMaxMenuPanel, originaloffsetMinMenuPanel - new Vector2(0, 1920f), originaloffsetMaxMenuPanel - new Vector2(0, 1920f), 0.2f));
+            originaloffsetMaxMenuPanel, originaloffsetMinMenuPanel - new Vector2(0, 1920f), originaloffsetMaxMenuPanel - new Vector2(0, 1920f), 0.5f));
         mainMenuPanel.SetActive(false);
         ultimateButtonAndEffectObject.SetActive(false);
         ultimateButton.gameObject.SetActive(false);
         manaSlider.gameObject.SetActive(true);
         gameBoard.SetActive(false);
         inGamePanel.SetActive(true);
-        StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.2f));
+        StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.5f));
         //foreach (Image tabsButtons in tabsManager.tabButtons)
         //{
         //    tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
@@ -1137,7 +1156,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOverPanel(bool isPlayerWin)
     {
-        gameOverPanel.SetActive(true);
+        Debug.Log("Show game over panel: " + isPlayerWin);
+        StartCoroutine(ShowOverPanel());
         mainMenuPanel.SetActive(false);
         //inGamePanel.SetActive(false);
     }
@@ -1151,7 +1171,7 @@ public class UIManager : MonoBehaviour
         //StartCoroutine(SlidePanel(mainMenuPanel.GetComponent<RectTransform>(), mainMenuPanel.GetComponent<RectTransform>().offsetMin,
         //    mainMenuPanel.GetComponent<RectTransform>().offsetMax, originaloffsetMinMenuPanel, originaloffsetMaxMenuPanel, 1f));
         inGamePanel.SetActive(false);
-        gameOverPanel.SetActive(false);
+        HideOverPanel();
         SetProgressAtStart();
 
         //foreach (Image tabsButtons in tabsManager.tabButtons)
@@ -1394,6 +1414,68 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region GAME OVER
+
+    public IEnumerator ShowOverPanel()
+    {
+        if (GameManager.instance.currentTurn == "Win")
+        { 
+            gameOverPanelImage.sprite = winPanelSprite;
+            resultImage.sprite = winResultSprite;
+            returnMenuButton.GetComponent<Image>().sprite = winButtonSprite;
+            rewardCoinText.text = "0";
+            rewardPanel.SetActive(true);
+        }
+        else
+        {
+            gameOverPanelImage.sprite = losePanelSprite;
+            resultImage.sprite = loseResultSprite;
+            returnMenuButton.GetComponent<Image>().sprite = loseButtonSprite;
+            rewardPanel.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(2.5f);
+        parentObject.SetActive(true);
+
+        yield return StartCoroutine(ShowPanelWithZoomInAnim(gameOverPanel, 0.3f));
+
+        // Count coins
+        if (GameManager.instance.currentTurn == "Win")
+        { 
+            yield return new WaitForSeconds(0.2f);
+            yield return StartCoroutine(CountCoin(LevelManager.instance.currentLevel.rewardCoin, 1f) );
+            yield return new WaitForSeconds(0.3f);
+            StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform, LevelManager.instance.currentLevel.rewardCoin, false));
+        }
+
+        yield return new WaitForSeconds(0.3f);
+        StartCoroutine(ShowPanelWithZoomInAnim(returnMenuButton.gameObject, 0.2f));
+    }
+
+    public IEnumerator CountCoin(int targetCoin, float duration)
+    {
+        int startScore = 0;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            int currentCoin = Mathf.RoundToInt(Mathf.Lerp(startScore, targetCoin, t));
+            rewardCoinText.text = currentCoin.ToString();
+            yield return null;
+        }
+
+        // đảm bảo kết quả cuối cùng chính xác
+        rewardCoinText.text = targetCoin.ToString();
+    }
+
+    public void HideOverPanel()
+    { 
+        returnMenuButton.gameObject.SetActive(false);
+        gameOverPanel.SetActive(false);
+        parentObject.SetActive(false);
+    }
+
     public void OnClickOverGameButton()
     {
         GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());

@@ -296,7 +296,7 @@ public class MissionsManager : MonoBehaviour
                 // For example, you can give coins, gems, or any other rewards based on the mission type
                 Debug.Log("Reward Claimed for Mission: " + missions[i].description);
 
-                CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[i].transform, missions[i].reward)); // Add coins to the player's currency
+                CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[i].transform, missions[i].reward, false)); // Add coins to the player's currency
 
 
             }

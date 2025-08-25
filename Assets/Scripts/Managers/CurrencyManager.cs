@@ -36,10 +36,10 @@ public class CurrencyManager : MonoBehaviour
         UIManager.instance.UpdateCoinText();
     }
 
-    public IEnumerator AddCoins(Transform startPos, int amount)
+    public IEnumerator AddCoins(Transform startPos, int amount, bool needChangeTransformFromWordToScreen)
     {
         //Play anim spawn coins
-        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCoinPrefabAndMoveToCoinPanel(startPos, amount));
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCoinPrefabAndMoveToCoinPanel(startPos, amount, needChangeTransformFromWordToScreen));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
 
         AddCoinsDontHaveAnim(amount); // Update the coin count without animation

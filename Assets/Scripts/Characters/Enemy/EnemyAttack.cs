@@ -116,8 +116,6 @@ public class EnemyAttack : MonoBehaviour
         if (isPlayerDie)
         {
             yield return new WaitForSeconds(1.15f);
-            GameManager.instance.currentTurn = "Lose";
-            GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
         }
         else
@@ -131,6 +129,14 @@ public class EnemyAttack : MonoBehaviour
 
     public void Victory()
     {
+        if (this.transform != LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
+        {
+            return;
+        }
+
+        GameManager.instance.currentTurn = "Lose";
+        GameManager.instance.currentGameState = GameState.GameOver;
+
         animator.SetBool(isVictoryHash, true);
         StartCoroutine(RotateToTarget(GameManager.instance.enemiesEndRotation));
 
@@ -192,7 +198,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f)));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f), true));
                     
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
@@ -265,7 +271,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f)));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f), true));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -297,7 +303,7 @@ public class EnemyAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         dropCoinSpecialVFX.Play();
-        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward));
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward, true));
     }
 
     public void BeingAttactk()

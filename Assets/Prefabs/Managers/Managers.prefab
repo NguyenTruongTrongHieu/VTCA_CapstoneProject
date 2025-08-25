@@ -92,7 +92,7 @@ MonoBehaviour:
     - {fileID: 6029603621710947302, guid: 8a5b4f440601dfd4e8fce9c05635e87b, type: 3}
     - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
     sceneName: Scene1
-    rewardCoin: 0
+    rewardCoin: 1000
     havingBoss: 0
     statesInBoard:
     - {x: 0, y: 1}
@@ -120,7 +120,7 @@ MonoBehaviour:
     - {fileID: 6029603621710947302, guid: e0751174f24fdce4992f3bb56374c7b4, type: 3}
     - {fileID: 6029603621710947302, guid: 3ee61d95f60d8f44b9b1dd7ff4b2ed42, type: 3}
     sceneName: Scene1
-    rewardCoin: 0
+    rewardCoin: 1000
     havingBoss: 1
     statesInBoard:
     - {x: 3, y: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
     - {fileID: 6029603621710947302, guid: 2ac02505a2929564bb9563ec228f76b6, type: 3}
     - {fileID: 6029603621710947302, guid: cf555ae65dbb5e547bb7d3b626d66cb2, type: 3}
     sceneName: Scene2
-    rewardCoin: 0
+    rewardCoin: 1000
     havingBoss: 0
     statesInBoard:
     - {x: 3, y: 0}
