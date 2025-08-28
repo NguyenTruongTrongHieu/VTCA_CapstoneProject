@@ -199,7 +199,9 @@ MonoBehaviour:
   basicDefense: 1
   defense: 1
   coinReward: 100
+  crystalDropRate: 50
   crystalReward: 0
+  starDropRate: 90
   starReward: 0
 --- !u!1 &8144704304589532369
 GameObject:

@@ -36,10 +36,15 @@ public class CurrencyManager : MonoBehaviour
         UIManager.instance.UpdateCoinText();
     }
 
-    public IEnumerator AddCoins(Transform startPos, int amount, bool needChangeTransformFromWordToScreen)
+    public IEnumerator AddCoins(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
     {
+        if (waitTimeBeforeAdd > 0f)
+        { 
+            yield return new WaitForSeconds(waitTimeBeforeAdd);
+        }
+
         //Play anim spawn coins
-        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCoinPrefabAndMoveToCoinPanel(startPos, amount, needChangeTransformFromWordToScreen));
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "coin", amount, needChangeTransformFromWordToScreen));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
 
         AddCoinsDontHaveAnim(amount); // Update the coin count without animation
@@ -59,6 +64,20 @@ public class CurrencyManager : MonoBehaviour
 
     #region UPDATE CRYSTAL
 
+    public IEnumerator AddCrystals(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
+    {
+        if (waitTimeBeforeAdd > 0f)
+        {
+            yield return new WaitForSeconds(waitTimeBeforeAdd);
+        }
+
+        //Play anim spawn crystals
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "crystal", amount, needChangeTransformFromWordToScreen));
+        StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
+
+        AddCrystalsDontHaveAnim(amount); // Update the crystal count without animation
+    }
+
     public void AddCrystalsDontHaveAnim (int amount)
     {
         crystals += amount;
@@ -77,6 +96,20 @@ public class CurrencyManager : MonoBehaviour
     #endregion
 
     #region UPDATE STAR
+
+    public IEnumerator AddStars(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
+    {
+        if (waitTimeBeforeAdd > 0f)
+        {
+            yield return new WaitForSeconds(waitTimeBeforeAdd);
+        }
+
+        //Play anim spawn stars
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "star", amount, needChangeTransformFromWordToScreen));
+        StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star", 0.1f));
+
+        AddStarsDontHaveAnim(amount); // Update the star count without animation
+    }
 
     public void AddStarsDontHaveAnim(int amount)
     {
