@@ -20,7 +20,9 @@ public class EnemyStat : Stats
 
     [Header("Reward")]
     public int coinReward = 0; // Amount of coins rewarded when the enemy is defeated
+    public float crystalDropRate = 1f; // Chance to drop diamonds (0 to 100)
     public int crystalReward = 0; // Amount of diamonds rewarded when the enemy is defeated
+    public float starDropRate = 10f; // Chance to drop stars (0 to 100)
     public int starReward = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -41,7 +43,7 @@ public class EnemyStat : Stats
     { 
         //Set crystal reward with a 1% chance
         float randomValue = Random.Range(0, 101); // Random value between 0 and 100
-        if (randomValue <= 90f) // 1% chance
+        if (randomValue <= crystalDropRate) // 1% chance
         {
             crystalReward = 1;
         }
@@ -52,7 +54,7 @@ public class EnemyStat : Stats
 
         //Set star reward with a 30% chance
         randomValue = Random.Range(0, 101); // Random value between 0 and 100
-        if (randomValue <= 100f) // 30% chance
+        if (randomValue <= starDropRate) // 30% chance
         {
             starReward = 1;
         }

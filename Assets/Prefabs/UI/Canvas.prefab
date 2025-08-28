@@ -1382,7 +1382,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1102133142337648050
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7956,6 +7956,8 @@ MonoBehaviour:
   damageText: {fileID: 2484180374567475607, guid: 4df89ff13fabc564bbe91179b49c6795, type: 3}
   characterWidthDamText: 150
   coinTextPrefab: {fileID: 8384053807997518815, guid: 076335b2771e2424280b20e8861c90c8, type: 3}
+  crystalTextPrefab: {fileID: 8384053807997518815, guid: a093ba5daaa6c704a86e6127b3356f79, type: 3}
+  starTextPrefab: {fileID: 8384053807997518815, guid: 3f6bc77d08692244c9044b29d9f14197, type: 3}
   characterWidthCoinText: 60
   missionsDescriptionTexts:
   - {fileID: 1767697811713646003}

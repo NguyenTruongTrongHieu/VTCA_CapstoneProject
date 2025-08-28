@@ -200,7 +200,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f), true));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0f));
                     
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
@@ -273,7 +273,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, (int)Mathf.Max(1, dam * 0.05f), true));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -305,16 +305,18 @@ public class EnemyAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         dropCoinSpecialVFX.Play();
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, enemyStat.coinReward, true, 0f));
         if (enemyStat.crystalReward > 0)
         {
             dropCrystalVFX.Play();
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCrystals(transform.position + new Vector3(0, 0.25f, 0), enemyStat.crystalReward, true, 0.2f));
         }
         if (enemyStat.starReward > 0)
         {
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddStars(transform.position + new Vector3(0, 0.5f, 0), enemyStat.starReward, true, 0.4f));
             yield return new WaitForSeconds(0.2f);
             dropStarVFX.Play();
         }
-        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward, true));
     }
 
     public void BeingAttactk()

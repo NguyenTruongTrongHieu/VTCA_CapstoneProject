@@ -173,7 +173,10 @@ public class UIManager : MonoBehaviour
 
     [Header("CoinText prefabs")]
     public GameObject coinTextPrefab;
+    public GameObject crystalTextPrefab;
+    public GameObject starTextPrefab;
     public float characterWidthCoinText;
+
 
     [Header("Missions")]
     public Text[] missionsDescriptionTexts;
@@ -385,20 +388,33 @@ public class UIManager : MonoBehaviour
         targetObject.localScale = targetScale; // Set the final scale
     }
 
-    public IEnumerator SpawnCoinPrefabAndMoveToCoinPanel(Transform startTransform, int coinAmount, bool needChangeTransformFromWordToScreen)
+    public IEnumerator SpawnCurrencyPrefabAndMoveToPanel(Vector3 startTransform, string currency, int coinAmount, bool needChangeTransformFromWordToScreen)
     {
         string text = NumberFomatter.FormatIntToString(coinAmount, 2);
         Vector3 startPos;
         if (needChangeTransformFromWordToScreen)
         {
-            startPos = Camera.main.WorldToScreenPoint(startTransform.position);
+            startPos = Camera.main.WorldToScreenPoint(startTransform);
         }
         else
         {
-            startPos = startTransform.position;
+            startPos = startTransform;
         }
 
-        GameObject coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+        GameObject coinTextObject = null;
+        if (currency == "coin")
+        {
+            coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+        }
+        else if (currency == "star")
+        {
+            coinTextObject = Instantiate(starTextPrefab, startPos, Quaternion.identity, transform);
+        }
+        else
+        {
+            coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
+        }
+
         Text coinText = coinTextObject.GetComponent<Text>();
         RectTransform rectTransformCoinText = coinTextObject.GetComponent<RectTransform>();
 
@@ -433,7 +449,19 @@ public class UIManager : MonoBehaviour
         rectTransformCoinText.localScale = targetScale; // Set the final scale
 
         elaspedTime = 0f;
-        Vector3 targetPos = coinPanel.transform.position;
+        Vector3 targetPos = Vector3.zero;
+        if(currency == "coin")
+        {
+            targetPos = coinPanel.transform.position;
+        }
+        else if (currency == "star")
+        {
+            targetPos = starPanel.transform.position;
+        }
+        else
+        {
+            targetPos = crystalPanel.transform.position;
+        }
         while (elaspedTime < 0.2f) // Run this animation for 0.2s
         {
             elaspedTime += Time.deltaTime;
@@ -1444,7 +1472,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             yield return StartCoroutine(CountCoin(LevelManager.instance.currentLevel.rewardCoin, 1f) );
             yield return new WaitForSeconds(0.3f);
-            StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform, LevelManager.instance.currentLevel.rewardCoin, false));
+            StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform.position, LevelManager.instance.currentLevel.rewardCoin, false, 0f));
         }
 
         yield return new WaitForSeconds(0.3f);
