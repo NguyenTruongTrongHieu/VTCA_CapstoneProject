@@ -13,6 +13,8 @@ public class EnemyAttack : MonoBehaviour
     [Header("VFX")]
     public ParticleSystem dropCoinNormalVFX;
     public ParticleSystem dropCoinSpecialVFX;
+    public ParticleSystem dropCrystalVFX;
+    public ParticleSystem dropStarVFX;
     public ParticleSystem debuffVFX;
     public ParticleSystem hitImpact;
     public ParticleSystem hitImpactSpecial;
@@ -303,6 +305,15 @@ public class EnemyAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         dropCoinSpecialVFX.Play();
+        if (enemyStat.crystalReward > 0)
+        {
+            dropCrystalVFX.Play();
+        }
+        if (enemyStat.starReward > 0)
+        {
+            yield return new WaitForSeconds(0.2f);
+            dropStarVFX.Play();
+        }
         CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform, enemyStat.coinReward, true));
     }
 
