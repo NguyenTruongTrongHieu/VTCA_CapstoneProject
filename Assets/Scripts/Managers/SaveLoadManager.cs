@@ -65,6 +65,7 @@ public class OwnedCharacter
 public class SaveLoadManager : MonoBehaviour
 {
     public static SaveLoadManager instance;
+    private bool isDataLoaded = false;
 
     [Header("Saving")]
     public int currentLevelIndex;
@@ -77,6 +78,9 @@ public class SaveLoadManager : MonoBehaviour
     public int currentCoin;
     public int currentCrystal;
     public int currentStar;
+
+    public Mission[] missionsToSave;
+
     public List<OwnedCharacter> ownedCharacters = new List<OwnedCharacter>();
 
     [Header("Loading UI")]
@@ -94,7 +98,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             instance = this;
             //PlayerPrefs.DeleteAll();
-            LoadDataWithPlayerPref();
+            isDataLoaded = LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -121,6 +125,16 @@ public class SaveLoadManager : MonoBehaviour
         CurrencyManager.instance.crystals = currentCrystal;
         CurrencyManager.instance.stars = currentStar;
 
+        if (!isDataLoaded)
+        {
+            //Setup mission here
+            MissionsManager._instance.SetUpMissionsInfo();
+        }
+        else
+        { 
+            MissionsManager._instance.missions = missionsToSave;
+        }
+
         StartCoroutine(LoadingSceneAsync(true, 1f));
     }
 
@@ -130,10 +144,11 @@ public class SaveLoadManager : MonoBehaviour
         
     }
 
-    public void LoadDataWithPlayerPref()
+    public bool LoadDataWithPlayerPref()//return true if can load, false if need to set default data
     {
         //Load owned characters first
         bool isFileExist = LoadDataWithFile("OwnedCharaters");
+        bool result = false;
 
         if (!PlayerPrefs.HasKey("CurrentLevelIndex") || !isFileExist)//!PlayerPrefs.HasKey("CurrentLevelIndex") || !System.IO.File.Exists("OwnedCharaters")
         {
@@ -182,7 +197,14 @@ public class SaveLoadManager : MonoBehaviour
             currentCoin = PlayerPrefs.GetInt("CurrentCoin");
             currentCrystal = PlayerPrefs.GetInt("CurrentCrystal");
             currentStar = PlayerPrefs.GetInt("CurrentStar");
+
+            string missionsJson = PlayerPrefs.GetString("Missions");
+            missionsToSave = JsonConvert.DeserializeObject<Mission[]>(missionsJson);
+
+            result = true;
         }
+
+        return result;
     }
 
     public void SaveDataWithPlayerPref()
@@ -197,6 +219,10 @@ public class SaveLoadManager : MonoBehaviour
         PlayerPrefs.SetInt("CurrentCoin", currentCoin);
         PlayerPrefs.SetInt("CurrentCrystal", currentCrystal);
         PlayerPrefs.SetInt("CurrentStar", currentStar);
+
+        //Save missions
+        string missionsJson = JsonConvert.SerializeObject(MissionsManager._instance.missions);
+        PlayerPrefs.SetString("Missions", missionsJson);
 
         //Save owned characters
         SaveDataWithFile("OwnedCharaters");

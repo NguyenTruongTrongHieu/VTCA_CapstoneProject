@@ -37,7 +37,6 @@ public class MissionsManager : MonoBehaviour
 
     void Start()
     {
-        SetUpMissionsInfo();
 
         //Debug.Log("How many Missions des: " + missionsDescription.missionsDescriptionTexts.Length.ToString());
     }
