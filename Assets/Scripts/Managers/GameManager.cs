@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
             incrementDamage = 5;
         }
 
-        basicDamage = BASEVALUE_DAMAGE + ((currentDamageLevel - 1) * incrementDamage);
+        basicDamage = BASEVALUE_DAMAGE + ((currentDamageLevel - 1) * incrementDamage);//Đem qua làm công thức tăng reward coin khi nhận thưởng
     }
 
     public int GetCostToUpgradeBasicDam()
