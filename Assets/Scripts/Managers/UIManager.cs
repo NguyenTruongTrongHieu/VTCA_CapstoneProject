@@ -1184,7 +1184,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOverPanel(bool isPlayerWin)
     {
-        Debug.Log("Show game over panel: " + isPlayerWin);
         StartCoroutine(ShowOverPanel());
         mainMenuPanel.SetActive(false);
         //inGamePanel.SetActive(false);
@@ -1464,7 +1463,8 @@ public class UIManager : MonoBehaviour
             rewardPanel.SetActive(false);
         }
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(HidePanelWithZoomOutAnim(gameBoard, 0.5f));
         parentObject.SetActive(true);
 
         yield return StartCoroutine(ShowPanelWithZoomInAnim(gameOverPanel, 0.3f));
