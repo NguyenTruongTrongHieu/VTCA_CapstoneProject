@@ -253,14 +253,14 @@ public class GameManager : MonoBehaviour
         SaveLoadManager.instance.loadingPanel.SetActive(true);
         yield return StartCoroutine(SaveLoadManager.instance.MoveUpLoadingPanel());
 
-        //Reset level or get new level
-        if (currentTurn == "Win")
-        {
-            LevelManager.instance.SetNextLevel(); // Set the next level
-        }
-        else if (currentTurn == "Lose")
-        {
-        }
+        //Reset level or get new level -> Moved to UIManager after display win or lose panel
+        //if (currentTurn == "Win")
+        //{
+        //    LevelManager.instance.SetNextLevel(); // Set the next level
+        //}
+        //else if (currentTurn == "Lose")
+        //{
+        //}
 
         //Basic reset
         currentGameState = GameState.MainMenu;

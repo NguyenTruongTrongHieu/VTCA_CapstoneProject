@@ -622,7 +622,7 @@ public class UIManager : MonoBehaviour
 
         //Change character
         PlayerUltimate.instance.TurnOffAllPlayersTransform();
-        PlayerUltimate.instance.GetPlayerTransform(characterName, characterLevel, 0.75f);
+        PlayerUltimate.instance.GetPlayerTransform(characterName, characterLevel, 0.5f);
 
         //Set button
         SetCurrentChosenCharacterButton(id, characterName);
@@ -1447,6 +1447,9 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.instance.currentTurn == "Win")
         { 
+            //Save new level
+            LevelManager.instance.SetNextLevel();
+
             gameOverPanelImage.sprite = winPanelSprite;
             resultImage.sprite = winResultSprite;
             returnMenuButton.GetComponent<Image>().sprite = winButtonSprite;

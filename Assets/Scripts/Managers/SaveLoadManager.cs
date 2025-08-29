@@ -3,12 +3,21 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+
 
 public class OwnedCharacter
 {
     public int characterID;
     public int currentLevel;
     public List<string> ownedSkins = new List<string>();
+
+    public OwnedCharacter()
+    {
+        characterID = 0;
+        currentLevel = 1;
+        ownedSkins = new List<string>();
+    }
 
     public OwnedCharacter(int id, string skinName)
     { 
@@ -84,6 +93,7 @@ public class SaveLoadManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            //PlayerPrefs.DeleteAll();
             LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
@@ -122,22 +132,120 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadDataWithPlayerPref()
     {
-        currentLevelIndex = 1;
-        currentBasicDamageLevel = 1;
-        currentBasicHealthLevel = 1;
+        //Load owned characters first
+        bool isFileExist = LoadDataWithFile("OwnedCharaters");
 
-        currentPlayerName = "Player2";
-        currentLevelOfCurrentPlayer = 2;
-
-        currentCoin = 109000;
-        currentCrystal = 0;
-        currentStar = 1000;
-
-        ownedCharacters = new List<OwnedCharacter>
+        if (!PlayerPrefs.HasKey("CurrentLevelIndex") || !isFileExist)//!PlayerPrefs.HasKey("CurrentLevelIndex") || !System.IO.File.Exists("OwnedCharaters")
         {
-            new OwnedCharacter(1, 2, new List<string>{ "Player2"}),
-        };
+            currentLevelIndex = 1;
+            currentBasicDamageLevel = 1;
+            currentBasicHealthLevel = 1;
+
+            currentPlayerName = "Player1";
+            currentLevelOfCurrentPlayer = 1;
+
+            currentCoin = 109000;
+            currentCrystal = 0;
+            currentStar = 1000;
+
+            ownedCharacters = new List<OwnedCharacter>
+            {
+                new OwnedCharacter(0, 1, new List<string>{ "Player1"}),
+            };
+        }
+        else//if hasKey
+        {
+            currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex");
+            currentBasicDamageLevel = PlayerPrefs.GetInt("CurrentBasicDamageLevel");
+            currentBasicHealthLevel = PlayerPrefs.GetInt("CurrentBasicHealthLevel");
+
+            currentPlayerName = PlayerPrefs.GetString("CurrentPlayerName");
+            currentLevelOfCurrentPlayer = PlayerPrefs.GetInt("CurrentLevelOfCurrentPlayer");
+            //Check if currentPlayerName isn't in the ownedCharacters
+            bool isPlayerNameExist = false;
+            foreach (OwnedCharacter character in ownedCharacters)
+            {
+                if (character.ownedSkins.Contains(currentPlayerName))
+                {
+                    isPlayerNameExist = true;
+                    break;
+                }
+            }
+            if (!isPlayerNameExist)
+            {
+                //Current player name not found in owned characters, resetting to default.
+                Debug.Log("Current player name not found in owned characters, resetting to default.");
+                currentPlayerName = ownedCharacters[0].ownedSkins[0];
+                currentLevelOfCurrentPlayer = ownedCharacters[0].currentLevel;
+            }
+
+            currentCoin = PlayerPrefs.GetInt("CurrentCoin");
+            currentCrystal = PlayerPrefs.GetInt("CurrentCrystal");
+            currentStar = PlayerPrefs.GetInt("CurrentStar");
+        }
     }
+
+    public void SaveDataWithPlayerPref()
+    { 
+        PlayerPrefs.SetInt("CurrentLevelIndex", currentLevelIndex);
+        PlayerPrefs.SetInt("CurrentBasicDamageLevel", currentBasicDamageLevel);
+        PlayerPrefs.SetInt("CurrentBasicHealthLevel", currentBasicHealthLevel);
+
+        PlayerPrefs.SetString("CurrentPlayerName", currentPlayerName);
+        PlayerPrefs.SetInt("CurrentLevelOfCurrentPlayer", currentLevelOfCurrentPlayer);
+
+        PlayerPrefs.SetInt("CurrentCoin", currentCoin);
+        PlayerPrefs.SetInt("CurrentCrystal", currentCrystal);
+        PlayerPrefs.SetInt("CurrentStar", currentStar);
+
+        //Save owned characters
+        SaveDataWithFile("OwnedCharaters");
+
+        PlayerPrefs.Save();
+    }
+
+    #region USE FOR OWNED CHARACTERS
+    public void SaveDataWithFile(string fileName)
+    { 
+        string path = Application.persistentDataPath + "/" + fileName + ".json";
+
+        //Save owned characters
+        string ownedCharacterJson = JsonConvert.SerializeObject(ownedCharacters);
+        System.IO.File.WriteAllText(path, ownedCharacterJson);
+    }
+
+    public bool LoadDataWithFile(string fileName)//return true if file exists
+    { 
+        string path = Application.persistentDataPath + "/" + fileName + ".json";
+        bool result = false;
+        if (System.IO.File.Exists(path))
+        { 
+            result = true;
+            string ownedCharacterJson = System.IO.File.ReadAllText(path);
+            ownedCharacters = JsonConvert.DeserializeObject<List<OwnedCharacter>>(ownedCharacterJson);
+        }
+        else
+        {
+            Debug.LogWarning("File not found: " + path);
+        }
+        return result;
+    }
+    #endregion
+
+    #region ON PAUSE AND QUIT GAME
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            SaveDataWithPlayerPref();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveDataWithPlayerPref();
+    }
+    #endregion
 
     public IEnumerator LoadingSceneAsync(bool isSetActiveLoadingPanel, float waitingTime)
     {
