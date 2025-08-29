@@ -195,6 +195,13 @@ public class MissionsManager : MonoBehaviour
     {
         missionCompletedCount = 0; // Reset the count of completed missions at the start
 
+        var availableLevels = LevelManager.instance.levels.Length; // Assuming there are 10 levels available
+        var currentLevel = LevelManager.instance.currentLevel.index; // Get the current level number
+        if (currentLevel >= availableLevels)
+        { 
+            missionTypes.Remove(MissionType.ReachLevel); // Remove ReachLevel mission type if the player is at the last level
+        }
+
         for (int i = 0; i < missions.Length; i++)
         {
             missions[i].goal = new MissionsGoal(); // Initialize the goal for each mission
@@ -237,9 +244,7 @@ public class MissionsManager : MonoBehaviour
                 else if (missions[i].missionType == MissionType.ReachLevel)
                 {
                     // Set the target amount based on the current level and available levels
-                    var availableLevels = LevelManager.instance.levels.Length; // Assuming there are 10 levels available
-                    var currentLevel = LevelManager.instance.currentLevel.index; // Get the current level number
-                    missions[i].goal.currentAmount = 1; // Initialize current amount to the current level
+                    missions[i].goal.currentAmount = currentLevel; // Initialize current amount to the current level
 
                     if ((availableLevels - currentLevel) == 3)
                     {
