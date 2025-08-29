@@ -63,6 +63,10 @@ public class UIManager : MonoBehaviour
     public GameObject starPanel;
     public Text starText;
 
+    [Header("Setting")]
+    public GameObject settingPanel;
+    public Button returnHomeButton;
+
     [Header("Main menu")]
     public Button playButton;
     public Button upgradeDamButton;
@@ -299,8 +303,8 @@ public class UIManager : MonoBehaviour
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
-        StartCoroutine(
-        CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
+        StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
+        StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0.7f));
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetHPSlider(true);
         StartCoroutine(ShowProgressPanel(0.3f));
@@ -1143,14 +1147,30 @@ public class UIManager : MonoBehaviour
     #region SETTING
     public void OnCLickReturnMenuButton()
     {
-        SaveLoadManager.instance.loadingPanel.SetActive(true);
-
-        GameManager.instance.currentGameState = GameState.MainMenu;
-        GameManager.instance.currentTurn = ""; // Reset the current turn
-        GameManager.instance.currentEnemyIndex = 0; // Reset the current enemy index
-
+        OnCLickCloseSettingPanel();
         GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
     }
+
+    public void OnClickSettingButton()
+    {
+        settingPanel.SetActive(true);
+    }
+
+    public void OnClickMusicToggle()
+    { 
+    
+    }
+
+    public void OnCLickSoundToggle()
+    { 
+        
+    }
+
+    public void OnCLickCloseSettingPanel()
+    {
+        settingPanel.SetActive(false);
+    }
+
     #endregion
 
     #region SHOW PANEL

@@ -69,14 +69,23 @@ public class GameManager : MonoBehaviour
                     //Enable input
                     UIManager.instance.disableMatching.SetActive(false); // Disable matching UI during player's turn
                     UIManager.instance.ultimateButton.interactable = true; // Disable ultimate button during player's turn
+                    UIManager.instance.returnHomeButton.gameObject.SetActive(true); // Show return home button during player's turn
                 }
             }
-            else //if (isPlayerTurn)
+            else if (isPlayerTurn)
             {
                 isPlayerTurn = false; // Enemy's turn
                 //Disable input
                 UIManager.instance.disableMatching.SetActive(true); // Enable matching UI during enemy's turn
                 UIManager.instance.ultimateButton.interactable = false;
+                UIManager.instance.returnHomeButton.gameObject.SetActive(false); // Hide return home button during enemy's turn
+            }
+        }
+        else
+        {
+            if (UIManager.instance != null && UIManager.instance.returnHomeButton.gameObject.activeSelf)
+            {
+                UIManager.instance.returnHomeButton.gameObject.SetActive(false); Debug.Log("Turn off return home button");
             }
         }
     }

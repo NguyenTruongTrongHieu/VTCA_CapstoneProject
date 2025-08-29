@@ -136,10 +136,10 @@ public class CheckIfGameStateIsPlaying : NodeBehaviourTree
     public override NodeState Evaluate()
     {
         state = GameManager.instance.currentGameState == GameState.Playing ? NodeState.success : NodeState.failure;// Neu trang thai game la playing, tra ve success, nguoc lai tra ve failure
-        if (state == NodeState.success)
-        {
-            Debug.Log("Current game state is playing");
-        }
+        //if (state == NodeState.success)
+        //{
+        //    Debug.Log("Current game state is playing");
+        //}
         return state;
     }
 }
