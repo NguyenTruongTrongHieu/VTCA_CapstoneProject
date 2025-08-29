@@ -15,6 +15,11 @@ public class PlayerAnimEvent : MonoBehaviour
     public Light specialHitVFXLight;
 
 
+    [Header("Sound")]
+    public string normalAttackSound;
+    public string specialAttackSound;
+
+
     public void TurnOnWeaponColider()
     { 
         weaponCollider.enabled = true; // Enable the weapon collider to detect hits

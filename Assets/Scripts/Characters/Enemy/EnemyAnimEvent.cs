@@ -7,6 +7,9 @@ public class EnemyAnimEvent : MonoBehaviour
     public Collider secondHitCollider;
     //public Collider specialHitWeaponCollider; // Collider for special hits, used to detect hits from special attacks
 
+    [Header("Sound")]
+    public string attackSound;
+
     public void TurnOnFirstHitCollider()
     {
         firstHitCollider.enabled = true; // Enable the weapon collider to detect hits

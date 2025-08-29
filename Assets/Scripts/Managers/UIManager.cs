@@ -237,6 +237,9 @@ public class UIManager : MonoBehaviour
         //Missions 
         Debug.Log("How many Missions des: " + missionsDescriptionTexts.Length.ToString());
 
+        //Turn on music
+        AudioManager.instance.PlayMusic("BackgroundMusic", true);
+
 
         // Set up the main menu
         SetUITextForUpgradeDamButton();
