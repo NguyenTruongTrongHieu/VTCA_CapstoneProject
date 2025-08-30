@@ -24,8 +24,7 @@ public class TabsManager : MonoBehaviour
         }
         if (TabID == 1)
         {
-            Debug.Log("Missions Tab"); // Debug log for Missions tab
-            StartCoroutine(UIManager.instance.ShowPanelWithZoomInAnim(tabs[TabID], 0.2f));// Show Missions panel with zoom-in animation
+            StartCoroutine(UIManager.instance.ShowPanelWithZoomInAnim(tabs[TabID], 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));// Show Missions panel with zoom-in animation
         }
         else
             tabs[TabID].SetActive(true); // Activate the selected tab
@@ -82,7 +81,7 @@ public class TabsManager : MonoBehaviour
                 if (PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().name != SaveLoadManager.instance.currentPlayerName)
                 {
                     PlayerUltimate.instance.TurnOffAllPlayersTransform();
-                    PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0.1f);
+                    PlayerUltimate.instance.GetPlayerTransform(SaveLoadManager.instance.currentPlayerName, SaveLoadManager.instance.currentLevelOfCurrentPlayer, 0.5f);
                 }
 
                 UIManager.instance.ShowCurrentLevelText();
