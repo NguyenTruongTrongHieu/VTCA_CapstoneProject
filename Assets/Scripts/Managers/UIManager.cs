@@ -1198,7 +1198,7 @@ public class UIManager : MonoBehaviour
         manaSlider.gameObject.SetActive(true);
         gameBoard.SetActive(false);
         inGamePanel.SetActive(true);
-        StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.5f));
+        StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.5f, Vector3.zero));
         //foreach (Image tabsButtons in tabsManager.tabButtons)
         //{
         //    tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
@@ -1230,11 +1230,11 @@ public class UIManager : MonoBehaviour
         //}
     }
 
-    public IEnumerator ShowPanelWithZoomInAnim(GameObject panel, float duration)
+    public IEnumerator ShowPanelWithZoomInAnim(GameObject panel, float duration, Vector3 startScale)
     {
         float elapsedTime = 0f;
-        panel.transform.localScale = Vector3.zero; // Start with the panel hidden
-        Vector3 startScale = panel.transform.localScale;
+        panel.transform.localScale = startScale; // Start with the panel hidden
+        //Vector3 startScale = panel.transform.localScale;
         Vector3 targetScale = Vector3.one; // Zoom in scale
         panel.SetActive(true); // Ensure the panel is active before starting the animation
         while (elapsedTime < duration)
@@ -1250,7 +1250,7 @@ public class UIManager : MonoBehaviour
     {
         float elapsedTime = 0f;
         Vector3 startScale = panel.transform.localScale;
-        Vector3 targetScale = Vector3.zero; // Zoom out scale
+        Vector3 targetScale = new Vector3(0.5f, 0.5f, 0.5f); // Zoom out scale
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
@@ -1353,7 +1353,7 @@ public class UIManager : MonoBehaviour
         }
 
         buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
-        StartCoroutine(ShowPanelWithZoomInAnim(BuyCharacterPanel, 0.2f));
+        StartCoroutine(ShowPanelWithZoomInAnim(BuyCharacterPanel, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
     }
 
     public void ShowUpgradeCharacterPanel()
@@ -1420,7 +1420,7 @@ public class UIManager : MonoBehaviour
         }
 
         buyAndUpgradeCharacterPanel.SetActive(true); // Show the buy and upgrade character panel
-        StartCoroutine(ShowPanelWithZoomInAnim(UpgradeCharacterPanel, 0.2f));
+        StartCoroutine(ShowPanelWithZoomInAnim(UpgradeCharacterPanel, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
     }
 
     public void ShowWarningNotEnoughCostPanel(string currency)
@@ -1439,7 +1439,7 @@ public class UIManager : MonoBehaviour
         }
         quitBuyCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the buy character panel
         quitUpgradeCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the upgrade character panel
-        StartCoroutine(ShowPanelWithZoomInAnim(WarningNotEnoughCostPanel, 0.2f));
+        StartCoroutine(ShowPanelWithZoomInAnim(WarningNotEnoughCostPanel, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
     }
 
     public void HideBuyCharacterPanel()
@@ -1490,7 +1490,7 @@ public class UIManager : MonoBehaviour
         yield return StartCoroutine(HidePanelWithZoomOutAnim(gameBoard, 0.5f));
         parentObject.SetActive(true);
 
-        yield return StartCoroutine(ShowPanelWithZoomInAnim(gameOverPanel, 0.3f));
+        yield return StartCoroutine(ShowPanelWithZoomInAnim(gameOverPanel, 0.3f, new Vector3(0.6f, 0.6f, 0.6f)));
 
         // Count coins
         if (GameManager.instance.currentTurn == "Win")
@@ -1502,7 +1502,7 @@ public class UIManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.3f);
-        StartCoroutine(ShowPanelWithZoomInAnim(returnMenuButton.gameObject, 0.2f));
+        StartCoroutine(ShowPanelWithZoomInAnim(returnMenuButton.gameObject, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
     }
 
     public IEnumerator CountCoin(int targetCoin, float duration)
@@ -1617,7 +1617,7 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
-            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.15f));
+            yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.15f, Vector3.zero));
             yield return new WaitForSeconds(0.35f);
             yield return StartCoroutine(OpenChestBoxAnim(1f)); // Start the chest box opening animation
             yield return new WaitForSeconds(0.5f); // Wait for the animation to finish before showing the rewards
@@ -1652,7 +1652,7 @@ public class UIManager : MonoBehaviour
         {
             if (!claimRewardButton.gameObject.activeSelf && pressCount >= itemRewardsInChestBox.Count + 2)
             {
-                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.2f));
+                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
             }
 
             isShowRewardRunning = false; // Reset the flag to indicate that the reward display is done
@@ -1672,7 +1672,7 @@ public class UIManager : MonoBehaviour
 
             if (pressCount == itemRewardsInChestBox.Count + 2)
             {
-                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.2f));
+                StartCoroutine(ShowPanelWithZoomInAnim(claimRewardButton.gameObject, 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));
             }
         }
 

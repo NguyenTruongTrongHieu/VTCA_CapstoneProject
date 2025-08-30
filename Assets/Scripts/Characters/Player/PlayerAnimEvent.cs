@@ -71,12 +71,20 @@ public class PlayerAnimEvent : MonoBehaviour
     }
 
     public void TurnOnSpecialHitLightVFX()
-    { 
+    {
+        if (specialHitVFXLight == null)
+        {
+            return;
+        }
         specialHitVFXLight.gameObject.SetActive(true); // Enable the light for the special hit visual effect
     }
 
     public void TurnOffSpecialHitLightVFX()
     {
+        if (specialHitVFXLight == null)
+        {
+            return;
+        }
         specialHitVFXLight.gameObject.SetActive(false); // Disable the light for the special hit visual effect
     }
 
