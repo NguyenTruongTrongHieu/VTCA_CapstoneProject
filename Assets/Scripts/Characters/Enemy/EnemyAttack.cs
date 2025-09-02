@@ -309,11 +309,11 @@ public class EnemyAttack : MonoBehaviour
         if (enemyStat.crystalReward > 0)
         {
             dropCrystalVFX.Play();
-            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCrystals(transform.position + new Vector3(0, 0.25f, 0), enemyStat.crystalReward, true, 0.2f));
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCrystals(transform.position + new Vector3(0, 0.25f, 0), enemyStat.crystalReward, true, 0.25f));
         }
         if (enemyStat.starReward > 0)
         {
-            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddStars(transform.position + new Vector3(0, 0.5f, 0), enemyStat.starReward, true, 0.4f));
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddStars(transform.position + new Vector3(0, 0.5f, 0), enemyStat.starReward, true, 0.5f));
             yield return new WaitForSeconds(0.2f);
             dropStarVFX.Play();
         }
