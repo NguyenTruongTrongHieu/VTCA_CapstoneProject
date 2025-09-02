@@ -433,9 +433,10 @@ public class UIManager : MonoBehaviour
 
         // Animation Text ZoomOut and Move Up
         float elaspedTime = 0f;
+        rectTransformCoinText.localScale = Vector3.zero; // Start with a smaller scale
         Vector3 startScale = rectTransformCoinText.localScale;
         Vector3 targetScale = Vector3.one; // Zoom in scale
-        while (elaspedTime < 0.1f) // Run this animation for 0.1s
+        while (elaspedTime < 0.15f) // Run this animation for 0.1s
         {
             elaspedTime += Time.deltaTime;
             rectTransformCoinText.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.1f);
