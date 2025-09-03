@@ -186,6 +186,13 @@ public class UIManager : MonoBehaviour
 
     [Header("Missions")]
     public Text[] missionsDescriptionTexts;
+    public GameObject[] missionsCompletedClaimButtons;
+    public Image[] missionCompletedImage;
+    public Slider[] missionsProgressSliders;
+    public Text[] missionsProgressTexts;
+    public Slider chestSlider;
+    public Text chestProgressText;
+    public Text resetMissionTimer;
 
     [Header("ChestBox")]
     public GameObject openChestBoxPanel;
@@ -306,7 +313,9 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        IsMissionCompletedChecking();
+        UpdateMissionsProgress();
+        ResetTimerSet();
     }
 
     #region MENU
@@ -1612,6 +1621,82 @@ public class UIManager : MonoBehaviour
                 missionsDescriptionTexts[i].text = "No active mission";
             }
         }
+    }
+
+    public void UpdateMissionsProgress()
+    {
+        for (int i = 0; i < missionsProgressSliders.Length; i++)
+        {
+            if (MissionsManager._instance.missions[i].isActive && !MissionsManager._instance.missions[i].isCompleted)
+            {
+                missionsProgressSliders[i].maxValue = MissionsManager._instance.missions[i].goal.targetAmount;
+                missionsProgressSliders[i].value = MissionsManager._instance.missions[i].goal.currentAmount;
+                missionsProgressTexts[i].text = $"{MissionsManager._instance.missions[i].goal.currentAmount}/{MissionsManager._instance.missions[i].goal.targetAmount}";
+            }
+            else if (MissionsManager._instance.missions[i].isCompleted)
+            {
+                missionsProgressSliders[i].maxValue = MissionsManager._instance.missions[i].goal.targetAmount;
+                missionsProgressSliders[i].value = MissionsManager._instance.missions[i].goal.targetAmount;
+                missionsProgressTexts[i].text = $"{MissionsManager._instance.missions[i].goal.targetAmount}/{MissionsManager._instance.missions[i].goal.targetAmount}";
+            }
+            else
+            {
+                missionsProgressSliders[i].maxValue = 1;
+                missionsProgressSliders[i].value = 0;
+                missionsProgressTexts[i].text = "0/0";
+            }
+        }
+
+        chestSlider.maxValue = MissionsManager._instance.missions.Length;
+        chestSlider.value = MissionsManager._instance.missionCompletedCount;
+        chestProgressText.text = $"{MissionsManager._instance.missionCompletedCount}/{MissionsManager._instance.missions.Length}";
+    }
+
+    public void IsMissionCompletedChecking()
+    {       
+        for (int i = 0; i < missionsCompletedClaimButtons.Length; i++)
+        {
+            if (MissionsManager._instance.missions[i].isCompleted && !MissionsManager._instance.missions[i].isClaimed)
+            {
+                missionsCompletedClaimButtons[i].SetActive(true); // Enable the claim button if the mission is completed and not yet claimed
+                missionCompletedImage[i].gameObject.SetActive(false); // Show the completed image
+            }
+            else if (MissionsManager._instance.missions[i].isCompleted && MissionsManager._instance.missions[i].isClaimed)
+            {
+                missionsCompletedClaimButtons[i].SetActive(false); // Disable the claim button if the mission is already claimed
+                missionCompletedImage[i].gameObject.SetActive(true); // Show the completed image
+            }
+            else
+            {
+                missionsCompletedClaimButtons[i].SetActive(false); // Disable the claim button otherwise
+                missionCompletedImage[i].gameObject.SetActive(false); // Show the completed image
+            }
+        }
+        
+    }
+
+    public void MissionsRewardClaiming()
+    {
+        MissionsManager._instance.RewardClaiming();
+    }
+
+    public void ResetTimerSet()
+    {
+        bool hasRun = false;
+
+
+        if (Timer.Instance.GetRemainingTime() == 0 && hasRun == false)
+        {
+           MissionsManager._instance.ResetMission();
+            SetUpMissionsDescription();
+            IsMissionCompletedChecking();
+            
+            hasRun = true;
+            Debug.Log("Missions have been reset after timer reached zero.");
+        }
+
+
+        resetMissionTimer.text = Timer.Instance.GetFormattedTime();
     }
     #endregion
 

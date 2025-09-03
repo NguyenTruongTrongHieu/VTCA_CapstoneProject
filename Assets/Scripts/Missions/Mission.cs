@@ -11,6 +11,7 @@ public class Mission
     public string description;
     public int reward;
     public bool isCompleted;
+    public bool isClaimed;
 
     // List of available mission types that can be assigned to a mission
 
