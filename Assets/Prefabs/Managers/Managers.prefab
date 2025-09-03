@@ -492,6 +492,36 @@ MonoBehaviour:
   musics:
   - name: BackgroundMusic
     audioClip: {fileID: 8300000, guid: 5ae5b4f05aaedda4bb073e24ee777fb3, type: 3}
-  sfx: []
+  sfx:
+  - name: EnemyAttackNoWeapon
+    audioClip: {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
+  - name: EnemyAttackWeapon
+    audioClip: {fileID: 8300000, guid: 7c8cbb86b3205de438d96fc4200f783a, type: 3}
+  - name: DropCoinWhenEnemyNotDie
+    audioClip: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
+  - name: DropCoinWhenEnemyDie
+    audioClip: {fileID: 8300000, guid: 2a7727b2142daf041afd5100d51c4ef1, type: 3}
+  - name: PlayerNormalAttackSword
+    audioClip: {fileID: 8300000, guid: 69f2db6273605b0458d7fa23a2ca8d48, type: 3}
+  - name: PlayerSpecialAttackSwordEarth
+    audioClip: {fileID: 8300000, guid: e8f4e15787a9a5b45ae6b535973c1ed5, type: 3}
+  - name: PlayerSpecialAttackSwordLightning
+    audioClip: {fileID: 8300000, guid: 453e6ac026806ff4f8e49724a6d35fa1, type: 3}
+  - name: PlayerNormalAttackGun
+    audioClip: {fileID: 8300000, guid: c8d7d913500eebb43be37369014c6bb9, type: 3}
+  - name: PlayerSpecialAttackGun
+    audioClip: {fileID: 8300000, guid: 0e5ec5d798406aa4699be8c44dd7599f, type: 3}
+  - name: PlayerNormalAttackMageLightning
+    audioClip: {fileID: 8300000, guid: d38397367f40f7240a2ea3e4fb423efa, type: 3}
+  - name: PlayerSpecialAttackMageFire
+    audioClip: {fileID: 8300000, guid: 037ccef96b426774cb56ebe3fd659019, type: 3}
+  - name: Healing
+    audioClip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
+  - name: UltimateHeal
+    audioClip: {fileID: 8300000, guid: aa967a280457c054bb646d57611f5bd0, type: 3}
+  - name: UltimateBuffDam
+    audioClip: {fileID: 8300000, guid: 7a9de5c4d998126449cf964a6b27a8b0, type: 3}
+  - name: UltimateSpawnDebuffItem
+    audioClip: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
   musicSource: {fileID: 8481910894306063675}
   sfxSource: {fileID: 4365999109710256419}

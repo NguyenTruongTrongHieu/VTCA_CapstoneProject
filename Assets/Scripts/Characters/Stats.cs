@@ -26,6 +26,7 @@ public class Stats : MonoBehaviour
         if (hpSlider != null && heal > 0)
         {
             hpSlider.PlusValue(currentHealth, heal); // Update the HP slider when healing
+            AudioManager.instance.PlaySFX("Healing");
         }
     }
 

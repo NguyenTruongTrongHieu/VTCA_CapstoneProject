@@ -11,6 +11,7 @@ public class Food : MonoBehaviour
 
     public bool isFalling;
     public bool isMatched; // biến kiểm tra xem thức ăn có được ăn hay không
+    public bool isFlying;
     private Vector2 currentPos;
     private Vector2 targetPos;
 
@@ -309,6 +310,8 @@ public class Food : MonoBehaviour
 
     public IEnumerator MoveToTarget(float duration, bool targetIsPlayer, string specialFoodType)//SpecialFoodTyoe: dựa theo Food và GameBoard
     {
+        isFlying = true;
+
         Vector3 targetPos = targetIsPlayer ? Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position) 
             : Camera.main.WorldToScreenPoint(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position);
 
@@ -338,6 +341,7 @@ public class Food : MonoBehaviour
             }
         }
 
+        isFlying = false;
         deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
     }
 

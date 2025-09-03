@@ -1162,12 +1162,12 @@ public class UIManager : MonoBehaviour
 
     public void OnClickMusicToggle()
     { 
-    
+        AudioManager.instance.musicSource.mute = !AudioManager.instance.musicSource.mute;
     }
 
     public void OnCLickSoundToggle()
-    { 
-        
+    {
+        AudioManager.instance.sfxSource.mute = !AudioManager.instance.sfxSource.mute;
     }
 
     public void OnCLickCloseSettingPanel()

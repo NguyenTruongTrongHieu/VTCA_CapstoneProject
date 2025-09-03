@@ -129,6 +129,11 @@ public class PlayerAttack : MonoBehaviour
             GetComponent<Player>().SetUpBehaviourTree();
             //Turn off hp slider
             UIManager.instance.StartCoroutine(UIManager.instance.HideHPSlider(false, 0.3f));
+            if (playerStat.currentHealth < playerStat.maxHealth)
+            {
+                yield return new WaitForSeconds(0.2f);
+                playerStat.Healing(playerStat.maxHealth * 0.2f); // Heal player by 20% of max health}
+            }
         }
         else
         {

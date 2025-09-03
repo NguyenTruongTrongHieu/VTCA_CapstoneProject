@@ -13,6 +13,10 @@ public class EnemyAnimEvent : MonoBehaviour
     public void TurnOnFirstHitCollider()
     {
         firstHitCollider.enabled = true; // Enable the weapon collider to detect hits
+        if (this.transform.parent == LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
+        { 
+            AudioManager.instance.PlaySFX(attackSound);
+        }
     }
 
     public void TurnOffFirstHitCollider()
@@ -23,6 +27,10 @@ public class EnemyAnimEvent : MonoBehaviour
     public void TurnOnSecondHitCollider()
     { 
         secondHitCollider.enabled = true;
+        if (this.transform.parent == LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
+        {
+            AudioManager.instance.PlaySFX(attackSound);
+        }
     }
 
     public void TurnOffSecondHitCollider()

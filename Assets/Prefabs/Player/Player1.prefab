@@ -872,6 +872,8 @@ MonoBehaviour:
   specialHitVFX: {fileID: 6245280363383632331}
   specialHitVFX2: {fileID: 6100774652905922220}
   specialHitVFXLight: {fileID: 0}
+  normalAttackSound: PlayerNormalAttackSword
+  specialAttackSound: PlayerSpecialAttackSwordEarth
 --- !u!65 &5434424411356710298
 BoxCollider:
   m_ObjectHideFlags: 0

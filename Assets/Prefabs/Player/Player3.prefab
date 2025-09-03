@@ -754,6 +754,8 @@ MonoBehaviour:
   specialHitVFX: {fileID: 7874589919352048589}
   specialHitVFX2: {fileID: 0}
   specialHitVFXLight: {fileID: 7874589919359999887}
+  normalAttackSound: PlayerNormalAttackMageLightning
+  specialAttackSound: PlayerSpecialAttackMageFire
 --- !u!65 &8821082810596240052
 BoxCollider:
   m_ObjectHideFlags: 0
