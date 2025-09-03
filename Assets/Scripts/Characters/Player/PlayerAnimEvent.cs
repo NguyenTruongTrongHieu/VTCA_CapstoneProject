@@ -23,6 +23,7 @@ public class PlayerAnimEvent : MonoBehaviour
     public void TurnOnWeaponColider()
     { 
         weaponCollider.enabled = true; // Enable the weapon collider to detect hits
+        AudioManager.instance.PlaySFX(normalAttackSound); // Play the normal attack sound effect
     }
 
     public void TurnOffWeaponColider()
@@ -33,6 +34,7 @@ public class PlayerAnimEvent : MonoBehaviour
     public void TurnOnSpecialHitWeaponCollider()
     {
         specialHitWeaponCollider.enabled = true; // Enable the special hit weapon collider to detect hits from special attacks
+        AudioManager.instance.PlaySFX(specialAttackSound); // Play the special attack sound effect
     }
 
     public void TurnOffSpecialHitWeaponCollider()

@@ -827,6 +827,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             return;
         }
+        else if(underPointer.GetComponentInParent<Food>().isFlying)
+        {
+            return;
+        }
 
         if (underPointer != null && underPointer.CompareTag("Food") && !hasMatchedFoods.Contains(underPointer.GetComponentInParent<Food>()))
         {
@@ -875,6 +879,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         GameObject underPointer = eventData.pointerEnter;
 
         if (underPointer == null || !underPointer.CompareTag("Food") || hasMatchedFoods.Count < 1)
+        {
+            return;
+        }
+        else if (underPointer.GetComponentInParent<Food>().isFlying)
         {
             return;
         }

@@ -1012,6 +1012,8 @@ MonoBehaviour:
   specialHitVFX: {fileID: 693173640016747447}
   specialHitVFX2: {fileID: 0}
   specialHitVFXLight: {fileID: 0}
+  normalAttackSound: PlayerNormalAttackGun
+  specialAttackSound: PlayerSpecialAttackGun
 --- !u!1 &7290582062777651734
 GameObject:
   m_ObjectHideFlags: 0

@@ -1533,6 +1533,8 @@ MonoBehaviour:
   specialHitVFX: {fileID: 6245280363383632331}
   specialHitVFX2: {fileID: 3600695666442175552}
   specialHitVFXLight: {fileID: 8780814640611852742}
+  normalAttackSound: PlayerNormalAttackSword
+  specialAttackSound: PlayerSpecialAttackSwordLightning
 --- !u!65 &5434424411356710298
 BoxCollider:
   m_ObjectHideFlags: 0

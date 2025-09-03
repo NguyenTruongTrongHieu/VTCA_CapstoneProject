@@ -544,6 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstHitCollider: {fileID: 2046931267851219362}
   secondHitCollider: {fileID: 0}
+  attackSound: EnemyAttackNoWeapon
 --- !u!65 &6093071876727627876
 BoxCollider:
   m_ObjectHideFlags: 0

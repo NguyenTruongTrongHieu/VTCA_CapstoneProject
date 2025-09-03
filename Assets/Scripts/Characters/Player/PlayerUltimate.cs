@@ -210,6 +210,7 @@ public class PlayerUltimate : MonoBehaviour
 
         StartCoroutine(PlayUltiVfx(2f)); // Start the coroutine to play ultimate visual effects
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2();
+        AudioManager.instance.PlaySFX("UltimatePlayer1");
         StartCoroutine(Player1UltimateCoroutine()); // Start the coroutine for Player 1's ultimate
 
         ResetUltiAndMana(true);
@@ -250,6 +251,7 @@ public class PlayerUltimate : MonoBehaviour
 
         StartCoroutine(PlayUltiVfx(0.75f));
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2(); // Play the ultimate visual effect
+        AudioManager.instance.PlaySFX("UltimatePlayer2");
 
         ResetUltiAndMana(true);
 
@@ -280,6 +282,7 @@ public class PlayerUltimate : MonoBehaviour
         isUltimateValid = false; // Reset ultimate validity after use
 
         StartCoroutine(PlayUltiVfx(1.5f));
+        AudioManager.instance.PlaySFX("UltimatePlayer3");
 
         ResetUltiAndMana(true);
 
