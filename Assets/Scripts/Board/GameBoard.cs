@@ -1079,20 +1079,20 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyAttack>().enemyDebuffTurn = 1;
         }
 
-        for (int i = hasMatchedFoods.Count; i > 0; i--)
+        for (int i = 0; i < hasMatchedFoods.Count; i++)// int i = hasMatchedFoods.Count; i > 0; i--
         {
-            if (i == 1)
+            if (i == hasMatchedFoods.Count - 1)
             {
-                specialPos = cells[hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex].transform.position;
+                specialPos = cells[hasMatchedFoods[i].xIndex, hasMatchedFoods[i].yIndex].transform.position;
 
-                specialFoodIndex = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+                specialFoodIndex = new Vector2Int(hasMatchedFoods[i].xIndex, hasMatchedFoods[i].yIndex);
             }
 
-            if (hasMatchedFoods[i - 1] != null)
+            if (hasMatchedFoods[i] != null)
             {
-                Vector2Int currentPos = new Vector2Int(hasMatchedFoods[i - 1].xIndex, hasMatchedFoods[i - 1].yIndex);
+                Vector2Int currentPos = new Vector2Int(hasMatchedFoods[i].xIndex, hasMatchedFoods[i].yIndex);
 
-                StartCoroutine(hasMatchedFoods[i - 1].MoveToTarget(0.25f, isFoodMoveToPlayer, specialType)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
+                StartCoroutine(hasMatchedFoods[i].MoveToTarget(0.25f, isFoodMoveToPlayer, specialType)); // di chuyển thức ăn đã so khớp vào thanh máu của người chơi
                 yield return new WaitForSeconds(0.25f); // đợi một khoảng thời gian trước khi xóa thức ăn
 
                 //Smoke VFX
@@ -1103,7 +1103,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             }
         }
 
-        for (int i = foodCount.Length - 1; i >= 0; i--)
+        //Add special food base on number of matched foods
+        for (int i = foodCount.Length - 1; i >= 0; i--)//foodCount.Length - 1; i >= 0
         {
             if (hasMatchedFoods.Count >= foodCount[i] && haveSpecialFood != true)
             {
