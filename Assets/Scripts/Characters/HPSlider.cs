@@ -126,7 +126,7 @@ public class HPSlider : MonoBehaviour
 
         float elaspedTime = 0f;
         Vector3 startPos = rectTransformHealText.anchoredPosition;
-        Vector3 targetPos = startPos + new Vector3(0, 120f, 0); // Di chuyển lên trên 1 đơn vị
+        Vector3 targetPos = startPos + new Vector3(0, 100f, 0); // Di chuyển lên trên 1 đơn vị
         while (elaspedTime < 0.2f)//Chạy anim này trong vòng 0.2s
         {
             elaspedTime += Time.deltaTime;
@@ -135,7 +135,7 @@ public class HPSlider : MonoBehaviour
         }
         rectTransformHealText.anchoredPosition = targetPos; // Đặt vị trí cuối cùng
 
-        yield return new WaitForSeconds(0.2f); // Đợi một chút trước khi xóa text
+        yield return new WaitForSeconds(0.5f); // Đợi một chút trước khi xóa text
         Destroy(rectTransformHealText.gameObject); // Xóa text sau khi hoàn thành
     }
 }

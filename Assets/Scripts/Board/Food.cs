@@ -311,6 +311,7 @@ public class Food : MonoBehaviour
     public IEnumerator MoveToTarget(float duration, bool targetIsPlayer, string specialFoodType)//SpecialFoodTyoe: dựa theo Food và GameBoard
     {
         isFlying = true;
+        AudioManager.instance.PlaySFX("FruitBeginMove");
 
         Vector3 targetPos = targetIsPlayer ? Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position) 
             : Camera.main.WorldToScreenPoint(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position);
@@ -333,12 +334,17 @@ public class Food : MonoBehaviour
         if (!targetIsPlayer)
         {
             LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyAttack>().GetHitAnim();
+            AudioManager.instance.PlaySFX("FruitMoveToEnemy");
 
             // Kiểm tra loại thức ăn bay đến enemy và thực hiện công dụng của food đó
             if (specialFoodType == "DebuffTakeDam")
             {
                 LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].GetComponent<EnemyStat>().defense += 0.1f;
             }
+        }
+        else
+        {
+            AudioManager.instance.PlaySFX("FruitMoveToPlayer");
         }
 
         isFlying = false;

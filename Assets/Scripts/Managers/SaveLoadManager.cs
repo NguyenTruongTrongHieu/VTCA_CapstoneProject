@@ -83,6 +83,11 @@ public class SaveLoadManager : MonoBehaviour
 
     public List<OwnedCharacter> ownedCharacters = new List<OwnedCharacter>();
 
+    //Setting
+    [Space]
+    public bool isSFXOn = true;
+    public bool isMusicOn = true;
+
     [Header("Loading UI")]
     public GameObject loadingPanel;
     private Vector2 originalOffsetMinLoadingPanel;
@@ -201,8 +206,14 @@ public class SaveLoadManager : MonoBehaviour
             string missionsJson = PlayerPrefs.GetString("Missions");
             missionsToSave = JsonConvert.DeserializeObject<Mission[]>(missionsJson);
 
+
             result = true;
         }
+
+        //load settings
+        isSFXOn = PlayerPrefs.GetInt("IsSFXOn", 1) == 0 ? false : true;
+        isMusicOn = PlayerPrefs.GetInt("IsMusicOn", 1) == 0 ? false : true;
+        Debug.Log("Is music on: " + PlayerPrefs.GetInt("IsMusicOn"));
 
         return result;
     }
@@ -226,6 +237,10 @@ public class SaveLoadManager : MonoBehaviour
 
         //Save owned characters
         SaveDataWithFile("OwnedCharaters");
+
+        //Save settings
+        //PlayerPrefs.SetInt("IsSFXOn", !AudioManager.instance.sfxSource.mute ? 1 : 0);
+        //PlayerPrefs.SetInt("IsMusicOn", !AudioManager.instance.musicSource.mute ? 1 : 0);
 
         PlayerPrefs.Save();
     }
