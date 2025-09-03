@@ -217,57 +217,82 @@ public class MissionsManager : MonoBehaviour
                 // Set the description based on the mission type
                 if (missions[i].missionType == MissionType.KillEnemy)
                 {
-                    missions[i].reward = 250;
-                    missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
+                    missions[i].reward = 500;
+                    missions[i].goal.targetAmount = 20; // Set a random target amount for the goal
                     missions[i].description = "Kill " + missions[i].goal.targetAmount + " Monsters";
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
                 }
                 else if (missions[i].missionType == MissionType.FruitMatching)
                 {
-                    missions[i].goal.targetAmount = UnityEngine.Random.Range(50, 100); // Set a random target amount for the goal
+                    missions[i].reward = 500;
+                    missions[i].goal.targetAmount = 100; // Set a random target amount for the goal
                     missions[i].description = "Match " + missions[i].goal.targetAmount + " Fruits";
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
                 }
                 else if (missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
-                    missions[i].reward = 250;
-                    missions[i].goal.currentAmount = 1; // Initialize current amount to 1
-                    missions[i].goal.targetAmount = UnityEngine.Random.Range(5, 10); // Set a random target amount for the goal
+                    missions[i].reward = 400;
+                    missions[i].goal.currentAmount = 0; // Initialize current amount to 1
+                    missions[i].goal.targetAmount = 10; // Set a random target amount for the goal
                     missions[i].description = "Upgrade your Damage " + missions[i].goal.targetAmount + " times";
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
                 }
                 else if (missions[i].missionType == MissionType.UpgradeHealthStats)
                 {
-                    missions[i].reward = 250;
-                    missions[i].goal.currentAmount = 1; // Initialize current amount to 1
-                    missions[i].goal.targetAmount = UnityEngine.Random.Range(5, 10); // Set a random target amount for the goal
+                    missions[i].reward = 400;
+                    missions[i].goal.currentAmount = 0; // Initialize current amount to 1
+                    missions[i].goal.targetAmount = 10; // Set a random target amount for the goal
                     missions[i].description = "Upgrade your Health " + missions[i].goal.targetAmount + " times";
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
                 }
                 else if (missions[i].missionType == MissionType.ReachLevel)
                 {
                     // Set the target amount based on the current level and available levels
                     missions[i].goal.currentAmount = currentLevel; // Initialize current amount to the current level
 
-                    if ((availableLevels - currentLevel) == 3)
-                    {
-                        missions[i].reward = 300;
-                        missions[i].goal.targetAmount = 3; // Set a random target amount for the goal
-                        missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
-                    }
-                    else if ((availableLevels - currentLevel) == 2)
-                    {
-                        missions[i].reward = 250;
-                        missions[i].goal.targetAmount = 2; // Set a random target amount for the goal
-                        missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
-                    }
-                    else if ((availableLevels - currentLevel) == 1)
-                    {
-                        missions[i].reward = 250;
-                        Debug.Log("Set goal to 1 level with aditional condition");
-                    }
+                    missions[i].reward = 300;
+                    missions[i].goal.targetAmount = missions[i].goal.currentAmount + 1; // Set a random target amount for the goal
+                    missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
+
+
+
+                    //if ((availableLevels - currentLevel) == 3)
+                    //{
+                    //    missions[i].reward = 300;
+                    //    missions[i].goal.targetAmount = 3; // Set a random target amount for the goal
+                    //    missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
+                    //}
+                    //else if ((availableLevels - currentLevel) == 2)
+                    //{
+                    //    missions[i].reward = 250;
+                    //    missions[i].goal.targetAmount = 2; // Set a random target amount for the goal
+                    //    missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
+                    //}
+                    //else if ((availableLevels - currentLevel) == 1)
+                    //{
+                    //    missions[i].reward = 250;
+                    //    Debug.Log("Set goal to 1 level with aditional condition");
+                    //}
                 }
                 else if (missions[i].missionType == MissionType.UsePowerUp)
                 {
                     missions[i].reward = 250;
-                    missions[i].goal.targetAmount = UnityEngine.Random.Range(1, 10); // Set a random target amount for the goal
+                    missions[i].goal.targetAmount = 10; // Set a random target amount for the goal
                     missions[i].description = "Use Power Up " + missions[i].goal.targetAmount + " times";
+                    missions[i].isCompleted = false;
+                    missions[i].isActive = true;
+                    missions[i].isClaimed = false;
                 }
             }
         }
@@ -294,14 +319,14 @@ public class MissionsManager : MonoBehaviour
     {
         for (int i = 0; i < missions.Length; i++)
         {
-            if (missions[i].isCompleted && !missions[i].isActive)
+            if (missions[i].isCompleted && !missions[i].isActive && !missions[i].isClaimed)
             {
                 // Here you can implement the logic to give rewards to the player
                 // For example, you can give coins, gems, or any other rewards based on the mission type
                 Debug.Log("Reward Claimed for Mission: " + missions[i].description);
 
                 CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[i].transform.position, missions[i].reward, false, 0f)); // Add coins to the player's currency
-
+                missions[i].isClaimed = true; // Mark the mission as claimed
 
             }
         }
@@ -312,4 +337,43 @@ public class MissionsManager : MonoBehaviour
         // This method is for testing purposes only, to simulate chest opening
         missionCompletedCount++;
     }
+
+    public bool CheckIsMissionsCompleted()
+    {
+        for (int i = 0; i < missions.Length; i++)
+        {
+            if (missions[i].isCompleted && !missions[i].isActive)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ResetMission()
+    {
+        for (int i = 0; i < missions.Length; i++)
+        {
+            missions[i].isActive = false;
+            missions[i].isCompleted = false;
+            missions[i].isClaimed = false;
+            missions[i].goal.currentAmount = 0;
+            missions[i].goal.targetAmount = 0;
+            missions[i].description = "";
+            missions[i].reward = 0;
+        }
+        missionTypes = new List<MissionType>
+        {
+            MissionType.KillEnemy,
+            MissionType.FruitMatching,
+            MissionType.UpgradeDamageStats,
+            MissionType.UpgradeHealthStats,
+            MissionType.ReachLevel,
+            MissionType.UsePowerUp
+        };
+        missionCompletedCount = 0; // Reset the count of completed missions
+        SetUpMissionsInfo();
+    }
+
 }
