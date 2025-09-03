@@ -186,7 +186,6 @@ public class PlayerIdle : NodeBehaviourTree
             UIManager.instance.SetCurrentProgress(false); // Hide progress bar when player is close enough to the enemy
 
             GameManager.instance.currentTurn = "Player"; // Switch turn to Player when player is close enough to the enemy
-            Debug.Log(" Player Idle");
             playerSelf.rb.isKinematic = false; // Disable physics interactions for smooth movement
 
             if (LevelManager.instance.currentLevel.

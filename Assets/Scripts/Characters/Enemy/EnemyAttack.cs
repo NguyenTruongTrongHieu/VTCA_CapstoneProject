@@ -200,7 +200,6 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    AudioManager.instance.PlaySFX("DropCoinWhenEnemyNotDie");
                     CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0f));
                     
 
@@ -274,7 +273,6 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    AudioManager.instance.PlaySFX("DropCoinWhenEnemyNotDie");
                     CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();

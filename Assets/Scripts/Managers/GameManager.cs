@@ -66,6 +66,13 @@ public class GameManager : MonoBehaviour
                 if (!isPlayerTurn)
                 {
                     isPlayerTurn = true; // Player's turn
+
+                    if (GameBoard.Instance.onDeleteFood)
+                    { 
+                        currentTurn = "None"; // Set to "None" if the player is deleting food
+                        return;
+                    }
+
                     //Enable input
                     UIManager.instance.disableMatching.SetActive(false); // Disable matching UI during player's turn
                     UIManager.instance.ultimateButton.interactable = true; // Disable ultimate button during player's turn
@@ -85,7 +92,7 @@ public class GameManager : MonoBehaviour
         {
             if (UIManager.instance != null && UIManager.instance.returnHomeButton.gameObject.activeSelf)
             {
-                UIManager.instance.returnHomeButton.gameObject.SetActive(false); Debug.Log("Turn off return home button");
+                UIManager.instance.returnHomeButton.gameObject.SetActive(false);
             }
         }
     }
@@ -306,6 +313,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.instance.UpdateColorTextForUpgradeCost();
         UIManager.instance.ShowMainMenuPanel();
+        UIManager.instance.HideAllHUDWithoutAnim();
 
         //SaveLoadManager.instance.loadingPanel.SetActive(false);
     }

@@ -44,19 +44,38 @@ public class State : MonoBehaviour
 
     public IEnumerator TakeHit(float magnitude)
     {
-        yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xử lý va chạm
+        //State thisState = this;
+        //durability--;
+        //if (durability <= 0)
+        //{
+        //    thisState = GameBoard.Instance.DeleteStateAtPos(xIndex, yIndex);
+        //}
 
+        //yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xử lý va chạm
+
+        //if (durability > 0)
+        //{
+        //    image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ 
+        //    AudioManager.instance.PlaySFX("HitState");
+        //}
+        //else
+        //{
+        //    AudioManager.instance.PlaySFX("BreakState");
+        //}
+        yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xử lý va chạm
         durability--;
 
 
         State thisState = this;
         if (durability > 0)
         {
-            image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ bền
+            image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ 
+            AudioManager.instance.PlaySFX("HitState");
         }
         else
         {
             thisState = GameBoard.Instance.DeleteStateAtPos(xIndex, yIndex);
+            AudioManager.instance.PlaySFX("BreakState");
         }
         hitStateVFX1.Play(); // Phát hiệu ứng VFX khi khối gỗ bị đánh
         hitStateVFX2.Play();

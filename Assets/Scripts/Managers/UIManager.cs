@@ -66,6 +66,8 @@ public class UIManager : MonoBehaviour
     [Header("Setting")]
     public GameObject settingPanel;
     public Button returnHomeButton;
+    public Toggle musicToggle;
+    public Toggle sfxToggle;
 
     [Header("Main menu")]
     public Button playButton;
@@ -288,6 +290,17 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+
+        //Load settings
+        if (!SaveLoadManager.instance.isMusicOn)
+        { 
+            musicToggle.isOn = false;
+        }
+
+        if (!SaveLoadManager.instance.isSFXOn)
+        {
+            sfxToggle.isOn = false;
+        }
     }
 
     // Update is called once per frame
@@ -421,6 +434,7 @@ public class UIManager : MonoBehaviour
         {
             coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
         }
+        AudioManager.instance.PlaySFX("DropCoinWhenEnemyNotDie");
 
         Text coinText = coinTextObject.GetComponent<Text>();
         RectTransform rectTransformCoinText = coinTextObject.GetComponent<RectTransform>();
@@ -1146,6 +1160,13 @@ public class UIManager : MonoBehaviour
         StartCoroutine(HideProgressPanel(0.3f)); // Hide the progress panel
     }
 
+    public void HideAllHUDWithoutAnim()
+    {
+        progressPanel.SetActive(false);
+        playerHPSlider.gameObject.SetActive(false);
+        enemyHPSlider.gameObject.SetActive(false);
+    }
+
     #endregion
 
     #region SETTING
@@ -1163,11 +1184,13 @@ public class UIManager : MonoBehaviour
     public void OnClickMusicToggle()
     { 
         AudioManager.instance.musicSource.mute = !AudioManager.instance.musicSource.mute;
+        PlayerPrefs.SetInt("IsMusicOn", !AudioManager.instance.musicSource.mute ? 1 : 0);
     }
 
-    public void OnCLickSoundToggle()
+    public void OnClickSoundToggle()
     {
         AudioManager.instance.sfxSource.mute = !AudioManager.instance.sfxSource.mute;
+        PlayerPrefs.SetInt("IsSFXOn", !AudioManager.instance.sfxSource.mute ? 1 : 0);
     }
 
     public void OnCLickCloseSettingPanel()
@@ -1191,14 +1214,14 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowInGamePanel()
     {
+        gameBoard.SetActive(false);
+        inGamePanel.SetActive(true);
         yield return StartCoroutine(SlidePanel( mainMenuPanel.GetComponent<RectTransform>(), originaloffsetMinMenuPanel, 
             originaloffsetMaxMenuPanel, originaloffsetMinMenuPanel - new Vector2(0, 1920f), originaloffsetMaxMenuPanel - new Vector2(0, 1920f), 0.5f));
         mainMenuPanel.SetActive(false);
         ultimateButtonAndEffectObject.SetActive(false);
         ultimateButton.gameObject.SetActive(false);
         manaSlider.gameObject.SetActive(true);
-        gameBoard.SetActive(false);
-        inGamePanel.SetActive(true);
         StartCoroutine(ShowPanelWithZoomInAnim(gameBoard, 0.5f, Vector3.zero));
         //foreach (Image tabsButtons in tabsManager.tabButtons)
         //{
@@ -1267,6 +1290,7 @@ public class UIManager : MonoBehaviour
         float elapsedTime = 0f;
         panel.offsetMin = StartMin; // Start from the initial position
         panel.offsetMax = startMax; // Start from the initial position
+        AudioManager.instance.PlaySFX("UIMove");
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;

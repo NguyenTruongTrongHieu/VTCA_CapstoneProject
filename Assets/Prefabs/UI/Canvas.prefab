@@ -177,7 +177,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6145687177885367788}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnCLickSoundToggle
+        m_MethodName: OnClickSoundToggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1139,6 +1139,7 @@ MonoBehaviour:
   multipleScore: 0
   numberToCheckSpecialFood: 0
   isCheckSpecialFood: 0
+  onDeleteFood: 0
   foodPrefab:
   - {fileID: 7500622247370611864, guid: 4640af521243fce499b1c3e89097b2fa, type: 3}
   - {fileID: 1685842561269039730, guid: e9dff944254e6e74b8aaf3a6956ce235, type: 3}
@@ -8333,6 +8334,8 @@ MonoBehaviour:
   starText: {fileID: 3724986922860532126}
   settingPanel: {fileID: 1955606074994159269}
   returnHomeButton: {fileID: 8135258399914947742}
+  musicToggle: {fileID: 1658894703656013656}
+  sfxToggle: {fileID: 3243545529099018809}
   playButton: {fileID: 6010455823550635749}
   upgradeDamButton: {fileID: 1294825000316137367}
   damageLevelText: {fileID: 8393113374975880997}
@@ -23897,6 +23900,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6294890334997027789, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294890334997027789, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 27
+      objectReference: {fileID: 0}
     - target: {fileID: 7412449373612280726, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.201
@@ -27798,6 +27809,14 @@ PrefabInstance:
     - target: {fileID: 6218431452891414498, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_Direction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294890334997027789, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294890334997027789, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -27
       objectReference: {fileID: 0}
     - target: {fileID: 6825338401755222850, guid: b22e52ab1071270409a73680fc4a5543, type: 3}
       propertyPath: m_EffectColor.b
