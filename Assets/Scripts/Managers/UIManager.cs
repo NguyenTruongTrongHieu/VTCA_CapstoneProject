@@ -1184,12 +1184,14 @@ public class UIManager : MonoBehaviour
     public void OnClickMusicToggle()
     { 
         AudioManager.instance.musicSource.mute = !AudioManager.instance.musicSource.mute;
+        SaveLoadManager.instance.isMusicOn = !AudioManager.instance.musicSource.mute;
         PlayerPrefs.SetInt("IsMusicOn", !AudioManager.instance.musicSource.mute ? 1 : 0);
     }
 
     public void OnClickSoundToggle()
     {
         AudioManager.instance.sfxSource.mute = !AudioManager.instance.sfxSource.mute;
+        SaveLoadManager.instance.isSFXOn = !AudioManager.instance.sfxSource.mute;
         PlayerPrefs.SetInt("IsSFXOn", !AudioManager.instance.sfxSource.mute ? 1 : 0);
     }
 
