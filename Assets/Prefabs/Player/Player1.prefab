@@ -173,6 +173,10 @@ MonoBehaviour:
   stopDistanceWithBoss: 2
   animator: {fileID: 4865034370249892278}
   isMovingHash: 0
+  bossVoice:
+  - BossAppear1
+  - BossAppear2
+  - BossAppear3
 --- !u!114 &-4051504416825153475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +205,7 @@ MonoBehaviour:
   auraTakeFruitVFX: {fileID: 9195976313164193001}
   ultiVFX: {fileID: 3728600204122732838}
   ultiVFX2: {fileID: 3671153652235230883}
-  hitImpact: {fileID: 7957930572521693016}
+  hitImpact: {fileID: 6424878530698923521}
   bloodSplash: {fileID: 933763372049588837}
   displayDealtDamTransform: {fileID: 4517747984560325329}
 --- !u!114 &2669768800509826746
@@ -682,7 +686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094285375519009783, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -700,9 +704,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2993612256550320456, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 2818308500766646454}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &7957930572521693016 stripped
+--- !u!198 &6424878530698923521 stripped
 ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5290774187047698414, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9094285375504854711, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
   m_PrefabInstance: {fileID: 2818308500766646454}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4534523367635459968

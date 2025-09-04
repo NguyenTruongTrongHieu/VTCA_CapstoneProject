@@ -550,6 +550,50 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: b83bf8726a7fac349a54389f0c57cda6, type: 3}
   - name: SubtractCurrency
     audioClip: {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
+  - name: BossVictory1
+    audioClip: {fileID: 8300000, guid: b06a9bf725bf1064d8e8379fd8b358d3, type: 3}
+  - name: BossVictory2
+    audioClip: {fileID: 8300000, guid: 83d532fe9c64ebe4a945cb357686eea7, type: 3}
+  - name: BossVictory3
+    audioClip: {fileID: 8300000, guid: f9b2b9c9b8113824e90d8f2b2f513a72, type: 3}
+  - name: EnemyHit1
+    audioClip: {fileID: 8300000, guid: cdaa833bd5b8f464d85d5fe201e2bfbb, type: 3}
+  - name: EnemyHit2
+    audioClip: {fileID: 8300000, guid: 73eca32f32987b342ac9649816e05297, type: 3}
+  - name: EnemyDie1
+    audioClip: {fileID: 8300000, guid: 76024b6f269a6a746851e1ba613d793f, type: 3}
+  - name: EnemyDie2
+    audioClip: {fileID: 8300000, guid: fb690208b7c28af4bba88e03e9b83390, type: 3}
+  - name: BossAppear1
+    audioClip: {fileID: 8300000, guid: 8db94545e59ff4649af24e67e3a1ef03, type: 3}
+  - name: BossAppear2
+    audioClip: {fileID: 8300000, guid: a1ee50eada0d3fe4e9f9c05ae6bf4fa6, type: 3}
+  - name: BossAppear3
+    audioClip: {fileID: 8300000, guid: 1bc40c1563e39f141b6085ef171dc141, type: 3}
+  - name: Player1VictoryVoice1
+    audioClip: {fileID: 8300000, guid: 037936e7940e0664d997147f0d15af13, type: 3}
+  - name: Player1VictoryVoice2
+    audioClip: {fileID: 8300000, guid: 87d9ab58a29f7204e8da4b43b11fa49a, type: 3}
+  - name: Player2VictoryVoice1
+    audioClip: {fileID: 8300000, guid: 7b752177e805d7b4b9c9f4a036b352d6, type: 3}
+  - name: Player2VictoryVoice2
+    audioClip: {fileID: 8300000, guid: 5cad7a4c407b27d429702bf244ee9fc8, type: 3}
+  - name: Player3VictoryVoice1
+    audioClip: {fileID: 8300000, guid: 84abeda564d58d648bdc6d1d4084fddc, type: 3}
+  - name: Player3VictoryVoice2
+    audioClip: {fileID: 8300000, guid: 9fc5596cd1d6590469e6a76242f34362, type: 3}
+  - name: Player1DeathVoice1
+    audioClip: {fileID: 8300000, guid: 66109240eda417b43bbd6717b912b715, type: 3}
+  - name: Player1DeathVoice2
+    audioClip: {fileID: 8300000, guid: 277610b80b82b8b41b14ede2426fa1ee, type: 3}
+  - name: Player2DeathVoice1
+    audioClip: {fileID: 8300000, guid: bc4862c358a9b314282da94a9696f425, type: 3}
+  - name: Player2DeathVoice2
+    audioClip: {fileID: 8300000, guid: de8e2dcc1b280fd42aafd1afc54ee0ea, type: 3}
+  - name: Player3DeathVoice1
+    audioClip: {fileID: 8300000, guid: 8dd6e3f3488c84e4a8059baebbe2aeb9, type: 3}
+  - name: Player3DeathVoice2
+    audioClip: {fileID: 8300000, guid: 28b91d2d4af20674abcf119365d5f126, type: 3}
   musicSource: {fileID: 8481910894306063675}
   sfxSource: {fileID: 4365999109710256419}
 --- !u!114 &6567360885161747434

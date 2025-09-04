@@ -10,6 +10,11 @@ public class EnemyAttack : MonoBehaviour
 
     public string attackState;//"": start; "Attacking": attacking; "DoneAttack": done animation attack; "DoneCircleAttack": done all attack, done setup for player attack
 
+    [Header("SFX")]
+    public string[] bossVictoryVoice;
+    public string[] enemyHitVoice;
+    public string[] enemyDieVoice;
+
     [Header("VFX")]
     public ParticleSystem dropCoinNormalVFX;
     public ParticleSystem dropCoinSpecialVFX;
@@ -147,6 +152,12 @@ public class EnemyAttack : MonoBehaviour
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
+        if (enemyStat.enemyType == EnemyType.boss)
+        {
+            int randomIndex = Random.Range(0, bossVictoryVoice.Length);
+            AudioManager.instance.PlaySFX(bossVictoryVoice[randomIndex]);
+        }
+
         UIManager.instance.HideAllHUD();
         UIManager.instance.ShowGameOverPanel(false);
     }
@@ -224,6 +235,8 @@ public class EnemyAttack : MonoBehaviour
                             {
                                 MissionsManager._instance.EnemyKilled();
                             }
+                            int randomIndex = Random.Range(0, enemyDieVoice.Length);
+                            AudioManager.instance.PlaySFX(enemyDieVoice[randomIndex]);
 
                             Destroy(gameObject, 1f);
                         }
@@ -288,11 +301,19 @@ public class EnemyAttack : MonoBehaviour
                             {
                                 MissionsManager._instance.EnemyKilled();
                             }
+                            int randomIndex = Random.Range(0, enemyDieVoice.Length);
+                            AudioManager.instance.PlaySFX(enemyDieVoice[randomIndex]);
 
                             Destroy(gameObject, 1f);
                         }
                     }
                 }
+                else
+                { 
+                    int randomIndex = Random.Range(0, enemyHitVoice.Length);
+                    AudioManager.instance.PlaySFX(enemyHitVoice[randomIndex]);
+                }
+
                 if (!animator.GetBool(isDeadHash))
                 {
                     animator.SetTrigger(getHitHash); // Trigger the get hit animation
