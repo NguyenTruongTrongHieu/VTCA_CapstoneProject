@@ -162,6 +162,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyStat: {fileID: 5190853607653065583}
   attackState: 
+  bossVictoryVoice: []
+  enemyHitVoice:
+  - EnemyHit1
+  - EnemyHit2
+  enemyDieVoice:
+  - EnemyDie1
+  - EnemyDie2
   dropCoinNormalVFX: {fileID: 4637667010220877038}
   dropCoinSpecialVFX: {fileID: 4584482348123805948}
   dropCrystalVFX: {fileID: 7294790614823933419}

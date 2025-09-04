@@ -154,6 +154,8 @@ public class PlayerAttack : MonoBehaviour
         CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
         StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
         StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
+        int randomIndex = Random.Range(0, victorySFXVoice.Length);
+        AudioManager.instance.PlaySFX(victorySFXVoice[randomIndex]);
 
         UIManager.instance.HideAllHUD();
         UIManager.instance.ShowGameOverPanel(true);
@@ -256,10 +258,11 @@ public class PlayerAttack : MonoBehaviour
                     {
                         if (enemyAttack.attackState == "DoneAttack")
                         {
-                            Debug.Log("Player is dead");
                             animator.SetBool(isDeadHash, true); // Trigger the dead animation
 
                             CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 3, -8f));
+                            int randomIndex = Random.Range(0, deathSFXVoice.Length);
+                            AudioManager.instance.PlaySFX(deathSFXVoice[randomIndex]);
                         }
                         else
                         {

@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [Header("Behaviour Tree")]
     private NodeBehaviourTree rootNode;
 
+    [Header("Boss SFX")]
+
     public void SetUpBehaviourTree()
     {
         rootNode = new Selector(new List<NodeBehaviourTree>
@@ -88,6 +90,12 @@ public class Player : MonoBehaviour
         this.transform.position = startPos + new Vector3(0, 0.25f, 0);
         this.transform.rotation = Quaternion.Euler(startQuaternion);
         rb.isKinematic = false; // Re-enable physics interactions
+    }
+
+    public void PlayBossSFX()
+    { 
+        int randomIndex = Random.Range(0, bossVoice.Length);
+        AudioManager.instance.PlaySFX(bossVoice[randomIndex]);
     }
 }
 
@@ -195,6 +203,7 @@ public class PlayerIdle : NodeBehaviourTree
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.75f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 1));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.75f, 'X', 1));
+                playerSelf.PlayBossSFX();
             }
         }
         

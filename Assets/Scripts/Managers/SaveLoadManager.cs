@@ -138,6 +138,15 @@ public class SaveLoadManager : MonoBehaviour
         else
         { 
             MissionsManager._instance.missions = missionsToSave;
+            int missionsCompleted = 0;
+            foreach (Mission mission in MissionsManager._instance.missions)
+            {
+                if (mission.isCompleted)
+                {
+                    missionsCompleted++;
+                }
+            }
+            MissionsManager._instance.missionCompletedCount = missionsCompleted;
         }
 
         StartCoroutine(LoadingSceneAsync(true, 1f));

@@ -173,6 +173,10 @@ MonoBehaviour:
   stopDistanceWithBoss: 2
   animator: {fileID: 4865034370249892278}
   isMovingHash: 0
+  bossVoice:
+  - BossAppear1
+  - BossAppear2
+  - BossAppear3
 --- !u!114 &-4051504416825153475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,7 +867,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094285375519009783, guid: dcba1f8583ec7ac45bd36110efa1c727, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
