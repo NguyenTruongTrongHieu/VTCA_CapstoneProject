@@ -46,6 +46,7 @@ public class CurrencyManager : MonoBehaviour
         //Play anim spawn coins
         yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "coin", amount, needChangeTransformFromWordToScreen));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
+        AudioManager.instance.PlaySFX("AddCurrency");
 
         AddCoinsDontHaveAnim(amount); // Update the coin count without animation
     }
@@ -53,6 +54,7 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractCoins(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
+        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         // Ensure coins do not go below zero
         coins = Mathf.Max(0, coins - amount);
@@ -74,6 +76,7 @@ public class CurrencyManager : MonoBehaviour
         //Play anim spawn crystals
         yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "crystal", amount, needChangeTransformFromWordToScreen));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
+        AudioManager.instance.PlaySFX("AddCurrency");
 
         AddCrystalsDontHaveAnim(amount); // Update the crystal count without animation
     }
@@ -88,6 +91,7 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractCrystal(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
+        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         crystals = Mathf.Max(0, crystals - amount);
         SaveLoadManager.instance.currentCrystal = crystals; 
@@ -107,6 +111,7 @@ public class CurrencyManager : MonoBehaviour
         //Play anim spawn stars
         yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "star", amount, needChangeTransformFromWordToScreen));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star", 0.1f));
+        AudioManager.instance.PlaySFX("AddCurrency");
 
         AddStarsDontHaveAnim(amount); // Update the star count without animation
     }
@@ -121,6 +126,7 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractStar(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star", 0.1f));
+        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         // Ensure stars do not go below zero
         stars = Mathf.Max(0, stars - amount);

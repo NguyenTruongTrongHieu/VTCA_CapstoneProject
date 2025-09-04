@@ -5,7 +5,7 @@ public class TabsManager : MonoBehaviour
 {
     [Header("For menu tabs")]
     public TabsManager charactersTab; // Singleton instance
-    private int currentTabID = 0; // Current active tab ID
+    private int currentTabID = 1; // Current active tab ID
 
     [Header("For all tabs")]
     public Carousel carousel; // Reference to the carousel for character selection
@@ -18,6 +18,11 @@ public class TabsManager : MonoBehaviour
 
     public void SwitchToTabs(int TabID)
     {
+        if (TabID == currentTabID)
+        {
+            return;
+        }
+
         foreach (GameObject tab in tabs)
         {
             tab.SetActive(false); // Deactivate all tabs
@@ -59,6 +64,7 @@ public class TabsManager : MonoBehaviour
 
         if (TabID == 2)
         {
+            CameraManager.instance.StopAllCoroutines();
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.3f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', -1.25f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', -1f));
@@ -82,6 +88,7 @@ public class TabsManager : MonoBehaviour
         {
             if (currentTabID == 2)
             {
+                CameraManager.instance.StopAllCoroutines();
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.3f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));
