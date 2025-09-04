@@ -328,8 +328,10 @@ public class UIManager : MonoBehaviour
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
-        StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
-        StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0.7f));
+        CameraManager.instance.StopAllCoroutines();
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
+        CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0.7f));
+
         PlayerUltimate.instance.AddUltimateToUltiButton(PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().id);
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetHPSlider(true);
         StartCoroutine(ShowProgressPanel(0.3f));
