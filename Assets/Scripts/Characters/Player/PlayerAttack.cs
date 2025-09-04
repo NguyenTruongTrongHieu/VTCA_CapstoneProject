@@ -12,6 +12,10 @@ public class PlayerAttack : MonoBehaviour
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
 
+    [Header("SFX")]
+    public string[] victorySFXVoice;
+    public string[] deathSFXVoice;
+
     [Header("VFX")]
     public ParticleSystem auraTakeFruitVFX;
     public ParticleSystem ultiVFX;

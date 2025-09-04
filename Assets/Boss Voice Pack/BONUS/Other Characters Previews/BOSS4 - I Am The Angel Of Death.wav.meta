@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: f34d0b07ffa054144b0ee213c6ce68df
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213968
+  packageName: 'Game Character Voices: Boss Voice Pack'
+  packageVersion: 1.0
+  assetPath: Assets/Boss Voice Pack/BONUS/Other Characters Previews/BOSS4 - I Am
+    The Angel Of Death.wav
+  uploadId: 482533

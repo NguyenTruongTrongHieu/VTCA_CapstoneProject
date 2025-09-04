@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 83d532fe9c64ebe4a945cb357686eea7
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213968
+  packageName: 'Game Character Voices: Boss Voice Pack'
+  packageVersion: 1.0
+  assetPath: Assets/Boss Voice Pack/Boss 4/BOSS4 - DEFEATED (Try Again).wav
+  uploadId: 482533
