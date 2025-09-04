@@ -2866,6 +2866,12 @@ MonoBehaviour:
   animator: {fileID: 95538263452871118}
   attackAnimations:
   - Attack1
+  victorySFXVoice:
+  - Player3VictoryVoice1
+  - Player3VictoryVoice2
+  deathSFXVoice:
+  - Player3DeathVoice1
+  - Player3DeathVoice2
   auraTakeFruitVFX: {fileID: 2852316086221306363}
   ultiVFX: {fileID: 475595165182392616}
   ultiVFX2: {fileID: 0}
