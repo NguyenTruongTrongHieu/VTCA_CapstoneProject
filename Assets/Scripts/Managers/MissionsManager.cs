@@ -353,6 +353,16 @@ public class MissionsManager : MonoBehaviour
 
     public void ResetMission()
     {
+        missionTypes = new List<MissionType>
+        {
+            MissionType.KillEnemy,
+            MissionType.FruitMatching,
+            MissionType.UpgradeDamageStats,
+            MissionType.UpgradeHealthStats,
+            MissionType.ReachLevel,
+            MissionType.UsePowerUp
+        };
+
         for (int i = 0; i < missions.Length; i++)
         {
             missions[i].isActive = false;
@@ -363,15 +373,6 @@ public class MissionsManager : MonoBehaviour
             missions[i].description = "";
             missions[i].reward = 0;
         }
-        missionTypes = new List<MissionType>
-        {
-            MissionType.KillEnemy,
-            MissionType.FruitMatching,
-            MissionType.UpgradeDamageStats,
-            MissionType.UpgradeHealthStats,
-            MissionType.ReachLevel,
-            MissionType.UsePowerUp
-        };
         missionCompletedCount = 0; // Reset the count of completed missions
         SetUpMissionsInfo();
     }

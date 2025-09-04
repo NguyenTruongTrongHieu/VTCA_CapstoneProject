@@ -25,9 +25,25 @@ public class TabsManager : MonoBehaviour
         if (TabID == 1)
         {
             StartCoroutine(UIManager.instance.ShowPanelWithZoomInAnim(tabs[TabID], 0.15f, new Vector3(0.6f, 0.6f, 0.6f)));// Show Missions panel with zoom-in animation
+
+            if (currentTabID != 1)
+            {
+                Timer.Instance.TimeSetup(); // Setup the timer when switching to the Missions tab
+
+                UIManager.instance.StartCoroutine(UIManager.instance.ResetTimerSet()); // Start the timer reset coroutine
+            }
         }
         else
+        {
             tabs[TabID].SetActive(true); // Activate the selected tab
+
+            if (currentTabID == 1)
+            {
+                UIManager.instance.StopCoroutine(UIManager.instance.ResetTimerSet()); // Stop any ongoing timer reset coroutine
+
+                Timer.Instance.SaveData(); // Save the timer data
+            }  
+        }
 
 
         foreach (Image image in tabButtons)
