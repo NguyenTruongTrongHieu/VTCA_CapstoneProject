@@ -313,9 +313,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IsMissionCompletedChecking();
-        UpdateMissionsProgress();
-        ResetTimerSet();
+        //ResetTimerSet();
     }
 
     #region MENU
@@ -1580,8 +1578,8 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < missionsDescriptionTexts.Length; i++)
         {
-            if (MissionsManager._instance.missions[i].isActive && !MissionsManager._instance.missions[i].isCompleted)
-            {
+            //if (MissionsManager._instance.missions[i].isActive && !MissionsManager._instance.missions[i].isCompleted)
+            //{
                 // Set the description based on the mission type
                 if (MissionsManager._instance.missions[i].missionType == MissionType.KillEnemy)
                 {
@@ -1614,11 +1612,13 @@ public class UIManager : MonoBehaviour
                     Debug.Log("Power Up Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
-            }
-            else
-            {
-                missionsDescriptionTexts[i].text = "No active mission";
-            }
+            //}
+            //else
+            //{
+            //    missionsDescriptionTexts[i].text = "No active mission";
+            //}
+            IsMissionCompletedChecking();
+            UpdateMissionsProgress();
         }
     }
 
