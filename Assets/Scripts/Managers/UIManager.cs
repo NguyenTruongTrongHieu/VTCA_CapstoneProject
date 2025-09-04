@@ -1612,10 +1612,6 @@ public class UIManager : MonoBehaviour
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
             }
-            else if (MissionsManager._instance.missions[i].isCompleted)
-            {
-                missionsDescriptionTexts[i].text = "Mission Completed: " + MissionsManager._instance.missions[i].description;
-            }
             else
             {
                 missionsDescriptionTexts[i].text = "No active mission";
@@ -1680,23 +1676,22 @@ public class UIManager : MonoBehaviour
         MissionsManager._instance.RewardClaiming();
     }
 
-    public void ResetTimerSet()
+    public IEnumerator ResetTimerSet()
     {
-        bool hasRun = false;
 
-
-        if (Timer.Instance.GetRemainingTime() == 0 && hasRun == false)
+        while (true)
         {
-           MissionsManager._instance.ResetMission();
-            SetUpMissionsDescription();
-            IsMissionCompletedChecking();
-            
-            hasRun = true;
-            Debug.Log("Missions have been reset after timer reached zero.");
+            if (Timer.Instance.GetRemainingTime() == 0)
+            {
+                Timer.Instance.ResetMissionTime();
+                MissionsManager._instance.ResetMission();
+                SetUpMissionsDescription();
+                IsMissionCompletedChecking();
+                Debug.Log("Missions have been reset after timer reached zero.");
+            }
+            resetMissionTimer.text = Timer.Instance.GetFormattedTime();
+            yield return null;
         }
-
-
-        resetMissionTimer.text = Timer.Instance.GetFormattedTime();
     }
     #endregion
 

@@ -3,7 +3,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public static Timer Instance { get; private set; }
-    [SerializeField] private float remainingTime = 5f; // Default starting time
+    [SerializeField] private float remainingTime = 36000f; // Default starting time
 
 
     private void Awake()
@@ -19,7 +19,66 @@ public class Timer : MonoBehaviour
             DontDestroyOnLoad(this.gameObject); // Optional: Keep it alive between scenes
         }
     }
-    public void Start()
+     void Start()
+    {
+      
+    }
+
+     void Update()
+    {
+
+        if (remainingTime > 0)
+        {
+            remainingTime -= Time.deltaTime;
+            Debug.Log(GetFormattedTime());
+        }
+        else
+        {
+            remainingTime = 0; // Ensure the time doesn't go negative
+            //timerText.text = "00:00";
+
+            Debug.Log("Time's up!");
+        }
+    }
+
+    public void OnApplicationQuit()
+    {
+       SaveData();
+    }
+
+    public void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            SaveData();
+        }
+    }
+
+    public string GetFormattedTime()
+    {
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
+        return string.Format("{0:D2}:{1:D2}", minutes, seconds);
+    }
+
+    public float GetRemainingTime()
+    {
+        return remainingTime;
+    }
+
+    public void ResetMissionTime()
+    {
+        if (remainingTime > 0)
+        remainingTime = 1f; // Reset to default time
+
+        else if (remainingTime < 0)
+                        remainingTime = 0f; // Reset to default time
+
+        else
+            remainingTime = 36000f; // Reset to default time
+    }
+
+    public void TimeSetup()
     {
         // Check if a saved time value exists
         if (PlayerPrefs.HasKey("SavedTime"))
@@ -48,33 +107,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-
-        if (remainingTime > 0)
-        {
-            remainingTime -= Time.deltaTime;
-
-            // Calculate minutes and seconds
-            //int minutes = Mathf.FloorToInt(remainingTime / 60);
-            //int seconds = Mathf.FloorToInt(remainingTime % 60);
-
-            Debug.Log(GetFormattedTime());
-
-            // Format the string to display minutes and seconds
-            // "D2" ensures that single-digit numbers are padded with a leading zero (e.g., 9 becomes 09)
-            //timerText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
-        }
-        else
-        {
-            remainingTime = 0; // Ensure the time doesn't go negative
-            //timerText.text = "00:00";
-
-            Debug.Log("Time's up!");
-        }
-    }
-
-    public void OnApplicationQuit()
+    public void SaveData()
     {
         // Save the current remaining time
         PlayerPrefs.SetFloat("SavedTime", remainingTime);
@@ -85,22 +118,5 @@ public class Timer : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("Saved exit timestamp: " + exitTimeTicks);
-    }
-
-    public string GetFormattedTime()
-    {
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        return string.Format("{0:D2}:{1:D2}", minutes, seconds);
-    }
-
-    public float GetRemainingTime()
-    {
-        return remainingTime;
-    }
-
-    public void Reset()
-    {
-        remainingTime = 5f; // Reset to default time
     }
 }
