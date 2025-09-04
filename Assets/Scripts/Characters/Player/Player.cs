@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     private NodeBehaviourTree rootNode;
 
     [Header("Boss SFX")]
+    public string[] bossVoice;
 
     public void SetUpBehaviourTree()
     {
