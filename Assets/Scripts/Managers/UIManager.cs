@@ -433,15 +433,18 @@ public class UIManager : MonoBehaviour
         GameObject coinTextObject = null;
         if (currency == "coin")
         {
-            coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+            //coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+            coinTextObject = PoolManager.Instance.GetObject("CoinText", startPos, Quaternion.identity, transform, coinTextPrefab);
         }
         else if (currency == "star")
         {
-            coinTextObject = Instantiate(starTextPrefab, startPos, Quaternion.identity, transform);
+            //coinTextObject = Instantiate(starTextPrefab, startPos, Quaternion.identity, transform);
+            coinTextObject = PoolManager.Instance.GetObject("StarText", startPos, Quaternion.identity, transform, starTextPrefab);
         }
         else
         {
-            coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
+            //coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
+            coinTextObject = PoolManager.Instance.GetObject("CrystalText", startPos, Quaternion.identity, transform, crystalTextPrefab);
         }
         AudioManager.instance.PlaySFX("DropCoinWhenEnemyNotDie");
 
@@ -449,9 +452,9 @@ public class UIManager : MonoBehaviour
         RectTransform rectTransformCoinText = coinTextObject.GetComponent<RectTransform>();
 
         // Set the text and text size
-        coinText.text += text;
+        coinText.text = text;
         Vector2 textSize = rectTransformCoinText.sizeDelta;
-        textSize.x += characterWidthCoinText * text.Length;
+        textSize.x = 60 + characterWidthCoinText * text.Length;
         rectTransformCoinText.sizeDelta = textSize;
 
         // Animation Text ZoomOut and Move Up
@@ -500,7 +503,23 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         rectTransformCoinText.position = targetPos; // Set the final position
-        Destroy(coinTextObject);
+
+        //Destroy(coinTextObject);
+        if (currency == "coin")
+        {
+            //coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
+            PoolManager.Instance.ReturnObject("CoinText", coinTextObject);
+        }
+        else if (currency == "star")
+        {
+            //coinTextObject = Instantiate(starTextPrefab, startPos, Quaternion.identity, transform);
+            PoolManager.Instance.ReturnObject("StarText", coinTextObject);
+        }
+        else
+        {
+            //coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
+            PoolManager.Instance.ReturnObject("CrystalText", coinTextObject);
+        }
     }
 
     //Crystal
@@ -904,14 +923,16 @@ public class UIManager : MonoBehaviour
         string text = NumberFomatter.FormatFloatToString(dam, 2);
         Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
 
-        GameObject damageTextObject = Instantiate(damageText, startPos, Quaternion.identity, transform);
+        //GameObject damageTextObject = Instantiate(damageText, startPos, Quaternion.identity, transform);
+        GameObject damageTextObject = PoolManager.Instance.GetObject("DamageText", startPos, Quaternion.identity, transform, damageText);
+
         Text damText = damageTextObject.GetComponent<Text>();
         RectTransform rectTransformDamText = damageTextObject.GetComponent<RectTransform>();
 
         // Set the text and text size
-        damText.text += text;
+        damText.text = "-" + text;
         Vector2 textSize = rectTransformDamText.sizeDelta;
-        textSize.x += characterWidthDamText * text.Length;
+        textSize.x = 100 + characterWidthDamText * text.Length;
         rectTransformDamText.sizeDelta = textSize;
 
         //Animation Text ZoomOut and Move Up
@@ -921,9 +942,10 @@ public class UIManager : MonoBehaviour
     IEnumerator DisplayText(Vector3 startPos, Vector3 targetPos, RectTransform text)
     {
         float elaspedTime = 0f;
+        text.localScale = Vector3.zero; // Bắt đầu với tỉ lệ nhỏ hơn
         Vector3 startScale = text.localScale;
         Vector3 targetScale = Vector3.one;
-        while (elaspedTime < 0.1f)//Chạy anim này trong vòng 0.1s
+        while (elaspedTime < 0.2f)//Chạy anim này trong vòng 0.1s
         {
             elaspedTime += Time.deltaTime;
             text.localScale = Vector3.Lerp(startScale, targetScale, elaspedTime / 0.1f);
@@ -941,7 +963,9 @@ public class UIManager : MonoBehaviour
         text.position = targetPos; // Đặt vị trí cuối cùng
 
         yield return new WaitForSeconds(0.25f); // Đợi một chút trước khi xóa text
-        Destroy(text.gameObject); // Xóa text sau khi hoàn thành
+
+        //Destroy(text.gameObject); // Xóa text sau khi hoàn thành
+        PoolManager.Instance.ReturnObject("DamageText", text.gameObject);
     }
 
     public IEnumerator IncreaseManaSliderValue(float duration, float targetValue)

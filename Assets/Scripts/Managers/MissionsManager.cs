@@ -120,7 +120,7 @@ public class MissionsManager : MonoBehaviour
         // Loop through all missions and check for UpgradeHealthStats type
         for (int i = 0; i < missions.Length; i++)
         {
-            if (missions[i].missionType == MissionType.UpgradeHealthStats)
+            if (missions[i].missionType == MissionType.UpgradeHealthStats && missions[i].isCompleted == false && missions[i].isActive == true)
             {
                 // Increment the current amount for the mission goal
                 missions[i].goal.currentAmount++;

@@ -9,14 +9,9 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         // Check if an instance already exists
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject); // Destroy this new instance
-        }
-        else
+        if (Instance == null)
         {
             Instance = this; // Set this as the Singleton instance
-            DontDestroyOnLoad(this.gameObject); // Optional: Keep it alive between scenes
         }
     }
      void Start()
@@ -30,7 +25,7 @@ public class Timer : MonoBehaviour
         if (remainingTime > 0)
         {
             remainingTime -= Time.deltaTime;
-            Debug.Log(GetFormattedTime());
+            //Debug.Log(GetFormattedTime());
         }
         else
         {
@@ -41,16 +36,19 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public void OnApplicationQuit()
-    {
-       SaveData();
-    }
-
     public void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus)
+        if (!pauseStatus)
         {
-            SaveData();
+            TimeSetup();
+        }
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            TimeSetup();
         }
     }
 

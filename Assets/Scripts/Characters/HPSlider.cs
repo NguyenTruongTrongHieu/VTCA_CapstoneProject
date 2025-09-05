@@ -106,7 +106,9 @@ public class HPSlider : MonoBehaviour
     {
         string text = NumberFomatter.FormatFloatToString(heal, 2);
 
-        GameObject healingTextObject = Instantiate(healingText, transform.position, Quaternion.identity, transform);
+        //GameObject healingTextObject = Instantiate(healingText, transform.position, Quaternion.identity, transform);
+        GameObject healingTextObject = PoolManager.Instance.GetObject("HealingText", transform.position, Quaternion.identity, transform, healingText);
+
         Text healText = healingTextObject.GetComponent<Text>();
         RectTransform rectTransformHealText = healingTextObject.GetComponent<RectTransform>();
 
@@ -136,6 +138,8 @@ public class HPSlider : MonoBehaviour
         rectTransformHealText.anchoredPosition = targetPos; // Đặt vị trí cuối cùng
 
         yield return new WaitForSeconds(0.5f); // Đợi một chút trước khi xóa text
-        Destroy(rectTransformHealText.gameObject); // Xóa text sau khi hoàn thành
+
+        //Destroy(rectTransformHealText.gameObject); // Xóa text sau khi hoàn thành
+        PoolManager.Instance.ReturnObject("HealingText", healingTextObject);
     }
 }

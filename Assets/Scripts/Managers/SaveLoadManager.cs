@@ -147,6 +147,7 @@ public class SaveLoadManager : MonoBehaviour
                 }
             }
             MissionsManager._instance.missionCompletedCount = missionsCompleted;
+            Timer.Instance.TimeSetup();
         }
 
         StartCoroutine(LoadingSceneAsync(true, 1f));
@@ -251,6 +252,9 @@ public class SaveLoadManager : MonoBehaviour
         //PlayerPrefs.SetInt("IsSFXOn", !AudioManager.instance.sfxSource.mute ? 1 : 0);
         //PlayerPrefs.SetInt("IsMusicOn", !AudioManager.instance.musicSource.mute ? 1 : 0);
 
+        //Save mission time
+        Timer.Instance.SaveData();
+
         PlayerPrefs.Save();
     }
 
@@ -286,6 +290,14 @@ public class SaveLoadManager : MonoBehaviour
     private void OnApplicationPause(bool pause)
     {
         if (pause)
+        {
+            SaveDataWithPlayerPref();
+        }
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
         {
             SaveDataWithPlayerPref();
         }
