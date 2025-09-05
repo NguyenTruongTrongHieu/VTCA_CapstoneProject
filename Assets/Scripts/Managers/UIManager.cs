@@ -1727,6 +1727,7 @@ public class UIManager : MonoBehaviour
         if (pressCount == 0)
         {
             //anim open chest
+            AudioManager.instance.PlaySFX("ChestAppear");
             yield return StartCoroutine(ShowPanelWithZoomInAnim(chestBoxImage.gameObject, 0.15f, Vector3.zero));
             yield return new WaitForSeconds(0.35f);
             yield return StartCoroutine(OpenChestBoxAnim(1f)); // Start the chest box opening animation
@@ -1796,6 +1797,7 @@ public class UIManager : MonoBehaviour
         Vector3 startPos = rewardObject.transform.position;
         Vector3 targetPos = rewardTargetPos.transform.position; // Target position for the reward
 
+        AudioManager.instance.PlaySFX("RewardAppear");
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -1876,6 +1878,7 @@ public class UIManager : MonoBehaviour
         smokeChestBoxVFX.Play(); // Play the smoke effect when the chest box is opened
         chestBoxImage.sprite = chestBoxOpenedSprite; // Change the sprite to the open chest box sprite
         lightChestBoxVFX.Play(); // Play the light effect when the chest box is opened
+        AudioManager.instance.PlaySFX("ChestOpen");
     }
 
     public void OnClickClaimButton()

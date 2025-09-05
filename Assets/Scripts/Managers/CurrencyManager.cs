@@ -54,7 +54,6 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractCoins(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
-        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         // Ensure coins do not go below zero
         coins = Mathf.Max(0, coins - amount);
@@ -91,7 +90,6 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractCrystal(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
-        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         crystals = Mathf.Max(0, crystals - amount);
         SaveLoadManager.instance.currentCrystal = crystals; 
@@ -126,7 +124,6 @@ public class CurrencyManager : MonoBehaviour
     public void SubtractStar(int amount)
     {
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star", 0.1f));
-        AudioManager.instance.PlaySFX("SubtractCurrency");
 
         // Ensure stars do not go below zero
         stars = Mathf.Max(0, stars - amount);
