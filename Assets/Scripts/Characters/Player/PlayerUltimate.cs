@@ -311,15 +311,20 @@ public class PlayerUltimate : MonoBehaviour
                 GameBoard.Instance.foodList[foodIndex].yIndex);
              yield return oldFood.StartCoroutine(oldFood.ZoomOut(0.25f, 0));
 
-            GameObject foodObject = Instantiate(GameBoard.Instance.debuffTakeDamSpecialFoodPrefab, 
-               oldFood.transform.position, Quaternion.identity, GameBoard.Instance.foodParent);
+            //GameObject foodObject = Instantiate(GameBoard.Instance.debuffTakeDamSpecialFoodPrefab, 
+            //   oldFood.transform.position, Quaternion.identity, GameBoard.Instance.foodParent);
+            GameObject foodObject = PoolManager.Instance.GetObject("Food DebuffTakeDam", 
+                oldFood.transform.position, Quaternion.identity, GameBoard.Instance.foodParent, 
+                GameBoard.Instance.debuffTakeDamSpecialFoodPrefab);
+
             foodObject.transform.localScale = Vector3.zero;
             Food food = foodObject.GetComponent<Food>();
             
             yield return food.StartCoroutine(food.ReturnOriginalScale(0.25f));
 
             GameBoard.Instance.AddFoodAtPos(oldFood.xIndex, oldFood.yIndex, food);
-            Destroy(oldFood.gameObject); // Destroy the old food object
+            //Destroy(oldFood.gameObject); // Destroy the old food object
+            oldFood.ReturnFoodToPool(oldFood);
         }
     }
 }

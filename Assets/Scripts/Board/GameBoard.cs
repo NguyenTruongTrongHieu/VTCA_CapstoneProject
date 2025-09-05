@@ -264,7 +264,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 position = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
 
                 // tạo một ô mới từ prefab đã chọn
-                GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+                //GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+                GameObject food = PoolManager.Instance.GetObject
+                    ($"Food {randomIndex}", 
+                    position, Quaternion.identity, foodParent, foodPrefab[randomIndex]);
 
                 food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
@@ -356,6 +359,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 {
                     Food food = DeleteFoodAtPos(x, y); // xóa thức ăn khỏi ô
                     Destroy(food.gameObject); // hủy đối tượng thức ăn
+                    //food.ReturnFoodToPool(food);
                 }
             }
         }
@@ -456,7 +460,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
         Vector2 position = new Vector2(cells[x, y].transform.position.x, cells[x, y].transform.position.y + deltaYBetweenTwoCell); // vị trí của ô mới
 
-        GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+        //GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+        GameObject food = PoolManager.Instance.GetObject
+            ($"Food {randomIndex}",
+            position, Quaternion.identity, foodParent, foodPrefab[randomIndex]);
+
         return food.GetComponent<Food>();
     }
 
@@ -771,8 +779,10 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 Debug.LogError("No food prefab found with the same type as the food at the center position.");
             }
 
-            Destroy(firstOldFood.gameObject); // hủy đối tượng thức ăn cũ
-            Destroy(secondOldFood.gameObject); // hủy đối tượng thức ăn cũ
+            //Destroy(firstOldFood.gameObject); // hủy đối tượng thức ăn cũ
+            //Destroy(secondOldFood.gameObject); // hủy đối tượng thức ăn cũ
+            firstOldFood.ReturnFoodToPool(firstOldFood);
+            secondOldFood.ReturnFoodToPool(secondOldFood);
         }
 
         //Tiến hành xáo lần 2
@@ -1121,7 +1131,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 //StartCoroutine(OnDeletedMatchFood()); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
                 //int randomIndex = UnityEngine.Random.Range(0, hasMatchedFoods.Count); // chọn ngẫu nhiên một ô thức ăn trong danh sách đã so khớp
-                GameObject specialFood = Instantiate(specialFoodPrefab, specialPos, Quaternion.identity, foodParent); // tạo một ô thức ăn đặc biệt tại vị trí của ô thức ăn đã so khớp
+
+                //GameObject specialFood = Instantiate(specialFoodPrefab, specialPos, Quaternion.identity, foodParent); // tạo một ô thức ăn đặc biệt tại vị trí của ô thức ăn đã so khớp
+                GameObject specialFood = PoolManager.Instance.GetObject("Food Multiple", 
+                    specialPos, Quaternion.identity, foodParent, specialFoodPrefab);
+
                 specialFood.transform.localScale = Vector3.zero; // đặt kích thước của ô thức ăn đặc biệt về 0
                 Food food = specialFood.GetComponent<Food>();
                 food.SetMultipleScore(specialMutiplie[i]); // đặt số điểm nhân của ô thức ăn đặc biệt là 3

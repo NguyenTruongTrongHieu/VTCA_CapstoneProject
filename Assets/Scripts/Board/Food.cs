@@ -68,6 +68,30 @@ public class Food : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        isMatched = false;
+        isFalling = false;
+        isFlying = false;
+        transform.localScale = new Vector3(foodScale, foodScale, 1f);
+        transform.localEulerAngles = Vector3.zero;
+        foodImage.color = new Color(foodImage.color.r, foodImage.color.g, foodImage.color.b, 1.0f);
+        foodHighLightImage.gameObject.SetActive(false);
+        foodHighLightImage.color = new Color(foodHighLightImage.color.r, foodHighLightImage.color.g, foodHighLightImage.color.b, 0.0f);
+        if (highlightVFX1 != null)
+        {
+            highlightVFX1.Stop();
+        }
+        if (highlightVFX2 != null)
+        {
+            highlightVFX2.Stop();
+        }
+        if (auraSpecialVFX != null)
+        {
+            auraSpecialVFX.Stop();
+        }
+    }
+
     //private void Update()
     //{
     //    if (Input.GetKeyDown(KeyCode.D))
@@ -313,7 +337,7 @@ public class Food : MonoBehaviour
         isFlying = true;
         AudioManager.instance.PlaySFX("FruitBeginMove");
 
-        Vector3 targetPos = targetIsPlayer ? Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position) 
+        Vector3 targetPos = targetIsPlayer ? Camera.main.WorldToScreenPoint(PlayerUltimate.instance.playerTransform.position)
             : Camera.main.WorldToScreenPoint(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position);
 
         this.transform.SetParent(UIManager.instance.inGamePanel.transform);
@@ -348,7 +372,9 @@ public class Food : MonoBehaviour
         }
 
         isFlying = false;
-        deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
+
+        //deletedFood.gameObject.SetActive(false); // ẩn đối tượng Food
+        ReturnFoodToPool(deletedFood);
     }
 
     public IEnumerator FoodHighLight(float duration)
@@ -400,6 +426,60 @@ public class Food : MonoBehaviour
         //}
 
         foodHighLightImage.color = originalColor; // Đảm bảo màu sắc cuối cùng chính xác
+    }
+
+    public void ReturnFoodToPool(Food deletedFood)
+    {
+        switch (foodType)
+        {
+            case FoodType.Apple:
+                {
+                    PoolManager.Instance.ReturnObject("Food 0", deletedFood.gameObject);
+                    break;
+                }
+
+            case FoodType.Banana:
+                {
+                    PoolManager.Instance.ReturnObject("Food 1", deletedFood.gameObject);
+                    break;
+                }
+
+            case FoodType.Blueberry:
+                {
+                    PoolManager.Instance.ReturnObject("Food 2", deletedFood.gameObject);
+                    break;
+                }
+
+            case FoodType.Grape:
+                {
+                    PoolManager.Instance.ReturnObject("Food 3", deletedFood.gameObject);
+                    break;
+                }
+
+            case FoodType.Orange:
+                {
+                    PoolManager.Instance.ReturnObject("Food 4", deletedFood.gameObject);
+                    break;
+                }
+
+            case FoodType.Special:
+                {
+                    if (deletedFood.specialType == "Multiple")
+                    {
+                        PoolManager.Instance.ReturnObject("Food Multiple", deletedFood.gameObject);
+                    }
+                    break;
+                }
+
+            case FoodType.DebuffSpecial:
+                {
+                    if (deletedFood.specialType == "DebuffTakeDam")
+                    {
+                        PoolManager.Instance.ReturnObject("Food DebuffTakeDam", deletedFood.gameObject);
+                    }
+                    break;
+                }
+        }
     }
 
 }

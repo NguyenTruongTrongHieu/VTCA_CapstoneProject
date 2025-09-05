@@ -5,7 +5,7 @@ public class TabsManager : MonoBehaviour
 {
     [Header("For menu tabs")]
     public TabsManager charactersTab; // Singleton instance
-    private int currentTabID = 1; // Current active tab ID
+    private int currentTabID = -1; // Current active tab ID
 
     [Header("For all tabs")]
     public Carousel carousel; // Reference to the carousel for character selection
