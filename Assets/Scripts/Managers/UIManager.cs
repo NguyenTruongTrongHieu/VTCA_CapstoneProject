@@ -1701,6 +1701,8 @@ public class UIManager : MonoBehaviour
     public void MissionsRewardClaiming()
     {
         MissionsManager._instance.RewardClaiming();
+        IsMissionCompletedChecking();
+        UpdateMissionsProgress();
     }
 
     public IEnumerator ResetTimerSet()
@@ -1713,7 +1715,6 @@ public class UIManager : MonoBehaviour
                 Timer.Instance.ResetMissionTime();
                 MissionsManager._instance.ResetMission();
                 SetUpMissionsDescription();
-                IsMissionCompletedChecking();
                 Debug.Log("Missions have been reset after timer reached zero.");
             }
             resetMissionTimer.text = Timer.Instance.GetFormattedTime();
