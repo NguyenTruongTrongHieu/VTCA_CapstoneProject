@@ -58,12 +58,13 @@ public class ObjectPoolGeneric
 
         obj = objectPools.Dequeue();
 
+        if (parent != null)
+        {
+            obj.transform.SetParent(parent);
+        }
+
         obj.transform.position = pos;
         obj.transform.rotation = rotation;
-        if (parent != null)
-        { 
-            obj.transform.SetParent(parent);
-        }    
         obj.gameObject.SetActive(true);
 
         return obj;

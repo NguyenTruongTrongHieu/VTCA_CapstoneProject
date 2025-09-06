@@ -68,13 +68,17 @@ public class Food : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        transform.localScale = new Vector3(foodScale, foodScale, 1f);
+        transform.localEulerAngles = Vector3.zero;
+    }
+
     private void OnDisable()
     {
         isMatched = false;
         isFalling = false;
         isFlying = false;
-        transform.localScale = new Vector3(foodScale, foodScale, 1f);
-        transform.localEulerAngles = Vector3.zero;
         foodImage.color = new Color(foodImage.color.r, foodImage.color.g, foodImage.color.b, 1.0f);
         foodHighLightImage.gameObject.SetActive(false);
         foodHighLightImage.color = new Color(foodHighLightImage.color.r, foodHighLightImage.color.g, foodHighLightImage.color.b, 0.0f);

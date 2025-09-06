@@ -60,6 +60,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public Food[,] foods;
     public List<Food> foodList = new List<Food>();
     public State[,] states2DArray; // mảng hai chiều chứa các khối gỗ của bàn cờ
+    public GameObject[,] lockedCells2DArray;
 
     public string[,] gameBoard; //"EmptyCell": ô trống; "HavingFood": ô chứa thức ăn; "LockedCell": ô bị khoá; "HavingState": ô chứa khối gỗ
     public GameObject gameBoardGO; // GameObject chứa bàn cờ
@@ -229,12 +230,18 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 if (findLockCell >= 0)
                 {
                     Vector2 pos = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
-                    GameObject lockCellObj = Instantiate(lockCellPrefab, pos, Quaternion.identity, foodParent);
+
+                    //GameObject lockCellObj = Instantiate(lockCellPrefab, pos, Quaternion.identity, foodParent);
+                    GameObject lockCellObj = PoolManager.Instance.GetObject
+                        ($"LockCell",
+                        pos, Quaternion.identity, foodParent, lockCellPrefab);
+                    lockCellObj.GetComponent<RectTransform>().localScale = Vector3.one;
 
                     // nếu ô hiện tại là ô bị khóa, không tạo thức ăn
                     gameBoard[x, y] = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
                     cells[x, y].cellState = "LockedCell"; // cập nhật trạng thái ô thành bị khóa
                     foods[x, y] = null; // không có thức ăn trong ô bị khóa
+                    lockedCells2DArray[x, y] = lockCellObj; // lưu ô bị khóa vào mảng lockedCells
                     continue; // bỏ qua việc tạo thức ăn cho ô này
                 }
 
@@ -244,7 +251,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     Vector2 pos = new Vector2(0, 0);
                     pos = cells[x, y].transform.position;
 
-                    GameObject state = Instantiate(statePrefab, pos, Quaternion.identity, foodParent); // tạo một khối gỗ mới từ prefab đã chọn
+                    //GameObject state = Instantiate(statePrefab, pos, Quaternion.identity, foodParent); // tạo một khối gỗ mới từ prefab đã chọn
+                    GameObject state = PoolManager.Instance.GetObject
+                        ($"State",
+                        pos, Quaternion.identity, foodParent, statePrefab);
+
                     state.GetComponent<State>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của khối gỗ
                     gameBoard[x, y] = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
                     cells[x, y].cellState = "HavingState"; // cập nhật trạng thái ô thành có khối gỗ
@@ -290,6 +301,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         cells = new Node[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô của bàn cờ
         foods = new Food[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô thức ăn
         states2DArray = new State[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các khối gỗ của bàn cờ
+        lockedCells2DArray = new GameObject[boardHeight, boardWidth]; // khởi tạo mảng hai chiều chứa các ô bị khoá của bàn cờ
 
         //spacingX = 0; // tính toán khoảng cách giữa các ô theo chiều ngang
         //spacingY = 0; // tính toán khoảng cách giữa các ô theo chiều dọc
@@ -346,11 +358,15 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                 if (gameBoard[x, y] == "LockedCell")
                 {
+                    PoolManager.Instance.ReturnObject("LockCell", lockedCells2DArray[x, y]); // xóa ô bị khoá khỏi mảng lockedCells
+
                     gameBoard[x, y] = "EmptyCell";
                     cells[x, y].cellState = "Empty";
                 }
                 else if (gameBoard[x, y] == "HavingState")
                 {
+                    PoolManager.Instance.ReturnObject("State", states2DArray[x, y].gameObject); // xóa khối gỗ khỏi mảng states
+
                     gameBoard[x, y] = "EmptyCell";
                     cells[x, y].cellState = "Empty";
                     //cells[x, y].food = null; // xóa khối gỗ khỏi ô
@@ -358,17 +374,17 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 else if (gameBoard[x, y] == "HavingFood")
                 {
                     Food food = DeleteFoodAtPos(x, y); // xóa thức ăn khỏi ô
-                    Destroy(food.gameObject); // hủy đối tượng thức ăn
-                    //food.ReturnFoodToPool(food);
+                    //Destroy(food.gameObject); // hủy đối tượng thức ăn
+                    food.ReturnFoodToPool(food);
                 }
             }
         }
 
         //Delete all child in foodParent
-        foreach (Transform child in foodParent)
-        {
-            Destroy(child.gameObject); // hủy tất cả các đối tượng con trong foodParent
-        }
+        //foreach (Transform child in foodParent)
+        //{
+        //    Destroy(child.gameObject); // hủy tất cả các đối tượng con trong foodParent
+        //}
     }
 
     #endregion
