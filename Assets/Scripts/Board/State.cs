@@ -22,6 +22,7 @@ public class State : MonoBehaviour
     {
         durability = 3; // Reset độ bền khi khối gỗ được kích hoạt
         image.sprite = stateSprite[durability - 1]; // Cập nhật hình ảnh của khối gỗ theo độ bền
+        GetComponent<RectTransform>().localScale = new Vector3(0.9f, 0.9f, 1); // Reset vị trí khi tái sử dụng từ pool
     }
 
     public State(int _xIndex, int _yIndex)
@@ -123,7 +124,8 @@ public class State : MonoBehaviour
 
         if (durability <= 0)
         {
-            Destroy(thisState.gameObject); // Destroy the state object when durability reaches 0
+            //Destroy(thisState.gameObject); // Destroy the state object when durability reaches 0
+            PoolManager.Instance.ReturnObject("State", thisState.gameObject);
         }
     }
 }

@@ -60,6 +60,7 @@ public class PoolManager : MonoBehaviour
         {
             ObjectPoolGeneric objectPool = poolDictionary[key];
             objectPool.ReturnObject(obj);
+            obj.transform.SetParent(transform);
         }
         else
         {
