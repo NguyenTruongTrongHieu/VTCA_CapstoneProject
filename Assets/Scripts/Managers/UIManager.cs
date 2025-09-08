@@ -251,13 +251,16 @@ public class UIManager : MonoBehaviour
 
 
         // Set up the main menu
-        SetUITextForUpgradeDamButton();
-        SetUITextForUpgradeHealthButton();
-        UpdateColorTextForUpgradeCost();
-        UpdateCoinText();
-        UpdateCrystalText();
-        UpdateStarText();
-        SetUpMissionsDescription();
+        if (LevelManager.instance.currentLevel.index != 0)
+        {
+            SetUITextForUpgradeDamButton();
+            SetUITextForUpgradeHealthButton();
+            UpdateColorTextForUpgradeCost();
+            UpdateCoinText();
+            UpdateCrystalText();
+            UpdateStarText();
+            SetUpMissionsDescription();
+        }
 
         originaloffsetMinMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMin;
         originaloffsetMaxMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMax;
@@ -278,21 +281,24 @@ public class UIManager : MonoBehaviour
         DisplayCurrentLevel();
 
         // Set up the character buttons
-        foreach (CharacterButton button in characterButtons)
+        if (LevelManager.instance.currentLevel.index != 0)
         {
-            var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == button.characterID);
-            if (checkCharacter != null)//if found the same id in ownedCharacters list
+            foreach (CharacterButton button in characterButtons)
             {
-                foreach (var name in checkCharacter.ownedSkins)
+                var checkCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == button.characterID);
+                if (checkCharacter != null)//if found the same id in ownedCharacters list
                 {
-                    if (name == button.characterName)//if found the same name in ownedCharacters list
+                    foreach (var name in checkCharacter.ownedSkins)
                     {
-                        //Also used for buying
-                        button.isOwned = true; // Set the button as owned
-                        button.ownedText.gameObject.SetActive(true);
-                        button.buyText.gameObject.SetActive(false);
-                        button.lockImage.gameObject.SetActive(false);//Turn off the lock image
-                        break;
+                        if (name == button.characterName)//if found the same name in ownedCharacters list
+                        {
+                            //Also used for buying
+                            button.isOwned = true; // Set the button as owned
+                            button.ownedText.gameObject.SetActive(true);
+                            button.buyText.gameObject.SetActive(false);
+                            button.lockImage.gameObject.SetActive(false);//Turn off the lock image
+                            break;
+                        }
                     }
                 }
             }
@@ -340,7 +346,14 @@ public class UIManager : MonoBehaviour
     {
         if (LevelManager.instance.currentLevel != null)
         {
-            currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
+            if (LevelManager.instance.currentLevel.index == 0)
+            {
+                currentLevelDisplay.text = $"Tutorial";
+            }
+            else
+            {
+                currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
+            }
 
             if (LevelManager.instance.currentLevel.havingBoss)
             {
@@ -1530,9 +1543,6 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.instance.currentTurn == "Win")
         { 
-            //Save new level
-            LevelManager.instance.SetNextLevel();
-
             gameOverPanelImage.sprite = winPanelSprite;
             resultImage.sprite = winResultSprite;
             returnMenuButton.GetComponent<Image>().sprite = winButtonSprite;
@@ -1560,6 +1570,9 @@ public class UIManager : MonoBehaviour
             yield return StartCoroutine(CountCoin(LevelManager.instance.currentLevel.rewardCoin, 1f) );
             yield return new WaitForSeconds(0.3f);
             StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform.position, LevelManager.instance.currentLevel.rewardCoin, false, 0f));
+
+            //Save new level
+            LevelManager.instance.SetNextLevel();
         }
 
         yield return new WaitForSeconds(0.3f);

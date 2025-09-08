@@ -49,6 +49,9 @@ public class MissionsManager : MonoBehaviour
 
     public void EnemyKilled()
     {
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         for (int i = 0; i < missions.Length; i++)
         {
             if (missions[i].missionType == MissionType.KillEnemy && missions[i].isCompleted == false && missions[i].isActive == true)
@@ -71,6 +74,9 @@ public class MissionsManager : MonoBehaviour
 
     public void FruitMatching(int hasMatchedFruit)
     {
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         for (int i = 0; i < missions.Length; i++)
         {
             if (missions[i].missionType == MissionType.FruitMatching && missions[i].isCompleted == false && missions[i].isActive == true)
@@ -92,7 +98,9 @@ public class MissionsManager : MonoBehaviour
 
     public void UpgradeDamageStats()
     {
-        
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         // Loop through all missions and check for UpgradeDamageStats type
         for (int i = 0; i < missions.Length; i++)
         {
@@ -117,6 +125,9 @@ public class MissionsManager : MonoBehaviour
 
     public void UpgradeHealthStats()
     {
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         // Loop through all missions and check for UpgradeHealthStats type
         for (int i = 0; i < missions.Length; i++)
         {
@@ -142,6 +153,9 @@ public class MissionsManager : MonoBehaviour
 
     public void ReachLevel(int level)
     {
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         for (int i = 0; i < missions.Length; i++)
         {
             if (missions[i].missionType == MissionType.ReachLevel && missions[i].isCompleted == false && missions[i].isActive == true)
@@ -171,6 +185,9 @@ public class MissionsManager : MonoBehaviour
 
     public void UsePowerUp()
     {
+        if (LevelManager.instance.currentLevel.index == 0)
+            return;
+
         for (int i = 0; i < missions.Length; i++)
         {
             if (missions[i].missionType == MissionType.UsePowerUp && missions[i].isCompleted == false && missions[i].isActive == true)

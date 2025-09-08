@@ -351,6 +351,31 @@ MonoBehaviour:
     statesInBoard: []
     lockCellInBoard: []
   levels:
+  - index: 0
+    enemiesAtLevel:
+    - {fileID: 6029603621710947302, guid: ae253dc3efbdbe0428a14778067494b8, type: 3}
+    - {fileID: 6029603621710947302, guid: d336b5d2a80910d468cbe4fba28084f5, type: 3}
+    sceneName: Tutorial
+    rewardCoin: 500
+    havingBoss: 0
+    statesInBoard:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+    lockCellInBoard:
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 4, y: 4}
+    - {x: 3, y: 4}
+    - {x: 2, y: 4}
+    - {x: 1, y: 4}
   - index: 1
     enemiesAtLevel:
     - {fileID: 6029603621710947302, guid: 8a5b4f440601dfd4e8fce9c05635e87b, type: 3}
@@ -434,7 +459,6 @@ MonoBehaviour:
     - {x: 3, y: 4}
     - {x: 2, y: 4}
     - {x: 1, y: 4}
-    - {x: 5, y: 5}
 --- !u!114 &3960010769516030489
 MonoBehaviour:
   m_ObjectHideFlags: 0
