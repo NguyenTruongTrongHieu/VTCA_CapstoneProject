@@ -213,7 +213,7 @@ public class MissionsManager : MonoBehaviour
 
         var availableLevels = LevelManager.instance.levels.Length; // Assuming there are 10 levels available
         var currentLevel = LevelManager.instance.currentLevel.index; // Get the current level number
-        if (currentLevel >= availableLevels)
+        if (currentLevel + 1 >= availableLevels)
         { 
             missionTypes.Remove(MissionType.ReachLevel); // Remove ReachLevel mission type if the player is at the last level
         }
