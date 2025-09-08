@@ -206,7 +206,7 @@ public class PlayerUltimate : MonoBehaviour
         lifeStealPercent = basicLifeStealPlayer + 0.1f;
         playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.lifeStealPercentBonus = lifeStealPercent; 
 
-        totalRound = 3; // Set the total rounds for the ultimate ability
+        totalRound = 1; // Set the total rounds for the ultimate ability
 
         StartCoroutine(PlayUltiVfx(2f)); // Start the coroutine to play ultimate visual effects
         playerTransform.GetComponent<PlayerAttack>().PlayUltiVFX2();
@@ -245,7 +245,7 @@ public class PlayerUltimate : MonoBehaviour
         ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 0.15f); 
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
 
-        totalRound = 3; // Set the total rounds for the ultimate ability
+        totalRound = 1; // Set the total rounds for the ultimate ability
 
         StartCoroutine(Player2UltimateCoroutine()); // Start the coroutine for Player 2's ultimate
 
@@ -296,7 +296,7 @@ public class PlayerUltimate : MonoBehaviour
     {
         List<int> usedCell = new List<int>();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             int foodIndex;
             do
