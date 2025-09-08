@@ -118,8 +118,8 @@ public class SaveLoadManager : MonoBehaviour
         originalOffsetMinLoadingPanel = loadingPanel.GetComponent<RectTransform>().offsetMin;
         originalOffsetMaxLoadingPanel = loadingPanel.GetComponent<RectTransform>().offsetMax;
 
-        LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex - 1].sceneName, 
-            LevelManager.instance.levels[currentLevelIndex - 1].havingBoss, LevelManager.instance.levels[currentLevelIndex - 1].rewardCoin);
+        LevelManager.instance.currentLevel = new Level(currentLevelIndex, LevelManager.instance.levels[currentLevelIndex].sceneName, 
+            LevelManager.instance.levels[currentLevelIndex].havingBoss, LevelManager.instance.levels[currentLevelIndex].rewardCoin);
         LevelManager.instance.AddStateAndLockCellToCurrentLevel();
 
         GameManager.instance.currentDamageLevel = currentBasicDamageLevel;
@@ -167,7 +167,7 @@ public class SaveLoadManager : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("CurrentLevelIndex") || !isFileExist)//!PlayerPrefs.HasKey("CurrentLevelIndex") || !System.IO.File.Exists("OwnedCharaters")
         {
-            currentLevelIndex = 1;
+            currentLevelIndex = 0;
             currentBasicDamageLevel = 1;
             currentBasicHealthLevel = 1;
 

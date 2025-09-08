@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour
     public void SpawnEnemiesAtCurrentLevel()
     { 
         currentLevel.enemiesAtLevel.Clear(); // Clear the current level's enemies list before spawning new ones
-        Level level = levels[currentLevel.index - 1]; // Get the current level from the levels array
+        Level level = levels[currentLevel.index]; // Get the current level from the levels array
         Debug.Log("Spawning enemies for level: " + level.index + " - " + level.sceneName);
         for (int i = 0; i < level.enemiesAtLevel.Count; i++)
         { 
@@ -63,8 +63,8 @@ public class LevelManager : MonoBehaviour
 
     public void AddStateAndLockCellToCurrentLevel()
     { 
-        currentLevel.lockCellInBoard = levels[currentLevel.index - 1].lockCellInBoard;
-        currentLevel.statesInBoard = levels[currentLevel.index - 1].statesInBoard;
+        currentLevel.lockCellInBoard = levels[currentLevel.index].lockCellInBoard;
+        currentLevel.statesInBoard = levels[currentLevel.index].statesInBoard;
     }
 
     public void SetNextLevel()
@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour
         int currentLevelIndex = currentLevel.index;
         if (currentLevelIndex < levels.Length)
         {
-            currentLevel = new Level(currentLevelIndex + 1, levels[currentLevelIndex].sceneName, levels[currentLevelIndex].havingBoss, levels[currentLevelIndex].rewardCoin); // Set the next level
+            currentLevel = new Level(currentLevelIndex + 1, levels[currentLevelIndex + 1].sceneName, levels[currentLevelIndex + 1].havingBoss, levels[currentLevelIndex + 1].rewardCoin); // Set the next level
             AddStateAndLockCellToCurrentLevel(); // Add states and lock cells to the new level
             SaveLoadManager.instance.currentLevelIndex = currentLevel.index; // Save the new level index
 

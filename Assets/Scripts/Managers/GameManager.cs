@@ -311,7 +311,10 @@ public class GameManager : MonoBehaviour
         UIManager.instance.ultimateButton.onClick.RemoveAllListeners(); // Remove all listeners from the ultimate button
         PlayerUltimate.instance.ResetPlayer();
 
-        UIManager.instance.UpdateColorTextForUpgradeCost();
+        if (LevelManager.instance.currentLevel.index != 0)
+        {
+            UIManager.instance.UpdateColorTextForUpgradeCost();
+        }
         UIManager.instance.ShowMainMenuPanel();
         UIManager.instance.HideAllHUDWithoutAnim();
 
