@@ -70,7 +70,7 @@ public class LevelManager : MonoBehaviour
     public void SetNextLevel()
     { 
         int currentLevelIndex = currentLevel.index;
-        if (currentLevelIndex < levels.Length)
+        if (currentLevelIndex < levels.Length - 1)
         {
             currentLevel = new Level(currentLevelIndex + 1, levels[currentLevelIndex + 1].sceneName, levels[currentLevelIndex + 1].havingBoss, levels[currentLevelIndex + 1].rewardCoin); // Set the next level
             AddStateAndLockCellToCurrentLevel(); // Add states and lock cells to the new level
