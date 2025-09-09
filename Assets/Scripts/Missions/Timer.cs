@@ -54,9 +54,16 @@ public class Timer : MonoBehaviour
 
     public string GetFormattedTime()
     {
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        return string.Format("{0:D2}:{1:D2}", minutes, seconds);
+        // Tính tổng số giây đã làm tròn
+        int totalSeconds = Mathf.FloorToInt(remainingTime);
+
+        // Tính giờ, phút, giây từ tổng số giây
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        // Định dạng chuỗi theo đúng cú pháp
+        return string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
     }
 
     public float GetRemainingTime()

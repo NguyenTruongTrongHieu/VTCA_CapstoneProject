@@ -281,19 +281,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33af9bda44ae5ff4581fbad650539082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 300
   currentHealth: 0
-  damage: 3
+  damage: 70
   hpSlider: {fileID: 0}
   id: 4
   name: RedWatcher
   enemyType: 0
   basicDefense: 1
   defense: 1
-  coinReward: 100
-  crystalDropRate: 50
+  coinReward: 150
+  crystalDropRate: 0.1
   crystalReward: 0
-  starDropRate: 90
+  starDropRate: 5
   starReward: 0
 --- !u!1001 &255865448027585629
 PrefabInstance:

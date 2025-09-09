@@ -249,19 +249,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33af9bda44ae5ff4581fbad650539082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 250
   currentHealth: 0
-  damage: 3
+  damage: 50
   hpSlider: {fileID: 0}
   id: 0
-  name: ShroomerCactus
+  name: Cactus
   enemyType: 0
   basicDefense: 1
   defense: 1
   coinReward: 100
-  crystalDropRate: 50
+  crystalDropRate: 0.1
   crystalReward: 0
-  starDropRate: 90
+  starDropRate: 5
   starReward: 0
 --- !u!1 &6391409706130101872
 GameObject:

@@ -196,19 +196,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33af9bda44ae5ff4581fbad650539082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 500
   currentHealth: 0
-  damage: 3
+  damage: 100
   hpSlider: {fileID: 0}
   id: 5
   name: Grunt
   enemyType: 0
   basicDefense: 1
   defense: 1
-  coinReward: 100
-  crystalDropRate: 50
+  coinReward: 200
+  crystalDropRate: 0.1
   crystalReward: 0
-  starDropRate: 90
+  starDropRate: 10
   starReward: 0
 --- !u!1 &8144704304589532369
 GameObject:

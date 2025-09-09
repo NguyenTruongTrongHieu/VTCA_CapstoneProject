@@ -193,6 +193,7 @@ public class UIManager : MonoBehaviour
     public Slider chestSlider;
     public Text chestProgressText;
     public Text resetMissionTimer;
+    public ChestManager chestManager;
 
     [Header("ChestBox")]
     public GameObject openChestBoxPanel;
@@ -1732,6 +1733,14 @@ public class UIManager : MonoBehaviour
             }
             resetMissionTimer.text = Timer.Instance.GetFormattedTime();
             yield return null;
+        }
+    }
+
+    public void ChestClaiming()
+    {
+        if (MissionsManager._instance.ChestOpening() == true)
+        {
+            chestManager.OpenChest();
         }
     }
     #endregion

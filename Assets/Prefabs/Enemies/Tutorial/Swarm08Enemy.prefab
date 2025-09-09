@@ -200,14 +200,14 @@ MonoBehaviour:
   damage: 3
   hpSlider: {fileID: 0}
   id: 2
-  name: Swarm08
+  name: StingRay
   enemyType: 0
   basicDefense: 1
   defense: 1
-  coinReward: 100
-  crystalDropRate: 50
+  coinReward: 30
+  crystalDropRate: 0
   crystalReward: 0
-  starDropRate: 90
+  starDropRate: 0
   starReward: 0
 --- !u!1 &8423428009521150321
 GameObject:

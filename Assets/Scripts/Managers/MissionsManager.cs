@@ -315,21 +315,23 @@ public class MissionsManager : MonoBehaviour
         }
     }
 
-    public void ChestOpening()
+    public bool ChestOpening()
     {
+        bool result = false;
+
         Debug.Log("Chest Opening called. Current completed missions: " + missionCompletedCount);
 
         if (missionCompletedCount == 3)
         {
-            // Open the chest and give rewards to the player
-            Debug.Log("Opening Chest! You have completed 3 missions.");
-            // Here you can implement the logic to open the chest and give rewards to the player
-            // For example, you can instantiate a chest prefab, play an animation, etc.
+            result = true;
+
         }
         else if (missionCompletedCount != 3)
         {
-            Debug.Log("You need to complete 3 missions to open the chest.");
+           result = false;
         }
+
+        return result;
     } 
 
     public void RewardClaiming()
