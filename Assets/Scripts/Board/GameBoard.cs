@@ -76,6 +76,9 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     //[SerializeField] private LineController lineController; // đối tượng điều khiển đường nối
     [SerializeField] private UILineRenderer uiLineRenderer; // đối tượng điều khiển đường nối UI
 
+    [Header("Tutorial")]
+    [SerializeField] private bool isTutorial; // biến kiểm tra xem có đang trong chế độ hướng dẫn hay không
+
 
     //layoutArray
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
@@ -264,21 +267,46 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     continue; // bỏ qua việc tạo thức ăn cho ô này
                 }
 
+                GameObject food = null;
                 Vector2 position = new Vector2(0, 0);
 
+                if (isTutorial)
+                {
+                    bool needToRandom = true;
+                    (food, needToRandom) = InitializzeFoodNotRandom(x, y);
+                    if (needToRandom)
+                    {
+                        int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                                                                                          // tính toán vị trí của ô dựa trên chỉ số hàng và cột
+                        RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
 
-                int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
-                // tính toán vị trí của ô dựa trên chỉ số hàng và cột
-                RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
+                        // điều chỉnh vị trí của ô dựa trên kích thước của prefab
+                        position = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
 
-                // điều chỉnh vị trí của ô dựa trên kích thước của prefab
-                position = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
+                        // tạo một ô mới từ prefab đã chọn
+                        //GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+                        food = PoolManager.Instance.GetObject
+                            ($"Food {randomIndex}",
+                            position, Quaternion.identity, foodParent, foodPrefab[randomIndex]);
+                    }
+                }
+                else
+                {
 
-                // tạo một ô mới từ prefab đã chọn
-                //GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
-                GameObject food = PoolManager.Instance.GetObject
-                    ($"Food {randomIndex}", 
-                    position, Quaternion.identity, foodParent, foodPrefab[randomIndex]);
+                    int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                                                                                      // tính toán vị trí của ô dựa trên chỉ số hàng và cột
+                    RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
+
+                    // điều chỉnh vị trí của ô dựa trên kích thước của prefab
+                    position = cells[x, y].transform.position; // lấy vị trí của ô hiện tại
+
+                    // tạo một ô mới từ prefab đã chọn
+                    //GameObject food = Instantiate(foodPrefab[randomIndex], position, Quaternion.identity, foodParent); // tạo một ô mới từ prefab đã chọn
+                    food = PoolManager.Instance.GetObject
+                        ($"Food {randomIndex}",
+                        position, Quaternion.identity, foodParent, foodPrefab[randomIndex]);
+
+                }
 
                 food.GetComponent<Food>().SetIndex(x, y); // thiết lập chỉ số hàng và cột của ô
                 gameBoard[x, y] = "HavingFood"; // tạo một ô mới và thêm trạng thái rỗng vào mảng hai chiều
@@ -293,6 +321,71 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             ShuffleBoard();
         }
+    }
+
+    public (GameObject, bool) InitializzeFoodNotRandom(int xIndex, int yIndex)
+    {
+        bool needToRandom = false;
+
+        GameObject food = null;
+        Vector2 position = cells[xIndex, yIndex].transform.position; // vị trí của ô mới
+
+        if (yIndex == 3)
+        {
+            if (xIndex == 1)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 0",
+                    position, Quaternion.identity, foodParent, foodPrefab[1]);
+            }
+            else if (xIndex == 4)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 4",
+                    position, Quaternion.identity, foodParent, foodPrefab[4]);
+            }
+            else if (xIndex == 5)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 4",
+                    position, Quaternion.identity, foodParent, foodPrefab[4]);
+            }
+            else
+            {
+                needToRandom = true;
+            }
+        }
+        else if (yIndex == 4)
+        {
+            if (xIndex == 2)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 0",
+                    position, Quaternion.identity, foodParent, foodPrefab[1]);
+            }
+            else if (xIndex == 4)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 4",
+                    position, Quaternion.identity, foodParent, foodPrefab[4]);
+            }
+            else if (xIndex == 5)
+            {
+                food = PoolManager.Instance.GetObject
+                    ($"Food 4",
+                    position, Quaternion.identity, foodParent, foodPrefab[4]);
+            }
+            else
+            { 
+                needToRandom = true;
+            }
+        }
+        else
+        {
+            needToRandom = true;
+        }
+
+        return (food, needToRandom);
     }
 
     public void InitializeBoard2()
