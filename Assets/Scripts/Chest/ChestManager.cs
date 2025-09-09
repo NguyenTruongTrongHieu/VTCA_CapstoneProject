@@ -40,17 +40,11 @@ public class ChestManager : MonoBehaviour
         SetRewardForChestBox();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.LeftAlt)) // For testing purposes
-        {
-            Debug.Log("Opening Chest Box");
-            OpenChest();
-        }
-    }
 
     public void OpenChest()
     {
+
+
         if (crystals > 0)
         {
             CurrencyManager.instance.AddCrystalsDontHaveAnim(crystals);

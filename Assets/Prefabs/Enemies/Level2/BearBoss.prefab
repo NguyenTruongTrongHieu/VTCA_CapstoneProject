@@ -201,19 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33af9bda44ae5ff4581fbad650539082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 500
   currentHealth: 0
-  damage: 3
+  damage: 70
   hpSlider: {fileID: 0}
   id: 8
   name: Bear
   enemyType: 1
   basicDefense: 1
   defense: 1
-  coinReward: 100
-  crystalDropRate: 50
+  coinReward: 300
+  crystalDropRate: 25
   crystalReward: 0
-  starDropRate: 90
+  starDropRate: 100
   starReward: 0
 --- !u!1 &7599139820361548407
 GameObject:
