@@ -336,7 +336,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 food = PoolManager.Instance.GetObject
                     ($"Food 0",
-                    position, Quaternion.identity, foodParent, foodPrefab[1]);
+                    position, Quaternion.identity, foodParent, foodPrefab[0]);
             }
             else if (xIndex == 4)
             {
@@ -361,7 +361,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 food = PoolManager.Instance.GetObject
                     ($"Food 0",
-                    position, Quaternion.identity, foodParent, foodPrefab[1]);
+                    position, Quaternion.identity, foodParent, foodPrefab[0]);
             }
             else if (xIndex == 4)
             {
