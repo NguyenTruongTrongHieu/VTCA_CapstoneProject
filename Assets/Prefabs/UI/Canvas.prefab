@@ -1164,6 +1164,11 @@ MonoBehaviour:
   cellColor1: {r: 0, g: 0.42352945, b: 0.5764706, a: 1}
   cellColor2: {r: 0, g: 0.34901962, b: 0.50980395, a: 1}
   uiLineRenderer: {fileID: 2953313334586466636}
+  isTutorial: 0
+  guideStep: 0
+  compulsoryStep1: []
+  compulsoryStep2: []
+  compulsoryStep3: []
 --- !u!1 &509069923602681100
 GameObject:
   m_ObjectHideFlags: 0

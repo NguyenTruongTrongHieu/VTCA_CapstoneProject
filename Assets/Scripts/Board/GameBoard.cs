@@ -78,7 +78,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     [Header("Tutorial")]
     [SerializeField] private bool isTutorial; // biến kiểm tra xem có đang trong chế độ hướng dẫn hay không
+    [SerializeField] private int guideStep = 1; // bước hiện tại trong chế độ hướng dẫn
 
+    public List<Vector2Int> compulsoryStep1;
+    public List<Vector2Int> compulsoryStep2;
+    public List<Vector2Int> compulsoryStep3;
 
     //layoutArray
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
@@ -276,7 +280,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     (food, needToRandom) = InitializzeFoodNotRandom(x, y);
                     if (needToRandom)
                     {
-                        int randomIndex = UnityEngine.Random.Range(0, foodPrefab.Length); // chọn ngẫu nhiên prefab của ô
+                        int randomIndex = UnityEngine.Random.Range(1, foodPrefab.Length - 1); // chọn ngẫu nhiên prefab của ô
                                                                                           // tính toán vị trí của ô dựa trên chỉ số hàng và cột
                         RectTransform rectTransform = foodPrefab[randomIndex].GetComponent<RectTransform>(); // lấy RectTransform của prefab ô
 
@@ -1174,18 +1178,25 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         //Xử lý food bay đến player hoặc enemy hoặc không bay đến đâu cả
         if (hasMatchedFoods.Count >= 2)
         {
-            StartCoroutine(OnDeletedMatchFood(havingSpecialFood, isFoodMoveToPlayer, specialTypeTmp)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
-
-            if (MissionsManager._instance.missions != null)
+            if (isTutorial && guideStep <= 3 && !CheckCompulsoryStepAtTutorial())
             {
-                MissionsManager._instance.FruitMatching(hasMatchedFoods.Count); // cập nhật tiến độ nhiệm vụ nếu có
+                StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight
             }
+            else
+            {
 
+                StartCoroutine(OnDeletedMatchFood(havingSpecialFood, isFoodMoveToPlayer, specialTypeTmp)); // gọi hàm xóa thức ăn đã so khớp sau khi kết thúc kéo
+
+                if (MissionsManager._instance.missions != null)
+                {
+                    MissionsManager._instance.FruitMatching(hasMatchedFoods.Count); // cập nhật tiến độ nhiệm vụ nếu có
+                }
+
+            }
         }
         else
         {
             StartCoroutine(OnTurnOffHighlightFood()); // nếu không có thức ăn nào được so khớp thì tắt hiệu ứng highlight
-            hasMatchedFoods.Clear(); // nếu không có thức ăn nào được so khớp thì xóa danh sách đã so khớp
         }
 
         uiLineRenderer.ClearLines(); // xóa đường nối giữa các ô thức ăn đã so khớp
@@ -1283,6 +1294,50 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
         onDeleteFood = false;
+    }
+
+    public bool CheckCompulsoryStepAtTutorial()
+    { 
+        bool result = true;
+
+        List<Vector2Int> compulsoryStep = null;
+        if (guideStep == 1)
+        {
+            compulsoryStep = compulsoryStep1.ToList();
+        }
+        else if (guideStep == 2)
+        {
+            compulsoryStep = compulsoryStep2.ToList();
+        }
+        else if (guideStep == 3)
+        {
+            compulsoryStep = compulsoryStep3.ToList();
+        }
+        else
+        {
+            return true;
+        }
+
+        int countCompulsoryStep = 0;   
+        for (int i = 0; i < compulsoryStep.Count; i++)
+        {
+            if (hasMatchedFoods.Contains(foods[compulsoryStep[i].x, compulsoryStep[i].y]))
+            {
+                countCompulsoryStep++;
+            }
+        }
+
+        if (countCompulsoryStep != compulsoryStep.Count)
+        {
+            result = false;
+        }
+        else
+        { 
+            guideStep++;
+            result = true;
+        }
+
+        return result;
     }
 
     public void HitState(Vector2Int center)
