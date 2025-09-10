@@ -1280,6 +1280,7 @@ public class UIManager : MonoBehaviour
         if (GameBoard.Instance.GetTutorial())
         {
             GameBoard.Instance.ResetGuideStep();
+            GameBoard.Instance.firstTimeShowInfoUltiPanel = true;
         }
     }
 

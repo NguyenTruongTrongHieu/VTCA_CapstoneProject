@@ -102,6 +102,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public List<Vector2Int> compulsoryStep2;
     public List<Vector2Int> compulsoryStep3;
 
+    [Space]
+    public GameObject handImageAtUltiButton;
+    public GameObject ultiPanel;
+    public GameObject infoUltiPanel;
+    public bool firstTimeShowInfoUltiPanel = true;
+
     //layoutArray
     //public ArrayLayout layoutArray; //  kiểu bố cục của bàn cờ
     // public static of gameBoard
@@ -1521,6 +1527,35 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                     foods[compulsoryStep[i].x, compulsoryStep[i].y].foodScale, 1);
             }
         }
+    }
+
+    public void OnClickUltimate()
+    {
+        if (!isTutorial || !firstTimeShowInfoUltiPanel)
+        {
+            return;
+        }
+
+        firstTimeShowInfoUltiPanel = false;
+        StartCoroutine(ShowUltiInfoPanel());
+    }
+
+    public IEnumerator ShowUltiInfoPanel()
+    { 
+        yield return new WaitForSeconds(1f);
+        ultiPanel.SetActive(true);
+        StartCoroutine(UIManager.instance.ShowPanelWithZoomInAnim(infoUltiPanel, 0.2f, new Vector3(0.8f, 0.8f, 0.8f)));
+    }
+
+    public void OnClickCloseUltiInfoPanel()
+    {
+        StartCoroutine(CloseUltiInfoPanel());
+    }
+
+    public IEnumerator CloseUltiInfoPanel()
+    {
+        yield return StartCoroutine(UIManager.instance.HidePanelWithZoomOutAnim(infoUltiPanel, 0.2f));
+        ultiPanel.SetActive(false);
     }
 
     #endregion
