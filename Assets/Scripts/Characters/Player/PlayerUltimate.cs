@@ -178,6 +178,11 @@ public class PlayerUltimate : MonoBehaviour
             UIManager.instance.manaSlider.gameObject.SetActive(true); // Show the mana slider when resetting
         }
 
+        if (GameBoard.Instance != null && GameBoard.Instance.GetTutorial())
+        {
+            GameBoard.Instance.handImageAtUltiButton.SetActive(false);
+        }
+
         //Reset slider mana in uimnager
         UIManager.instance.manaSlider.value = 0; // Reset the mana slider to 0
     }
@@ -195,6 +200,10 @@ public class PlayerUltimate : MonoBehaviour
             //UIManager.instance.ultimateButton.gameObject.SetActive(true); // Enable the ultimate button when mana is full
             //UIManager.instance.manaSlider.gameObject.SetActive(false); // Show the mana slider when mana is full
             UIManager.instance.StartCoroutine(UIManager.instance.ChangeManaSliderAndUltimateButton());
+            if (GameBoard.Instance != null && GameBoard.Instance.GetTutorial())
+            { 
+                GameBoard.Instance.handImageAtUltiButton.SetActive(true);
+            }
         }
     }
 
@@ -218,6 +227,11 @@ public class PlayerUltimate : MonoBehaviour
         if (MissionsManager._instance.missions != null)
         {
             MissionsManager._instance.UsePowerUp();
+        }
+
+        if (GameBoard.Instance != null && GameBoard.Instance.firstTimeShowInfoUltiPanel)
+        {
+            GameBoard.Instance.OnClickUltimate();
         }
     }
 
