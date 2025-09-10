@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Playing")]
     public string currentTurn = "";//"": not playing; "Player": player turn; "Enemy": enemy turn; "None": not do attack; "Win": all enemies die; "Lose": player die
-    private bool isPlayerTurn = false; // True if it's player's turn, false if it's enemy's turn
+    private bool isPlayerTurn = true; // True if it's player's turn, false if it's enemy's turn
     public int multipleScoreForPlayerHit = 1; // Score multiplier for player hits
 
     public int currentEnemyIndex = 0; // Index of the current enemy in the level
@@ -77,6 +77,11 @@ public class GameManager : MonoBehaviour
                     UIManager.instance.disableMatching.SetActive(false); // Disable matching UI during player's turn
                     UIManager.instance.ultimateButton.interactable = true; // Disable ultimate button during player's turn
                     UIManager.instance.returnHomeButton.gameObject.SetActive(true); // Show return home button during player's turn
+
+                    if (GameBoard.Instance.GetTutorial() && GameBoard.Instance.GetGuideStep() <= 3)
+                    {
+                        GameBoard.Instance.StartCoroutine(GameBoard.Instance.HighlightCompulsoryStep());
+                    }
                 }
             }
             else if (isPlayerTurn)

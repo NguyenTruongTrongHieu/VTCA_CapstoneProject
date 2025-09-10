@@ -1277,6 +1277,10 @@ public class UIManager : MonoBehaviour
         //{
         //    tabsButtons.gameObject.SetActive(false); // Hide all tab buttons
         //}
+        if (GameBoard.Instance.GetTutorial())
+        {
+            GameBoard.Instance.ResetGuideStep();
+        }
     }
 
     public void ShowGameOverPanel(bool isPlayerWin)

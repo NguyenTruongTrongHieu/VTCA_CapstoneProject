@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Accessibility;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -78,8 +79,25 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
     [Header("Tutorial")]
     [SerializeField] private bool isTutorial; // biến kiểm tra xem có đang trong chế độ hướng dẫn hay không
+
+    public bool GetTutorial()
+    { 
+        return isTutorial;
+    }
+
     [SerializeField] private int guideStep = 1; // bước hiện tại trong chế độ hướng dẫn
 
+    public void ResetGuideStep()
+    {
+        guideStep = 1;
+    }
+
+    public int GetGuideStep()
+    {
+        return guideStep;
+    }
+
+    private bool isPlayAnimGuideStep = false; // biến kiểm tra xem có đang chơi hoạt ảnh hướng dẫn hay không
     public List<Vector2Int> compulsoryStep1;
     public List<Vector2Int> compulsoryStep2;
     public List<Vector2Int> compulsoryStep3;
@@ -963,6 +981,11 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (hasMatchedFoods.Count == 0)
             {
+                if (isTutorial && guideStep <= 3)
+                {
+                    StopHighlightCompulsoryStep();
+                }
+
                 hasMatchedFoods.Add(underPointer.GetComponentInParent<Food>()); // thêm ô thức ăn đầu tiên vào danh sách đã so khớp
                 underPointer.GetComponentInParent<Food>().isMatched = true; // đặt biến isMatched của ô thức ăn đã so khớp về true
                 StartCoroutine(underPointer.GetComponentInParent<Food>().ChoosenAnim());
@@ -986,6 +1009,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 }
             }
         }
+
 
         //Những ô thức ăn không cùng foodType với ô thức ăn đang được kéo sẽ bị mờ đi và thu nhỏ lại
         if (!isCheckSpecialFood)
@@ -1379,6 +1403,124 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         }
 
         hasMatchedFoods.Clear(); // xóa danh sách các ô thức ăn đã so khớp
+
+        if (isTutorial && guideStep <= 3)
+        {
+            StartCoroutine(HighlightCompulsoryStep());
+        }
+    }
+
+    #endregion
+
+    #region ANIMATION TUTORIAL
+
+    public IEnumerator HighlightCompulsoryStep()
+    { 
+        isPlayAnimGuideStep = true;
+        List<Vector2Int> compulsoryStep = null;
+        if (guideStep == 1)
+        {
+            compulsoryStep = compulsoryStep1;
+        }
+        else if (guideStep == 2)
+        {
+            compulsoryStep = compulsoryStep2;
+        }
+        else if (guideStep == 3)
+        {
+            compulsoryStep = compulsoryStep3;
+        }
+
+        if (compulsoryStep != null)
+        {
+            while (isPlayAnimGuideStep)
+            {
+                float elapsedTime = 0f;
+                //Wait for 0.5s
+                while (elapsedTime < 0.5f && isPlayAnimGuideStep)
+                {
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+
+                for (int i = 0; i < compulsoryStep.Count; i++)
+                {
+                    if (!isPlayAnimGuideStep)
+                    {
+                        break;
+                    }
+
+                    foods[compulsoryStep[i].x, compulsoryStep[i].y].isMatched = true;
+                    StartCoroutine(foods[compulsoryStep[i].x, compulsoryStep[i].y].ChoosenAnim());
+
+                    //Wait for 0.5s
+                    elapsedTime = 0f;
+                    while (elapsedTime < 0.5f && isPlayAnimGuideStep)
+                    {
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
+                }
+
+                //Wait for 0.5s
+                elapsedTime = 0f;
+                while (elapsedTime < 0.75f && isPlayAnimGuideStep)
+                {
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+                for (int i = 0; i < compulsoryStep.Count; i++)
+                {
+                    if (!isPlayAnimGuideStep)
+                    {
+                        break;
+                    }
+                    foods[compulsoryStep[i].x, compulsoryStep[i].y].isMatched = false;
+                    StartCoroutine(foods[compulsoryStep[i].x, compulsoryStep[i].y].ReturnOriginalScale(0.15f));
+                }
+
+                //Wait for 0.5s
+                elapsedTime = 0f;
+                while (elapsedTime < 0.5f && isPlayAnimGuideStep)
+                {
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+        }
+    }
+
+    public void StopHighlightCompulsoryStep()
+    {
+        isPlayAnimGuideStep = false;
+        //StopCoroutine(HighlightCompulsoryStep());
+
+        List<Vector2Int> compulsoryStep = null;
+        if (guideStep == 1)
+        {
+            compulsoryStep = compulsoryStep1;
+        }
+        else if (guideStep == 2)
+        {
+            compulsoryStep = compulsoryStep2;
+        }
+        else if (guideStep == 3)
+        {
+            compulsoryStep = compulsoryStep3;
+        }
+
+        if (compulsoryStep != null)
+        {
+            for (int i = 0; i < compulsoryStep.Count; i++)
+            {
+                foods[compulsoryStep[i].x, compulsoryStep[i].y].isMatched = false;
+                foods[compulsoryStep[i].x, compulsoryStep[i].y].transform.localScale = 
+                    new Vector3(foods[compulsoryStep[i].x, compulsoryStep[i].y].foodScale, 
+                    foods[compulsoryStep[i].x, compulsoryStep[i].y].foodScale, 1);
+            }
+        }
     }
 
     #endregion
