@@ -253,6 +253,7 @@ MonoBehaviour:
   animator: {fileID: 8728068140518167206}
   attackAnimations:
   - Attack1
+  dieAnimDuration: 0.5
   victorySFXVoice:
   - Player2VictoryVoice1
   - Player2VictoryVoice2

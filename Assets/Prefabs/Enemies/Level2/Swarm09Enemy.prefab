@@ -161,6 +161,7 @@ MonoBehaviour:
   animator: {fileID: 2314029799001472940}
   attackAnimations:
   - Attack1
+  dieAnimDuration: 0.3
 --- !u!114 &5190853607653065583
 MonoBehaviour:
   m_ObjectHideFlags: 0
