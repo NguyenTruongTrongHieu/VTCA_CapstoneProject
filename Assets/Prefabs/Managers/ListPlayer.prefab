@@ -126,7 +126,7 @@ MonoBehaviour:
   PivotOffset: {x: 0, y: 0, z: 0}
   AmplitudeGain: 0
   FrequencyGain: 0
-  m_NoiseOffsets: {x: 0, y: 0, z: 0}
+  m_NoiseOffsets: {x: -49.482697, y: -698.00134, z: -736.9409}
 --- !u!1 &4465789838100233751
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cineCam: {fileID: 4307036520904109373}
+  isPlayingCutScene: 0
 --- !u!1001 &2678228093005978227
 PrefabInstance:
   m_ObjectHideFlags: 0
