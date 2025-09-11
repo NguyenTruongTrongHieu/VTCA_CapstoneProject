@@ -8,9 +8,11 @@ public class PlayerAttack : MonoBehaviour
 {
     public PlayerStat playerStat;
 
+    [Header("Animation")]
     public string attackState;
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
+    public float dieAnimDuration = 1f;
 
     [Header("SFX")]
     public string[] victorySFXVoice;
@@ -120,6 +122,11 @@ public class PlayerAttack : MonoBehaviour
         if (isAllEnemiesDie)
         {
             yield return new WaitForSeconds(0.5f);
+            while (CameraManager.instance.isPlayingCutScene)
+            {
+                yield return null;
+            }
+            yield return StartCoroutine(CameraManager.instance.ChangeTargetCamFromEnemyToPlayer());
             GameManager.instance.currentTurn = "Win";
             GameManager.instance.currentGameState = GameState.GameOver;
             Victory();
@@ -265,7 +272,9 @@ public class PlayerAttack : MonoBehaviour
                         {
                             animator.SetBool(isDeadHash, true); // Trigger the dead animation
 
-                            CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 3, -8f));
+                            //CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(true, 3, -8f));
+                            CameraManager.instance.StartCoroutine(CameraManager.instance.CutSceneAtPlayerWhenPlayerDie(27));
+
                             int randomIndex = Random.Range(0, deathSFXVoice.Length);
                             AudioManager.instance.PlaySFX(deathSFXVoice[randomIndex]);
                         }

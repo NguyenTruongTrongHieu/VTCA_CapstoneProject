@@ -126,6 +126,14 @@ public class EnemyAttack : MonoBehaviour
         if (isPlayerDie)
         {
             yield return new WaitForSeconds(1.15f);
+            while (CameraManager.instance.isPlayingCutScene)
+            {
+                yield return null;
+            }
+            if (this.transform == LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
+            {
+                yield return StartCoroutine(CameraManager.instance.ChangeTargetCamFromPlayerToEnemy());
+            }
             Victory();
         }
         else
@@ -141,6 +149,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (this.transform != LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
         {
+            Debug.Log("Not current enemy, return");
             return;
         }
 
@@ -152,7 +161,14 @@ public class EnemyAttack : MonoBehaviour
 
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0f));
-        CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
+        if (enemyStat.enemyType == EnemyType.normal)
+        {
+            CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(30f, 0.5f));
+        }
+        else
+        {
+            CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.5f));
+        }
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0f));
 
         if (enemyStat.enemyType == EnemyType.boss)
