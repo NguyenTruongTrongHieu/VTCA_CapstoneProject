@@ -184,6 +184,7 @@ MonoBehaviour:
   attackAnimations:
   - Attack1
   - Attack2
+  dieAnimDuration: 0.4
 --- !u!114 &5190853607653065583
 MonoBehaviour:
   m_ObjectHideFlags: 0

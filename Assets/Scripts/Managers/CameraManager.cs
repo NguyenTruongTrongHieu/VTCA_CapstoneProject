@@ -422,6 +422,7 @@ public class CameraManager : MonoBehaviour
         }
         StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
         Destroy(dummyTarget);
+        Destroy(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].gameObject);
     }
 
     public IEnumerator CutSceneAtPlayerWhenEnemyDie()
@@ -436,10 +437,57 @@ public class CameraManager : MonoBehaviour
 
         StartCoroutine(SetHardLookAt(1f, 'z', 0.7f));
         StartCoroutine(SetFollowOffset(0.5f, 'x', 0.7f));
-        Destroy(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].gameObject);
+        //Destroy(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].gameObject);
         yield return StartCoroutine(SetVerticalFOV(35, 0.5f));
 
         isPlayingCutScene = false;
+    }
+
+    public IEnumerator CutSceneAtPlayerWhenPlayerDie(float targetFOV)
+    {
+        isPlayingCutScene = true;
+        StartCoroutine(ShakeCamera(5f, 1f, 0.5f));
+        //float currentLookAtOffsetZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
+        //float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
+        //float currentFOV = cineCam.Lens.FieldOfView;
+
+        StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
+        StartCoroutine(SetHardLookAt(50f, 'z', 0));
+        StartCoroutine(SetFollowOffset(0.1f, 'x', 0));
+        yield return StartCoroutine(SetVerticalFOV(targetFOV, 0.1f));
+
+        float startSlowTime = Time.realtimeSinceStartup;
+        float endSlowTime = startSlowTime + 1f; // Duration of the slow motion effect
+        while (Time.realtimeSinceStartup < endSlowTime)
+        {
+            Time.timeScale = 0.1f;
+            yield return null; // Wait for the next frame
+        }
+        Time.timeScale = 1f; // Reset time scale to normal
+
+        yield return new WaitForSeconds(PlayerUltimate.instance.playerTransform.GetComponent<PlayerAttack>().dieAnimDuration);
+
+        //StartCoroutine(SetHardLookAt(1f, 'z', currentLookAtOffsetZ));
+        //StartCoroutine(SetFollowOffset(0.5f, 'x', currentFollowOffsetX));
+        //Destroy(enemy.gameObject);
+        //yield return StartCoroutine(SetVerticalFOV(currentFOV, 0.5f));
+
+        isPlayingCutScene = false;
+        yield return null;
+    }
+
+    public IEnumerator ChangeTargetCamFromPlayerToEnemy()
+    { 
+        GameObject dummyTarget = new GameObject();
+        dummyTarget.transform.position = PlayerUltimate.instance.playerTransform.position;
+        StartCoroutine(SetTargetForCam(dummyTarget.transform, 0f));
+        while (Vector3.Distance(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position, dummyTarget.transform.position) > 0.1f)
+        {
+            dummyTarget.transform.position = Vector3.MoveTowards(dummyTarget.transform.position, LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position, 3f * Time.deltaTime);
+            yield return null;
+        }
+        StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
+        Destroy(dummyTarget);
     }
 
     public IEnumerator SetCamForSpecialAttack(float targetLookAtOffsetZ, float targetFOV)

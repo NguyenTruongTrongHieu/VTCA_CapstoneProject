@@ -196,6 +196,7 @@ MonoBehaviour:
   - Attack1
   - Attack2
   - Attack3
+  dieAnimDuration: 0.5
   victorySFXVoice:
   - Player1VictoryVoice1
   - Player1VictoryVoice2
