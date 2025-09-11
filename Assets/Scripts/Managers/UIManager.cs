@@ -820,16 +820,13 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        //Subtract star and coin
-        CurrencyManager.instance.SubtractStar(nextBonusStat.starCost);
-        CurrencyManager.instance.SubtractCoins(nextBonusStat.coinCost);
-
         //Increase the level of the character
         if (SaveLoadManager.instance.currentLevelOfCurrentPlayer == playerStat.bonusStatsLevel.Length)
         {
             Debug.LogError("You have reached the max level of this character, cannot upgrade anymore!");
             return;
         }
+
         var ownedCharacter = SaveLoadManager.instance.ownedCharacters.Find(x => x.characterID == playerStat.id);
         if (ownedCharacter != null)
         {
@@ -842,11 +839,16 @@ public class UIManager : MonoBehaviour
             return;
         }
 
+        //Subtract star and coin
+        CurrencyManager.instance.SubtractStar(nextBonusStat.starCost);
+        CurrencyManager.instance.SubtractCoins(nextBonusStat.coinCost);
+
         playerStat.bonusStatAtCurrentLevel = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer - 1]; // Set the bonus stats for the player at the current level
         playerStat.SetUpStatAndSlider();
         PlayerUltimate.instance.SetUpBaseStatForPlayer();
 
         //Setup UI
+        PlayerUltimate.instance.SetUltimateAnimPlayer();
         SetUIInfoCurrentPlayer(SaveLoadManager.instance.currentLevelOfCurrentPlayer);
         HideUpgradeCharacterPanel();
     }
