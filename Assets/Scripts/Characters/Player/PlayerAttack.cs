@@ -128,6 +128,11 @@ public class PlayerAttack : MonoBehaviour
         else if (isEnemyDie)
         {
             yield return new WaitForSeconds(0.5f);
+            while(CameraManager.instance.isPlayingCutScene)
+            {
+                yield return null;
+            }
+            yield return StartCoroutine(CameraManager.instance.CutSceneAtPlayerWhenEnemyDie());
             GameManager.instance.currentTurn = "None";
             GameManager.instance.GoToNextEnemy(); // Go to next enemy
             GetComponent<Player>().SetUpBehaviourTree();

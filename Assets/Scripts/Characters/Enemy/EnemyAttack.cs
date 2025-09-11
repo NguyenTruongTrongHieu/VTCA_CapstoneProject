@@ -33,6 +33,7 @@ public class EnemyAttack : MonoBehaviour
     public int enemyDebuffTurn;
     public int enemyBuffTurn;
 
+    [Header("Animation")]
     public Animator animator;
     public List<string> attackAnimations; // List of animation names to play
     private List<int> attackHashes = new List<int>();//Trigger
@@ -40,6 +41,8 @@ public class EnemyAttack : MonoBehaviour
     private int getHitHash; // Trigger for getting hit
     private int isDeadHash; // Trigger for dead animation
     private int isVictoryHash;
+
+    public float dieAnimDuration = 2f;
 
     private int specialAttackHash;//Trigger, maybe use in the future
 
@@ -219,16 +222,18 @@ public class EnemyAttack : MonoBehaviour
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
-                            StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
+                            //StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
 
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
                             if (enemyStat.enemyType == EnemyType.normal)
                             {
-                                CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 3, -8));
+                                //CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 3, -8));
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.CutSceneAtEnemyWhenEnemyDieByNormallAttack(this, 30));
                             }
                             else
                             {
-                                CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 5, -6));
+                                //CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 5, -6));
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.CutSceneAtEnemyWhenEnemyDieByNormallAttack(this, 40));
                             }
 
                             if (MissionsManager._instance.missions != null)
@@ -238,7 +243,7 @@ public class EnemyAttack : MonoBehaviour
                             int randomIndex = Random.Range(0, enemyDieVoice.Length);
                             AudioManager.instance.PlaySFX(enemyDieVoice[randomIndex]);
 
-                            Destroy(gameObject, 1f);
+                            //Destroy(gameObject, 1f);
                         }
                     }
                 }
@@ -273,14 +278,6 @@ public class EnemyAttack : MonoBehaviour
                 BeingAttackSpecial();
 
                 CameraManager.instance.StartCoroutine(CameraManager.instance.ShakeCamera(3f, 3f, 0.5f));
-                if (enemyStat.enemyType == EnemyType.normal)
-                {
-                    CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.35f, 24f));
-                }
-                else
-                {
-                    CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.3f, 30f));
-                }
 
                 if (enemyStat.CheckIfObjectDead())
                 {
@@ -293,9 +290,18 @@ public class EnemyAttack : MonoBehaviour
                     {
                         if (playerAttack.attackState == "DoneAttack")
                         {
-                            StartCoroutine(PlayDropCoinEffectWhenPlayerDie());
-
                             animator.SetBool(isDeadHash, true); // Trigger dead animation
+
+                            if (enemyStat.enemyType == EnemyType.normal)
+                            {
+                                //CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 3, -8));
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.CutSceneAtEnemyWhenEnemyDieBySpecialAttack(this, 24, 30, 0.35f));
+                            }
+                            else
+                            {
+                                //CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamWhenTargetDie(false, 5, -6));
+                                CameraManager.instance.StartCoroutine(CameraManager.instance.CutSceneAtEnemyWhenEnemyDieBySpecialAttack(this, 30, 40, 0.3f));
+                            }
 
                             if (MissionsManager._instance.missions != null)
                             {
@@ -304,12 +310,20 @@ public class EnemyAttack : MonoBehaviour
                             int randomIndex = Random.Range(0, enemyDieVoice.Length);
                             AudioManager.instance.PlaySFX(enemyDieVoice[randomIndex]);
 
-                            Destroy(gameObject, 1f);
                         }
                     }
                 }
                 else
-                { 
+                {
+                    if (enemyStat.enemyType == EnemyType.normal)
+                    {
+                        CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.35f, 24f));
+                    }
+                    else
+                    {
+                        CameraManager.instance.StartCoroutine(CameraManager.instance.SetCamForSpecialAttack(0.3f, 30f));
+                    }
+
                     int randomIndex = Random.Range(0, enemyHitVoice.Length);
                     AudioManager.instance.PlaySFX(enemyHitVoice[randomIndex]);
                 }
@@ -322,7 +336,7 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    public IEnumerator PlayDropCoinEffectWhenPlayerDie()
+    public IEnumerator PlayDropCoinEffectWhenEnemyDie()
     {
         yield return new WaitForSeconds(0.5f);
         dropCoinSpecialVFX.Play();

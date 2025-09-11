@@ -9,16 +9,17 @@ public class CameraManager : MonoBehaviour
     //Hard Look At Offset Z: 0: cam bình thường; 0.7: cam khi gặp enemy; 1:  Đòn đánh special, cam khi gặp boss
     public static CameraManager instance;
     public CinemachineCamera cineCam;
+    public bool isPlayingCutScene;
 
     private void Awake()
     {
         if (instance == null)
-        { 
+        {
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
-        { 
+        {
             Destroy(gameObject);
         }
     }
@@ -39,7 +40,7 @@ public class CameraManager : MonoBehaviour
 
     public IEnumerator SetTargetForCam(Transform target, float waitTimeToSet)
     {
-        if(waitTimeToSet > 0f)
+        if (waitTimeToSet > 0f)
         {
             yield return new WaitForSeconds(waitTimeToSet);
         }
@@ -47,12 +48,12 @@ public class CameraManager : MonoBehaviour
     }
 
     public void SetScreenPosCompositionWhenPlaying()
-    { 
+    {
         cineCam.GetComponent<CinemachineRotationComposer>().Composition.ScreenPosition.x = -0.25f;
     }
 
     public void SetScreenPosCompositionWhenNotPlaying()
-    { 
+    {
         cineCam.GetComponent<CinemachineRotationComposer>().Composition.ScreenPosition.x = 0f;
     }
 
@@ -107,7 +108,7 @@ public class CameraManager : MonoBehaviour
     public IEnumerator SetHardLookAt(float speed, char offsetPos, float target)
     {
         if (offsetPos == 'X' || offsetPos == 'x')
-        { 
+        {
             float currentLookAtX = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x;
             if (currentLookAtX < target)
             {
@@ -132,7 +133,7 @@ public class CameraManager : MonoBehaviour
             // Ensure the final value is set to the target
             cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.x = target;
         }
-        else if(offsetPos == 'Y' || offsetPos == 'y')
+        else if (offsetPos == 'Y' || offsetPos == 'y')
         {
             float currentLookAtY = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.y;
             if (currentLookAtY < target)
@@ -242,7 +243,7 @@ public class CameraManager : MonoBehaviour
     public IEnumerator SetFollowOffset(float duration, char offsetPos, float target)
     {
         if (offsetPos == 'X' || offsetPos == 'x')
-        { 
+        {
             float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
             float elapsedTime = 0f;
             while (elapsedTime < duration)
@@ -283,7 +284,7 @@ public class CameraManager : MonoBehaviour
     }
 
     public IEnumerator ShakeCamera(float amplitude, float frequency, float time)
-    { 
+    {
         // Start the camera shake effect
         if (cineCam != null)
         {
@@ -336,6 +337,109 @@ public class CameraManager : MonoBehaviour
             StartCoroutine(SetFollowOffset(0.6f, 'Z', currentFollowOffsetZ));
             yield return StartCoroutine(SetFollowOffset(0.6f, 'X', currentFollowOffsetX));
         }
+    }
+
+    public IEnumerator CutSceneAtEnemyWhenEnemyDieByNormallAttack(EnemyAttack enemy, float targetFOV)
+    {
+        isPlayingCutScene = true;
+        StartCoroutine(ShakeCamera(5f, 1f, 0.5f));
+        //float currentLookAtOffsetZ = cineCam.GetComponent<CinemachineHardLookAt>().LookAtOffset.z;
+        //float currentFollowOffsetX = cineCam.GetComponent<CinemachineFollow>().FollowOffset.x;
+        //float currentFOV = cineCam.Lens.FieldOfView;
+
+        StartCoroutine(SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
+        StartCoroutine(SetHardLookAt(50f, 'z', 0));
+        StartCoroutine(SetFollowOffset(0.1f, 'x', 0));
+        yield return StartCoroutine(SetVerticalFOV(targetFOV, 0.1f));
+
+        float startSlowTime = Time.realtimeSinceStartup;
+        float endSlowTime = startSlowTime + 1f; // Duration of the slow motion effect
+        while (Time.realtimeSinceStartup < endSlowTime)
+        {
+            Time.timeScale = 0.1f;
+            yield return null; // Wait for the next frame
+        }
+        Time.timeScale = 1f; // Reset time scale to normal
+
+        // Wait until the enemy's die animation is finished
+        yield return new WaitForSeconds(enemy.dieAnimDuration);
+        StartCoroutine(enemy.PlayDropCoinEffectWhenEnemyDie());
+        yield return new WaitForSeconds(1f);
+
+        //StartCoroutine(SetHardLookAt(1f, 'z', currentLookAtOffsetZ));
+        //StartCoroutine(SetFollowOffset(0.5f, 'x', currentFollowOffsetX));
+        //Destroy(enemy.gameObject);
+        //yield return StartCoroutine(SetVerticalFOV(currentFOV, 0.5f));
+
+        isPlayingCutScene = false;
+        yield return null;
+    }
+
+    public IEnumerator CutSceneAtEnemyWhenEnemyDieBySpecialAttack(EnemyAttack enemy, float targetFOV1, float targetFOV2, float targetLookAtOffsetZ)
+    {//targetFOV1: FOV khi enemy trúng đòn special, targetFOV2: FOV khi enemy die 
+        isPlayingCutScene = true;
+
+        StartCoroutine(ShakeCamera(5f, 1f, 0.5f));
+
+        StartCoroutine(SetTargetForCam(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform, 0f));
+        StartCoroutine(SetHardLookAt(50f, 'z', targetLookAtOffsetZ));
+        StartCoroutine(SetFollowOffset(0.1f, 'x', targetLookAtOffsetZ));
+        yield return StartCoroutine(SetVerticalFOV(targetFOV1, 0.1f));
+
+        float startSlowTime = Time.realtimeSinceStartup;
+        float endSlowTime = startSlowTime + 1f; // Duration of the slow motion effect
+        while (Time.realtimeSinceStartup < endSlowTime)
+        {
+            Time.timeScale = 0.1f;
+            yield return null; // Wait for the next frame
+        }
+        Time.timeScale = 1f; // Reset time scale to normal
+
+        StartCoroutine(SetHardLookAt(20f, 'z', 0));
+        StartCoroutine(SetFollowOffset(0.5f, 'x', 0));
+        StartCoroutine(SetVerticalFOV(targetFOV2, 0.5f));
+
+
+        // Wait until the enemy's die animation is finished
+        yield return new WaitForSeconds(enemy.dieAnimDuration);
+        StartCoroutine(enemy.PlayDropCoinEffectWhenEnemyDie());
+        yield return new WaitForSeconds(1f);
+
+        isPlayingCutScene = false;
+        yield return null;
+    }
+
+    public IEnumerator ChangeTargetCamFromEnemyToPlayer()
+    {
+        //Move cam to player
+        GameObject dummyTarget = new GameObject();
+        dummyTarget.transform.position = LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform.position;
+        StartCoroutine(SetTargetForCam(dummyTarget.transform, 0f));
+        while (Vector3.Distance(PlayerUltimate.instance.playerTransform.position, dummyTarget.transform.position) > 0.1f)
+        {
+            dummyTarget.transform.position = Vector3.MoveTowards(dummyTarget.transform.position, PlayerUltimate.instance.playerTransform.position, 3f * Time.deltaTime);
+            yield return null;
+        }
+        StartCoroutine(SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
+        Destroy(dummyTarget);
+    }
+
+    public IEnumerator CutSceneAtPlayerWhenEnemyDie()
+    {
+        isPlayingCutScene = true;
+
+        yield return StartCoroutine(ChangeTargetCamFromEnemyToPlayer());
+
+        yield return new WaitForSeconds(0.5f);
+        PlayerUltimate.instance.SetUltimateAnimPlayer();
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(SetHardLookAt(1f, 'z', 0.7f));
+        StartCoroutine(SetFollowOffset(0.5f, 'x', 0.7f));
+        Destroy(LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].gameObject);
+        yield return StartCoroutine(SetVerticalFOV(35, 0.5f));
+
+        isPlayingCutScene = false;
     }
 
     public IEnumerator SetCamForSpecialAttack(float targetLookAtOffsetZ, float targetFOV)
