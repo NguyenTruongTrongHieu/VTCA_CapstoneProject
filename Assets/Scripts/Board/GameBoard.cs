@@ -90,6 +90,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public void ResetGuideStep()
     {
         guideStep = 1;
+        handImageAtBoard.SetActive(false);
     }
 
     public int GetGuideStep()
@@ -101,6 +102,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public List<Vector2Int> compulsoryStep1;
     public List<Vector2Int> compulsoryStep2;
     public List<Vector2Int> compulsoryStep3;
+    public GameObject handImageAtBoard;
 
     [Space]
     public GameObject handImageAtUltiButton;
@@ -1443,11 +1445,17 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             {
                 float elapsedTime = 0f;
                 //Wait for 0.5s
+                handImageAtBoard.transform.position = cells[compulsoryStep[0].x, compulsoryStep[0].y - 1].transform.position;
+                Vector3 startPosHandImage = handImageAtBoard.transform.position;
+                Vector3 endPosHandImage = cells[compulsoryStep[0].x, compulsoryStep[0].y].transform.position;
+                handImageAtBoard.SetActive(true);
                 while (elapsedTime < 0.5f && isPlayAnimGuideStep)
                 {
+                    handImageAtBoard.transform.position = Vector3.Lerp(startPosHandImage, endPosHandImage, (elapsedTime / 0.5f));
                     elapsedTime += Time.deltaTime;
                     yield return null;
                 }
+                handImageAtBoard.transform.position = endPosHandImage;
 
 
                 for (int i = 0; i < compulsoryStep.Count; i++)
@@ -1462,20 +1470,38 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                     //Wait for 0.5s
                     elapsedTime = 0f;
+                    if (i < compulsoryStep.Count - 1)
+                    {
+                        startPosHandImage = handImageAtBoard.transform.position;
+                        endPosHandImage = cells[compulsoryStep[i + 1].x, compulsoryStep[i + 1].y].transform.position;
+                    }
                     while (elapsedTime < 0.5f && isPlayAnimGuideStep)
                     {
+                        if (i < compulsoryStep.Count - 1)
+                        {
+                            handImageAtBoard.transform.position = Vector3.Lerp(startPosHandImage, endPosHandImage, (elapsedTime / 0.5f));
+                        }
                         elapsedTime += Time.deltaTime;
                         yield return null;
+                    }
+                    if (i < compulsoryStep.Count - 1)
+                    {
+                        handImageAtBoard.transform.position = endPosHandImage;
                     }
                 }
 
                 //Wait for 0.5s
-                elapsedTime = 0f;
+                elapsedTime = 0f; 
+                startPosHandImage = handImageAtBoard.transform.position;
+                endPosHandImage = cells[compulsoryStep[0].x, compulsoryStep[0].y - 1].transform.position;
                 while (elapsedTime < 0.75f && isPlayAnimGuideStep)
                 {
+                    handImageAtBoard.transform.position = Vector3.Lerp(startPosHandImage, endPosHandImage, (elapsedTime / 0.75f));
                     elapsedTime += Time.deltaTime;
                     yield return null;
                 }
+                handImageAtBoard.transform.position = endPosHandImage;
+                handImageAtBoard.SetActive(false);
 
                 for (int i = 0; i < compulsoryStep.Count; i++)
                 {
@@ -1501,6 +1527,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public void StopHighlightCompulsoryStep()
     {
         isPlayAnimGuideStep = false;
+        handImageAtBoard.SetActive(false);
         //StopCoroutine(HighlightCompulsoryStep());
 
         List<Vector2Int> compulsoryStep = null;
