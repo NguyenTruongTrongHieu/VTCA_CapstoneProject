@@ -283,7 +283,7 @@ MonoBehaviour:
   damage: 0
   hpSlider: {fileID: 0}
   id: 1
-  name: Player2
+  name: Ellie
   playerClass: 0
   isNormalSkin: 1
   bonusStatAtCurrentLevel:

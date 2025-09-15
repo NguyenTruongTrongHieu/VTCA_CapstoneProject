@@ -266,7 +266,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player2
+  m_Text: Ellie
 --- !u!1 &68808897641101882
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,6 +1169,7 @@ MonoBehaviour:
   compulsoryStep1: []
   compulsoryStep2: []
   compulsoryStep3: []
+  handImageAtBoard: {fileID: 0}
   handImageAtUltiButton: {fileID: 0}
   ultiPanel: {fileID: 0}
   infoUltiPanel: {fileID: 0}
@@ -8673,7 +8674,7 @@ MonoBehaviour:
   warningNotEnoughCostText: {fileID: 4550082482269450636}
   characterButtons:
   - characterID: 0
-    characterName: Player1
+    characterName: Luthor
     changeCharacterObject: {fileID: 1952185922493672428}
     ownedText: {fileID: 7719495812045865590}
     buyText: {fileID: 2531899418556584960}
@@ -8682,7 +8683,7 @@ MonoBehaviour:
     lockImage: {fileID: 1382651495568839934}
     isOwned: 0
   - characterID: 1
-    characterName: Player2
+    characterName: Ellie
     changeCharacterObject: {fileID: 7538310494394319580}
     ownedText: {fileID: 1777746742228675398}
     buyText: {fileID: 5812430437404687664}
@@ -8691,7 +8692,7 @@ MonoBehaviour:
     lockImage: {fileID: 6970113725503307214}
     isOwned: 0
   - characterID: 2
-    characterName: Player3
+    characterName: Madokk
     changeCharacterObject: {fileID: 5782409943881471729}
     ownedText: {fileID: 2308545056310640491}
     buyText: {fileID: 7497276145262946589}
@@ -8700,7 +8701,7 @@ MonoBehaviour:
     lockImage: {fileID: 6347994925576366563}
     isOwned: 0
   - characterID: 0
-    characterName: Player1_ Skin1
+    characterName: Luthor_Skin1
     changeCharacterObject: {fileID: 9132303391234844740}
     ownedText: {fileID: 1047882714305855966}
     buyText: {fileID: 5082565440965728168}
@@ -8953,7 +8954,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player3
+  m_Text: Madokk
 --- !u!1 &3265826162630053327
 GameObject:
   m_ObjectHideFlags: 0
@@ -19080,7 +19081,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player1
+  m_Text: Luthor
 --- !u!1 &7721320662339421104
 GameObject:
   m_ObjectHideFlags: 0
@@ -25242,7 +25243,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2838803319503622, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Text
-      value: Player3
+      value: Madokk
       objectReference: {fileID: 0}
     - target: {fileID: 1418862397691849686, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Pivot.x
@@ -25354,7 +25355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Player3
+      value: Madokk
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -28164,7 +28165,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2838803319503622, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Text
-      value: Player2
+      value: Ellie
       objectReference: {fileID: 0}
     - target: {fileID: 1418862397691849686, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Pivot.x
@@ -28276,7 +28277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Player2
+      value: Ellie
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -29698,7 +29699,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2838803319503622, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Text
-      value: Player 1 Skin 1
+      value: Luthor Skin1
       objectReference: {fileID: 0}
     - target: {fileID: 1418862397691849686, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Pivot.x
@@ -29810,7 +29811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Player1_ Skin1
+      value: Luthor_Skin1
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -31487,7 +31488,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2838803319503622, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Text
-      value: Player1
+      value: Luthor
       objectReference: {fileID: 0}
     - target: {fileID: 1418862397691849686, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_Pivot.x
@@ -31599,7 +31600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Player1
+      value: Luthor
       objectReference: {fileID: 0}
     - target: {fileID: 5190102962273172739, guid: 7608b9ef402b1094395730bb538d35ba, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

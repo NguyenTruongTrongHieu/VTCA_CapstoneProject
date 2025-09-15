@@ -2900,7 +2900,7 @@ MonoBehaviour:
   damage: 0
   hpSlider: {fileID: 0}
   id: 2
-  name: Player3
+  name: Madokk
   playerClass: 3
   isNormalSkin: 1
   bonusStatAtCurrentLevel:
