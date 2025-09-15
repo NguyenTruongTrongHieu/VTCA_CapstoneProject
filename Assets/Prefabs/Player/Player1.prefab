@@ -226,7 +226,7 @@ MonoBehaviour:
   damage: 0
   hpSlider: {fileID: 0}
   id: 0
-  name: Player1
+  name: Luthor
   playerClass: 1
   isNormalSkin: 1
   bonusStatAtCurrentLevel:

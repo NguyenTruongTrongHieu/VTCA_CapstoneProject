@@ -171,7 +171,7 @@ public class SaveLoadManager : MonoBehaviour
             currentBasicDamageLevel = 1;
             currentBasicHealthLevel = 1;
 
-            currentPlayerName = "Player1";
+            currentPlayerName = "Luthor";
             currentLevelOfCurrentPlayer = 1;
 
             currentCoin = 10009000;
@@ -180,7 +180,7 @@ public class SaveLoadManager : MonoBehaviour
 
             ownedCharacters = new List<OwnedCharacter>
             {
-                new OwnedCharacter(0, 1, new List<string>{ "Player1"}),
+                new OwnedCharacter(0, 1, new List<string>{ "Luthor"}),
             };
         }
         else//if hasKey
