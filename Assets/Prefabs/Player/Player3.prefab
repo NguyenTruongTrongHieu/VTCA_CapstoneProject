@@ -2911,35 +2911,35 @@ MonoBehaviour:
     starCost: 0
     crystalCost: 0
   bonusStatsLevel:
-  - healthPercentBonus: 0
-    damagePercentBonus: 0
-    lifeStealPercentBonus: 0
-    coinCost: 0
-    starCost: 10
-    crystalCost: 0
   - healthPercentBonus: -0.05
     damagePercentBonus: 0.05
     lifeStealPercentBonus: 0
-    coinCost: 100000
+    coinCost: 5000
     starCost: 10
     crystalCost: 0
   - healthPercentBonus: -0.04
     damagePercentBonus: 0.06
     lifeStealPercentBonus: 0
-    coinCost: 300000
-    starCost: 30
+    coinCost: 150000
+    starCost: 50
     crystalCost: 0
   - healthPercentBonus: -0.03
     damagePercentBonus: 0.07
     lifeStealPercentBonus: 0
     coinCost: 500000
-    starCost: 50
+    starCost: 150
     crystalCost: 0
   - healthPercentBonus: -0.02
     damagePercentBonus: 0.08
     lifeStealPercentBonus: 0
-    coinCost: 750000
-    starCost: 75
+    coinCost: 1000000
+    starCost: 500
+    crystalCost: 0
+  - healthPercentBonus: -0.01
+    damagePercentBonus: 0.09
+    lifeStealPercentBonus: 0
+    coinCost: 2000000
+    starCost: 1250
     crystalCost: 0
 --- !u!1 &5533298038079511866
 GameObject:

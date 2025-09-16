@@ -26,8 +26,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     public int numberToCheckSpecialFood; //  dùng để kiểm tra món đặt biệt
     public bool isCheckSpecialFood; // biến kiểm tra xem có cần kiểm tra món đặc biệt hay không
 
-    private int[] foodCount = { 4, 7, 10, 13, 16, 19, 21 }; // mảng đếm số lượng món đặc biệt theo loại
-    private int[] specialMutiplie = { 3, 5, 7, 9, 11, 13, 15 }; // mảng nhân điểm theo loại món đặc biệt
+    private int[] foodCount = { 4, 6, 8, 10, 12, 14, 16 }; // mảng đếm số lượng món đặc biệt theo loại
+    private int[] specialMutiplie = { 3, 5, 7, 9, 10, 11, 12 }; // mảng nhân điểm theo loại món đặc biệt
 
     public bool onDeleteFood; // biến kiểm tra xem có đang xoá thức ăn hay không
 

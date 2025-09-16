@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
 
     public void PlayBossSFX()
     { 
+        AudioManager.instance.PlayMusic("BossMusic", true);
         int randomIndex = Random.Range(0, bossVoice.Length);
         AudioManager.instance.PlaySFX(bossVoice[randomIndex]);
     }

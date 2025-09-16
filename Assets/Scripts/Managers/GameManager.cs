@@ -159,12 +159,17 @@ public class GameManager : MonoBehaviour
     {
         int incrementDamage = 0;
 
-        if (currentDamageLevel < 10)
+        if (currentDamageLevel < 15)
         {
             incrementDamage = 2;
         }
+
+        else if (currentDamageLevel < 50)
+        {
+            incrementDamage = 3;
+        }
         else
-        { 
+        {
             incrementDamage = 5;
         }
 
@@ -180,15 +185,15 @@ public class GameManager : MonoBehaviour
             damCostToUpgrade = BASECOST_DAMAGE;
             return damCostToUpgrade;
         }
-        else if (currentDamageLevel < 5)
+        else if (currentDamageLevel < 10)
         {
             growthFactor = 1.15f;
         }
-        else if (currentDamageLevel < 10)
+        else if (currentDamageLevel < 30)
         {
             growthFactor = 1.3f; // Increase growth factor for levels 1-9
         }
-        else if (currentDamageLevel < 20)
+        else if (currentDamageLevel < 50)
         {
             growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
         }
@@ -201,9 +206,13 @@ public class GameManager : MonoBehaviour
     {
         int incrementHealth = 0;
 
-        if (currentHealthLevel < 10)
+        if (currentHealthLevel < 15)
         {
             incrementHealth = 5;
+        }
+        else if (currentHealthLevel < 50)
+        {
+            incrementHealth = 8;
         }
         else
         { 
@@ -222,15 +231,15 @@ public class GameManager : MonoBehaviour
             healthCostToUpgrade = BASECOST_HEALTH;
             return healthCostToUpgrade;
         }
-        else if (currentHealthLevel < 5)
+        else if (currentHealthLevel < 10)
         {
             growthFactor = 1.15f;
         }
-        else if (currentHealthLevel < 10)
+        else if (currentHealthLevel < 30)
         {
             growthFactor = 1.3f; // Increase growth factor for levels 1-9
         }
-        else if (currentHealthLevel < 20)
+        else if (currentHealthLevel < 50)
         {
             growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
         }
@@ -324,6 +333,8 @@ public class GameManager : MonoBehaviour
         UIManager.instance.HideAllHUDWithoutAnim();
 
         //SaveLoadManager.instance.loadingPanel.SetActive(false);
+
+        AudioManager.instance.PlayMusic("BackgroundMusic", true);
     }
 
     //public void Vibrate()

@@ -194,6 +194,8 @@ public class UIManager : MonoBehaviour
     public Text chestProgressText;
     public Text resetMissionTimer;
     public ChestManager chestManager;
+    public Text[] rewardMissionsTexts;
+    
 
     [Header("ChestBox")]
     public GameObject openChestBoxPanel;
@@ -257,11 +259,12 @@ public class UIManager : MonoBehaviour
             SetUITextForUpgradeDamButton();
             SetUITextForUpgradeHealthButton();
             UpdateColorTextForUpgradeCost();
-            UpdateCoinText();
-            UpdateCrystalText();
-            UpdateStarText();
             SetUpMissionsDescription();
         }
+
+        UpdateCoinText();
+        UpdateCrystalText();
+        UpdateStarText();
 
         originaloffsetMinMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMin;
         originaloffsetMaxMenuPanel = mainMenuPanel.GetComponent<RectTransform>().offsetMax;
@@ -1629,32 +1632,38 @@ public class UIManager : MonoBehaviour
                 if (MissionsManager._instance.missions[i].missionType == MissionType.KillEnemy)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.FruitMatching)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeHealthStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.ReachLevel)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UsePowerUp)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
-                    Debug.Log("Power Up Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
+                Debug.Log("Power Up Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
             //}
@@ -1704,16 +1713,19 @@ public class UIManager : MonoBehaviour
             {
                 missionsCompletedClaimButtons[i].SetActive(true); // Enable the claim button if the mission is completed and not yet claimed
                 missionCompletedImage[i].gameObject.SetActive(false); // Show the completed image
+                rewardMissionsTexts[i].gameObject.SetActive(false); // Show the reward text
             }
             else if (MissionsManager._instance.missions[i].isCompleted && MissionsManager._instance.missions[i].isClaimed)
             {
                 missionsCompletedClaimButtons[i].SetActive(false); // Disable the claim button if the mission is already claimed
                 missionCompletedImage[i].gameObject.SetActive(true); // Show the completed image
+                rewardMissionsTexts[i].gameObject.SetActive(false);
             }
             else
             {
                 missionsCompletedClaimButtons[i].SetActive(false); // Disable the claim button otherwise
                 missionCompletedImage[i].gameObject.SetActive(false); // Show the completed image
+                rewardMissionsTexts[i].gameObject.SetActive(true);
             }
         }
         
