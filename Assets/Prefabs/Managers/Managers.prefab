@@ -356,32 +356,53 @@ MonoBehaviour:
     - {fileID: 6029603621710947302, guid: ae253dc3efbdbe0428a14778067494b8, type: 3}
     - {fileID: 6029603621710947302, guid: d336b5d2a80910d468cbe4fba28084f5, type: 3}
     sceneName: Tutorial
-    rewardCoin: 500
+    rewardCoin: 200
     havingBoss: 0
-    statesInBoard:
-    - {x: 3, y: 0}
-    - {x: 3, y: 1}
-    - {x: 3, y: 2}
-    - {x: 3, y: 5}
-    - {x: 3, y: 6}
-    - {x: 3, y: 7}
+    statesInBoard: []
     lockCellInBoard:
-    - {x: 1, y: 3}
-    - {x: 2, y: 3}
-    - {x: 3, y: 3}
-    - {x: 4, y: 3}
-    - {x: 5, y: 3}
-    - {x: 5, y: 4}
-    - {x: 4, y: 4}
-    - {x: 3, y: 4}
-    - {x: 2, y: 4}
-    - {x: 1, y: 4}
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 5, y: 1}
+    - {x: 5, y: 5}
+    - {x: 4, y: 5}
+    - {x: 3, y: 5}
+    - {x: 2, y: 5}
+    - {x: 1, y: 5}
+    - {x: 0, y: 5}
+    - {x: 5, y: 6}
+    - {x: 4, y: 6}
+    - {x: 3, y: 6}
+    - {x: 2, y: 6}
+    - {x: 1, y: 6}
+    - {x: 0, y: 6}
+    - {x: 1, y: 7}
+    - {x: 2, y: 7}
+    - {x: 3, y: 7}
+    - {x: 4, y: 7}
+    - {x: 5, y: 7}
+    - {x: 0, y: 7}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 5, y: 2}
   - index: 1
     enemiesAtLevel:
-    - {fileID: 6029603621710947302, guid: 8a5b4f440601dfd4e8fce9c05635e87b, type: 3}
-    - {fileID: 6029603621710947302, guid: 0e6f78e25a45b4e469efbdda1ab5d6c2, type: 3}
+    - {fileID: 6029603621710947302, guid: 073dbfa6b5ae02643873e703c1ba6431, type: 3}
+    - {fileID: 6029603621710947302, guid: 4a8b68110795ce24e9221c758bd02995, type: 3}
+    - {fileID: 6029603621710947302, guid: 7b422d59a0c3af94ba461ddd11696fbb, type: 3}
     sceneName: Scene1
-    rewardCoin: 1000
+    rewardCoin: 500
     havingBoss: 0
     statesInBoard:
     - {x: 0, y: 1}
@@ -405,11 +426,12 @@ MonoBehaviour:
     - {x: 5, y: 7}
   - index: 2
     enemiesAtLevel:
-    - {fileID: 6029603621710947302, guid: c034e2fbcebc7fa4d8efae13263b32bb, type: 3}
-    - {fileID: 6029603621710947302, guid: e0751174f24fdce4992f3bb56374c7b4, type: 3}
-    - {fileID: 6029603621710947302, guid: 3ee61d95f60d8f44b9b1dd7ff4b2ed42, type: 3}
+    - {fileID: 6029603621710947302, guid: 4c39795f13c04c640b1061736048fc4e, type: 3}
+    - {fileID: 6029603621710947302, guid: a864476d53dddca4082e22f11d886d99, type: 3}
+    - {fileID: 6029603621710947302, guid: 92fe1f6119579ee4babac1923aeace6a, type: 3}
+    - {fileID: 6029603621710947302, guid: a5b4fff5a70e5224eaf85c404da6acd9, type: 3}
     sceneName: Scene1
-    rewardCoin: 1000
+    rewardCoin: 1500
     havingBoss: 1
     statesInBoard:
     - {x: 3, y: 0}
@@ -433,12 +455,40 @@ MonoBehaviour:
     - {x: 0, y: 4}
   - index: 3
     enemiesAtLevel:
-    - {fileID: 6029603621710947302, guid: 648b67e5f9f4d1a47be977f72618a1bc, type: 3}
-    - {fileID: 6029603621710947302, guid: 9e867401f3540924fbbf95a6c5bac0e1, type: 3}
-    - {fileID: 6029603621710947302, guid: 2ac02505a2929564bb9563ec228f76b6, type: 3}
-    - {fileID: 6029603621710947302, guid: cf555ae65dbb5e547bb7d3b626d66cb2, type: 3}
+    - {fileID: 6029603621710947302, guid: 0cda652897d2e274395e6de6e7b74fec, type: 3}
+    - {fileID: 6029603621710947302, guid: 7a922a96edf5c1f428a0ad47344d52e0, type: 3}
+    - {fileID: 6029603621710947302, guid: ae158b21c4a9c71408c4627fa66a0d49, type: 3}
+    - {fileID: 6029603621710947302, guid: a3e5988ff033b3c4e8d32a2286d690a1, type: 3}
     sceneName: Scene2
-    rewardCoin: 1000
+    rewardCoin: 2000
+    havingBoss: 0
+    statesInBoard:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+    lockCellInBoard:
+    - {x: 0, y: 0}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 4, y: 4}
+    - {x: 3, y: 4}
+    - {x: 2, y: 4}
+    - {x: 1, y: 4}
+  - index: 4
+    enemiesAtLevel:
+    - {fileID: 6029603621710947302, guid: b5824a01dadf3af4d99ebf9c5d987b55, type: 3}
+    - {fileID: 6029603621710947302, guid: 6f56c0221c8782d42ac065aaf7fd346d, type: 3}
+    - {fileID: 6029603621710947302, guid: 1dfec7730d603a842952b08cc89c2af8, type: 3}
+    - {fileID: 6029603621710947302, guid: 6c97a699b0217e9439fb8e263bec1334, type: 3}
+    sceneName: Scene2
+    rewardCoin: 3000
     havingBoss: 1
     statesInBoard:
     - {x: 3, y: 0}
@@ -521,7 +571,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musics:
   - name: BackgroundMusic
-    audioClip: {fileID: 8300000, guid: 5ae5b4f05aaedda4bb073e24ee777fb3, type: 3}
+    audioClip: {fileID: 8300000, guid: 49f2a13c5d4978e4fb5e3dbf20b5570b, type: 3}
+  - name: BossMusic
+    audioClip: {fileID: 8300000, guid: 124bea4ef476ec2498cc2cd9c8c7d79d, type: 3}
   sfx:
   - name: EnemyAttackNoWeapon
     audioClip: {fileID: 8300000, guid: 9815d172b36b13e46a6b3edab9be2378, type: 3}
@@ -548,11 +600,11 @@ MonoBehaviour:
   - name: Healing
     audioClip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
   - name: UltimatePlayer1
-    audioClip: {fileID: 8300000, guid: aa967a280457c054bb646d57611f5bd0, type: 3}
+    audioClip: {fileID: 8300000, guid: 7b5c44c42bc92f04ba6fc3c0cd2bb7dd, type: 3}
   - name: UltimatePlayer2
-    audioClip: {fileID: 8300000, guid: 7a9de5c4d998126449cf964a6b27a8b0, type: 3}
+    audioClip: {fileID: 8300000, guid: bcdb774b39b48a24c8dba0a99c1868cc, type: 3}
   - name: UltimatePlayer3
-    audioClip: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+    audioClip: {fileID: 8300000, guid: a0c0879ef6ec33441b75e5d4f9c5e45d, type: 3}
   - name: ChoseFruit
     audioClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
   - name: ChoseSpecialFruit
@@ -623,6 +675,18 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 668620113e9d6dc4483ba3d8dbae9fcf, type: 3}
   - name: RewardAppear
     audioClip: {fileID: 8300000, guid: 973cbfce50fc9634b8c2729624d4cc4d, type: 3}
+  - name: Win
+    audioClip: {fileID: 8300000, guid: efd2397b528e91d48880ea0ae35e1f51, type: 3}
+  - name: Lose
+    audioClip: {fileID: 8300000, guid: 6e23f6464e97d46499ead62b8c9562f8, type: 3}
+  - name: MissionClaim
+    audioClip: {fileID: 8300000, guid: 2c40fd9f950630143b3d35d41ac82f65, type: 3}
+  - name: PlayerUpgrade
+    audioClip: {fileID: 8300000, guid: 8a42c140c89c04c45a19fcffa6c08fd5, type: 3}
+  - name: PlayerPurchase
+    audioClip: {fileID: 8300000, guid: e4e4ffb14fd58c4439ae9df6d5375dab, type: 3}
+  - name: Button
+    audioClip: {fileID: 8300000, guid: ddd16025d5ef32249bf91ac485f99fd8, type: 3}
   musicSource: {fileID: 8481910894306063675}
   sfxSource: {fileID: 4365999109710256419}
 --- !u!114 &6567360885161747434

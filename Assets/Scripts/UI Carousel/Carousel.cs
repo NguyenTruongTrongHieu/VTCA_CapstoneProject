@@ -103,7 +103,7 @@ public class Carousel : MonoBehaviour, IEndDragHandler
 
     private void ScrollToSpecificIndex(int index)
     {
-        Debug.Log($"ScrollToSpecificIndex called with index: {index}");
+        //Debug.Log($"ScrollToSpecificIndex called with index: {index}");
         ClearCurrentIndex();
 
         ScrollTo(index);
@@ -111,7 +111,7 @@ public class Carousel : MonoBehaviour, IEndDragHandler
 
     public void ScrollToNext()
     {
-        Debug.Log("ScrollToNext called");
+        //Debug.Log("ScrollToNext called");
         ClearCurrentIndex();
 
         _currentIndex = (_currentIndex + 1) % classCharactersPanels.Count;
@@ -120,7 +120,7 @@ public class Carousel : MonoBehaviour, IEndDragHandler
 
     public void ScrollToPrevious()
     {
-        Debug.Log("ScrollToPrevious called");
+        //Debug.Log("ScrollToPrevious called");
         ClearCurrentIndex();
 
         _currentIndex = (_currentIndex - 1 + classCharactersPanels.Count) % classCharactersPanels.Count;
@@ -179,7 +179,6 @@ public class Carousel : MonoBehaviour, IEndDragHandler
 
     public void OnEndDrag(PointerEventData data)
     {
-        Debug.Log($"OnEndDrag called with delta: {data.delta}");
         if (data.delta.x != 0)
         {
             if (data.delta.x > 0)

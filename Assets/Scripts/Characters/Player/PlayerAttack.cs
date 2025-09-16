@@ -17,6 +17,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("SFX")]
     public string[] victorySFXVoice;
     public string[] deathSFXVoice;
+    public string[] hitSFXVoice;
 
     [Header("VFX")]
     public ParticleSystem auraTakeFruitVFX;
@@ -287,6 +288,13 @@ public class PlayerAttack : MonoBehaviour
 
                 if (!animator.GetBool(isDeadHash))
                 {
+                    //Random to play sfx player hit voice or not
+                    int randomIndex = Random.Range(0, 101);
+                    if (randomIndex < 70)
+                    {
+                        int randomIndex2 = Random.Range(0, hitSFXVoice.Length);
+                        AudioManager.instance.PlaySFX(hitSFXVoice[randomIndex2]);
+                    }
                     animator.SetTrigger(getHitHash); // Trigger the get hit animation
                 }
             }
