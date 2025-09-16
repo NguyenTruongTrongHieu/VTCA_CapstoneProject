@@ -20,6 +20,7 @@ public class TabsManager : MonoBehaviour
     {
         if (TabID == currentTabID)
         {
+            AudioManager.instance.PlaySFX("Button");
             return;
         }
 
@@ -36,6 +37,8 @@ public class TabsManager : MonoBehaviour
                 Timer.Instance.TimeSetup(); // Setup the timer when switching to the Missions tab
 
                 UIManager.instance.StartCoroutine(UIManager.instance.ResetTimerSet()); // Start the timer reset coroutine
+
+                AudioManager.instance.PlaySFX("Button");
             }
         }
         else
@@ -47,6 +50,8 @@ public class TabsManager : MonoBehaviour
                 UIManager.instance.StopCoroutine(UIManager.instance.ResetTimerSet()); // Stop any ongoing timer reset coroutine
 
                 Timer.Instance.SaveData(); // Save the timer data
+
+                AudioManager.instance.PlaySFX("Button");
             }  
         }
 
@@ -78,9 +83,11 @@ public class TabsManager : MonoBehaviour
             if (playerStat.isNormalSkin)
             {
                 charactersTab.TurnOnCharacterTab(0); // Activate the character tab
+                AudioManager.instance.PlaySFX("Button");
             }
             else
                 charactersTab.TurnOnSkinTab(1);
+            AudioManager.instance.PlaySFX("Button");
 
             UIManager.instance.HideCurrentLevelText(); 
         }
@@ -108,6 +115,7 @@ public class TabsManager : MonoBehaviour
                 }
 
                 UIManager.instance.ShowCurrentLevelText();
+                AudioManager.instance.PlaySFX("Button");
             }
         }
 
@@ -132,6 +140,8 @@ public class TabsManager : MonoBehaviour
 
         PlayerStat playerStat = PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>();
         carousel.ActivateCurrentIndicatorByPlayerClass(playerStat.playerClass);
+
+        AudioManager.instance.PlaySFX("Button");
     }
 
 
@@ -152,6 +162,8 @@ public class TabsManager : MonoBehaviour
         }
         tabButtons[TabID].sprite = activeTabBG; // Set the selected tab button to active background
         tabButtons[TabID].rectTransform.sizeDelta = activeButtonSize; // Set the selected tab button to active size
+
+        AudioManager.instance.PlaySFX("Button");
     }
 
     public void Start()
