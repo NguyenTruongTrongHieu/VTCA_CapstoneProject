@@ -96,6 +96,7 @@ public class TabsManager : MonoBehaviour
             if (currentTabID == 2)
             {
                 CameraManager.instance.StopAllCoroutines();
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.3f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));

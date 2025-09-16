@@ -265,6 +265,12 @@ public class EnemyAttack : MonoBehaviour
                 }
                 if (!animator.GetBool(isDeadHash))
                 {
+                    //Random to play sfx enemy hit voice or not
+                    int randomIndex = Random.Range(0, 101);
+                    if (randomIndex < 70)
+                    {
+                        AudioManager.instance.PlaySFX("EnemyHit1");
+                    }
                     animator.SetTrigger(getHitHash); // Trigger the get hit animation
                 }
             }

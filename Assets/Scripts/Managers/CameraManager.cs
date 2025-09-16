@@ -42,9 +42,16 @@ public class CameraManager : MonoBehaviour
     {
         if (waitTimeToSet > 0f)
         {
-            yield return new WaitForSeconds(waitTimeToSet);
+            float startTime = 0f;
+            while (startTime < waitTimeToSet)
+            {
+                startTime += Time.deltaTime;
+                yield return null;
+            }
         }
+        Debug.Log("Set target for: " + target);
         cineCam.Follow = target;
+        yield return null;
     }
 
     public void SetScreenPosCompositionWhenPlaying()

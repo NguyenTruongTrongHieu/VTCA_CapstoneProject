@@ -102,7 +102,7 @@ public class SaveLoadManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
             isDataLoaded = LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
@@ -174,7 +174,7 @@ public class SaveLoadManager : MonoBehaviour
             currentPlayerName = "Luthor";
             currentLevelOfCurrentPlayer = 1;
 
-            currentCoin = 9800;
+            currentCoin = 12000000;
             currentCrystal = 0;
             currentStar = 10000;
 
@@ -223,7 +223,6 @@ public class SaveLoadManager : MonoBehaviour
         //load settings
         isSFXOn = PlayerPrefs.GetInt("IsSFXOn", 1) == 0 ? false : true;
         isMusicOn = PlayerPrefs.GetInt("IsMusicOn", 1) == 0 ? false : true;
-        Debug.Log("Is music on: " + PlayerPrefs.GetInt("IsMusicOn"));
 
         return result;
     }

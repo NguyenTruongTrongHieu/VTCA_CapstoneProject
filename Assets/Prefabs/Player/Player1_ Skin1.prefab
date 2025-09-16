@@ -203,6 +203,10 @@ MonoBehaviour:
   deathSFXVoice:
   - Player1DeathVoice1
   - Player1DeathVoice2
+  hitSFXVoice:
+  - Player1HitVoice1
+  - Player1HitVoice2
+  - Player1HitVoice3
   auraTakeFruitVFX: {fileID: 4071076456551096344}
   ultiVFX: {fileID: 3728600204122732838}
   ultiVFX2: {fileID: 3671153652235230883}
