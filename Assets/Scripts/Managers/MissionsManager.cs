@@ -346,7 +346,7 @@ public class MissionsManager : MonoBehaviour
 
                 CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[i].transform.position, missions[i].reward, false, 0f)); // Add coins to the player's currency
                 missions[i].isClaimed = true; // Mark the mission as claimed
-
+                AudioManager.instance.PlaySFX("MissionClaim");
             }
         }
     }

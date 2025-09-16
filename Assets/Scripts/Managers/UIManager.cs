@@ -344,6 +344,8 @@ public class UIManager : MonoBehaviour
         PlayerUltimate.instance.playerTransform.GetComponent<PlayerStat>().SetHPSlider(true);
         StartCoroutine(ShowProgressPanel(0.3f));
         SetUsedProgress();
+
+        AudioManager.instance.PlaySFX("Button");
     }
 
     public void DisplayCurrentLevel()
@@ -656,6 +658,7 @@ public class UIManager : MonoBehaviour
             if (button.characterName == characterName)
             {
                 id = button.characterID;
+                AudioManager.instance.PlaySFX("Button");
                 break;
             }
         }
@@ -733,6 +736,7 @@ public class UIManager : MonoBehaviour
                 //Show panel to waring player, they need to buy character first
                 titleBuyCharacterText.text = "You need to buy the character first before buying this skin!";
                 titleBuyCharacterText.color = Color.red;
+                AudioManager.instance.PlaySFX("Button");
                 return;
             }
         }
@@ -743,31 +747,37 @@ public class UIManager : MonoBehaviour
             if (CurrencyManager.instance.coins < playerStat.bonusStatsLevel[0].coinCost)
             {
                 ShowWarningNotEnoughCostPanel("coin");
+                AudioManager.instance.PlaySFX("Button");
                 return;
             }
 
             //Subtract coin
             CurrencyManager.instance.SubtractCoins(playerStat.bonusStatsLevel[0].coinCost);
+            AudioManager.instance.PlaySFX("PlayerPurchase");
         }
         else if (currency == "star")
         {
             if (CurrencyManager.instance.stars < playerStat.bonusStatsLevel[0].starCost)
             {
                 ShowWarningNotEnoughCostPanel("star");
+                AudioManager.instance.PlaySFX("Button");
                 return;
             }
 
             CurrencyManager.instance.SubtractStar(playerStat.bonusStatsLevel[0].starCost);
+            AudioManager.instance.PlaySFX("PlayerPurchase");
         }
         else
         {
             if (CurrencyManager.instance.crystals < playerStat.bonusStatsLevel[0].crystalCost)
             {
                 ShowWarningNotEnoughCostPanel("crystal");
+                AudioManager.instance.PlaySFX("Button");
                 return;
             }
 
             CurrencyManager.instance.SubtractCrystal(playerStat.bonusStatsLevel[0].crystalCost);
+            AudioManager.instance.PlaySFX("PlayerPurchase");
         }
 
 
@@ -814,12 +824,14 @@ public class UIManager : MonoBehaviour
         if (CurrencyManager.instance.stars < nextBonusStat.starCost)
         {
             ShowWarningNotEnoughCostPanel("star");
+            AudioManager.instance.PlaySFX("Button");
             return;
         }
         //Check if the player not have enough coins
         if (CurrencyManager.instance.coins < nextBonusStat.coinCost)
         {
             ShowWarningNotEnoughCostPanel("coin");
+            AudioManager.instance.PlaySFX("Button");
             return;
         }
 
@@ -827,6 +839,7 @@ public class UIManager : MonoBehaviour
         if (SaveLoadManager.instance.currentLevelOfCurrentPlayer == playerStat.bonusStatsLevel.Length)
         {
             Debug.LogError("You have reached the max level of this character, cannot upgrade anymore!");
+            AudioManager.instance.PlaySFX("Button");
             return;
         }
 
@@ -834,11 +847,13 @@ public class UIManager : MonoBehaviour
         if (ownedCharacter != null)
         {
             ownedCharacter.currentLevel++;
+            AudioManager.instance.PlaySFX("PlayerUpgrade");
             SaveLoadManager.instance.currentLevelOfCurrentPlayer = ownedCharacter.currentLevel;
         }
         else
         {
             Debug.LogError($"Character with ID {playerStat.id} not found in owned characters.");
+            AudioManager.instance.PlaySFX("Button");
             return;
         }
 
@@ -877,6 +892,8 @@ public class UIManager : MonoBehaviour
         //Set UIButton
         SetUITextForUpgradeDamButton();
         UpdateColorTextForUpgradeCost();
+
+        AudioManager.instance.PlaySFX("PlayerUpgrade");
     }
 
     public void OnClickUpgradeHealthButton()
@@ -897,6 +914,8 @@ public class UIManager : MonoBehaviour
         //Set UIButton
         SetUITextForUpgradeHealthButton();
         UpdateColorTextForUpgradeCost();
+
+        AudioManager.instance.PlaySFX("PlayerUpgrade");
     }
 
     public void SetUITextForUpgradeDamButton()
@@ -1225,12 +1244,14 @@ public class UIManager : MonoBehaviour
     public void OnCLickReturnMenuButton()
     {
         OnCLickCloseSettingPanel();
+        AudioManager.instance.PlaySFX("Button");
         GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
     }
 
     public void OnClickSettingButton()
     {
         settingPanel.SetActive(true);
+        AudioManager.instance.PlaySFX("Button");
     }
 
     public void OnClickMusicToggle()
@@ -1239,6 +1260,7 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.musicSource.mute = !musicToggle.isOn;
         SaveLoadManager.instance.isMusicOn = !AudioManager.instance.musicSource.mute;
         PlayerPrefs.SetInt("IsMusicOn", !AudioManager.instance.musicSource.mute ? 1 : 0);
+        AudioManager.instance.PlaySFX("Button");
     }
 
     public void OnClickSoundToggle()
@@ -1246,11 +1268,13 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.sfxSource.mute = !sfxToggle.isOn;
         SaveLoadManager.instance.isSFXOn = !AudioManager.instance.sfxSource.mute;
         PlayerPrefs.SetInt("IsSFXOn", !AudioManager.instance.sfxSource.mute ? 1 : 0);
+        AudioManager.instance.PlaySFX("Button");
     }
 
     public void OnCLickCloseSettingPanel()
     {
         settingPanel.SetActive(false);
+        AudioManager.instance.PlaySFX("Button");
     }
 
     #endregion
@@ -1559,6 +1583,8 @@ public class UIManager : MonoBehaviour
             returnMenuButton.GetComponent<Image>().sprite = winButtonSprite;
             rewardCoinText.text = "0";
             rewardPanel.SetActive(true);
+            AudioManager.instance.PlaySFX("Win");
+            AudioManager.instance.StopMusic();
         }
         else
         {
@@ -1566,6 +1592,8 @@ public class UIManager : MonoBehaviour
             resultImage.sprite = loseResultSprite;
             returnMenuButton.GetComponent<Image>().sprite = loseButtonSprite;
             rewardPanel.SetActive(false);
+            AudioManager.instance.PlaySFX("Lose");
+            AudioManager.instance.StopMusic();
         }
 
         yield return new WaitForSeconds(2f);
@@ -1618,6 +1646,7 @@ public class UIManager : MonoBehaviour
     public void OnClickOverGameButton()
     {
         GameManager.instance.StartCoroutine(GameManager.instance.LoadNewLevel());
+        AudioManager.instance.PlaySFX("Button");
     }
     #endregion
 
