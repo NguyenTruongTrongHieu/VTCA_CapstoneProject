@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 800
   currentHealth: 0
-  damage: 200
+  damage: 150
   hpSlider: {fileID: 0}
   id: 6
   name: RockGolem

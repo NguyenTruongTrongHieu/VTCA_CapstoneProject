@@ -346,6 +346,7 @@ public class UIManager : MonoBehaviour
         SetUsedProgress();
 
         AudioManager.instance.PlaySFX("Button");
+        AudioManager.instance.PlayMusic("BattleMusic", true);
     }
 
     public void DisplayCurrentLevel()
