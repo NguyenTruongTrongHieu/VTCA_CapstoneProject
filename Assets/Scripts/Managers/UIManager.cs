@@ -1692,7 +1692,7 @@ public class UIManager : MonoBehaviour
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Power Up Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                Debug.Log("Ultimate Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
             //}

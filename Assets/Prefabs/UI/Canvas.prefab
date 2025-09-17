@@ -4983,8 +4983,8 @@ MonoBehaviour:
   stars: 0
   minCrystal: 0
   maxCrystal: 5
-  minCoin: 1000
-  maxCoin: 10000
+  minCoin: 200
+  maxCoin: 300
   minStar: 1
   maxStar: 10
   itemLevelsInChest: 020000000100000000000000

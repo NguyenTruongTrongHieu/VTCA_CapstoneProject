@@ -405,25 +405,39 @@ MonoBehaviour:
     rewardCoin: 500
     havingBoss: 0
     statesInBoard:
-    - {x: 0, y: 1}
-    - {x: 1, y: 2}
-    - {x: 2, y: 3}
-    - {x: 3, y: 4}
-    - {x: 4, y: 5}
-    - {x: 5, y: 6}
-    lockCellInBoard:
-    - {x: 0, y: 0}
+    - {x: 1, y: 0}
     - {x: 2, y: 0}
     - {x: 3, y: 0}
     - {x: 4, y: 0}
-    - {x: 5, y: 0}
-    - {x: 1, y: 0}
-    - {x: 0, y: 7}
     - {x: 1, y: 7}
     - {x: 2, y: 7}
     - {x: 3, y: 7}
     - {x: 4, y: 7}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    lockCellInBoard:
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 0, y: 0}
+    - {x: 0, y: 7}
+    - {x: 1, y: 0}
+    - {x: 1, y: 7}
+    - {x: 4, y: 0}
+    - {x: 4, y: 7}
+    - {x: 5, y: 0}
     - {x: 5, y: 7}
+    - {x: 0, y: 1}
+    - {x: 0, y: 6}
+    - {x: 5, y: 1}
+    - {x: 5, y: 6}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
   - index: 2
     enemiesAtLevel:
     - {fileID: 6029603621710947302, guid: 4c39795f13c04c640b1061736048fc4e, type: 3}
@@ -434,25 +448,47 @@ MonoBehaviour:
     rewardCoin: 1500
     havingBoss: 1
     statesInBoard:
-    - {x: 3, y: 0}
-    - {x: 3, y: 1}
-    - {x: 3, y: 2}
-    - {x: 3, y: 5}
-    - {x: 3, y: 6}
-    - {x: 3, y: 7}
-    lockCellInBoard:
-    - {x: 0, y: 3}
-    - {x: 1, y: 3}
     - {x: 2, y: 3}
-    - {x: 3, y: 3}
-    - {x: 4, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 1, y: 7}
+    - {x: 2, y: 7}
+    - {x: 3, y: 7}
+    - {x: 4, y: 7}
+    - {x: 2, y: 3}
+    - {x: 3, y: 4}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
     - {x: 5, y: 3}
     - {x: 5, y: 4}
-    - {x: 4, y: 4}
-    - {x: 3, y: 4}
-    - {x: 2, y: 4}
-    - {x: 1, y: 4}
-    - {x: 0, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+    lockCellInBoard:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 0, y: 7}
+    - {x: 1, y: 7}
+    - {x: 2, y: 7}
+    - {x: 3, y: 7}
+    - {x: 4, y: 7}
+    - {x: 5, y: 7}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 2, y: 5}
+    - {x: 3, y: 5}
+    - {x: 1, y: 6}
+    - {x: 2, y: 6}
+    - {x: 3, y: 6}
+    - {x: 4, y: 6}
   - index: 3
     enemiesAtLevel:
     - {fileID: 6029603621710947302, guid: 0cda652897d2e274395e6de6e7b74fec, type: 3}
@@ -463,24 +499,35 @@ MonoBehaviour:
     rewardCoin: 2000
     havingBoss: 0
     statesInBoard:
-    - {x: 3, y: 0}
-    - {x: 3, y: 1}
-    - {x: 3, y: 2}
-    - {x: 3, y: 5}
-    - {x: 3, y: 6}
-    - {x: 3, y: 7}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 0, y: 6}
+    - {x: 1, y: 6}
     lockCellInBoard:
     - {x: 0, y: 0}
-    - {x: 1, y: 3}
-    - {x: 2, y: 3}
-    - {x: 3, y: 3}
-    - {x: 4, y: 3}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 5, y: 7}
+    - {x: 4, y: 7}
+    - {x: 3, y: 7}
+    - {x: 2, y: 7}
+    - {x: 1, y: 7}
+    - {x: 0, y: 7}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
     - {x: 5, y: 3}
     - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
     - {x: 4, y: 4}
-    - {x: 3, y: 4}
-    - {x: 2, y: 4}
-    - {x: 1, y: 4}
+    - {x: 4, y: 3}
   - index: 4
     enemiesAtLevel:
     - {fileID: 6029603621710947302, guid: b5824a01dadf3af4d99ebf9c5d987b55, type: 3}
@@ -491,24 +538,39 @@ MonoBehaviour:
     rewardCoin: 3000
     havingBoss: 1
     statesInBoard:
-    - {x: 3, y: 0}
     - {x: 3, y: 1}
     - {x: 3, y: 2}
     - {x: 3, y: 5}
     - {x: 3, y: 6}
-    - {x: 3, y: 7}
-    lockCellInBoard:
-    - {x: 0, y: 0}
-    - {x: 1, y: 3}
-    - {x: 2, y: 3}
-    - {x: 3, y: 3}
-    - {x: 4, y: 3}
+    - {x: 4, y: 0}
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+    - {x: 4, y: 7}
     - {x: 5, y: 3}
     - {x: 5, y: 4}
-    - {x: 4, y: 4}
-    - {x: 3, y: 4}
-    - {x: 2, y: 4}
-    - {x: 1, y: 4}
+    lockCellInBoard:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 0, y: 6}
+    - {x: 1, y: 6}
+    - {x: 2, y: 6}
+    - {x: 0, y: 7}
+    - {x: 1, y: 7}
+    - {x: 2, y: 7}
+    - {x: 3, y: 7}
+    - {x: 5, y: 0}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+    - {x: 5, y: 7}
 --- !u!114 &3960010769516030489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,9 +664,9 @@ MonoBehaviour:
   - name: UltimatePlayer1
     audioClip: {fileID: 8300000, guid: 7b5c44c42bc92f04ba6fc3c0cd2bb7dd, type: 3}
   - name: UltimatePlayer2
-    audioClip: {fileID: 8300000, guid: bcdb774b39b48a24c8dba0a99c1868cc, type: 3}
+    audioClip: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
   - name: UltimatePlayer3
-    audioClip: {fileID: 8300000, guid: a0c0879ef6ec33441b75e5d4f9c5e45d, type: 3}
+    audioClip: {fileID: 8300000, guid: 7b5c44c42bc92f04ba6fc3c0cd2bb7dd, type: 3}
   - name: ChoseFruit
     audioClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
   - name: ChoseSpecialFruit
@@ -687,6 +749,24 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: e4e4ffb14fd58c4439ae9df6d5375dab, type: 3}
   - name: Button
     audioClip: {fileID: 8300000, guid: ddd16025d5ef32249bf91ac485f99fd8, type: 3}
+  - name: Player1HitVoice1
+    audioClip: {fileID: 8300000, guid: 2034913980bd45742bf50e8343a61a18, type: 3}
+  - name: Player1HitVoice2
+    audioClip: {fileID: 8300000, guid: 7b892a9d1530890429098ec9db740ec6, type: 3}
+  - name: Player1HitVoice3
+    audioClip: {fileID: 8300000, guid: f379da8d8fa452d4b9d0752ded3a23d4, type: 3}
+  - name: Player2HitVoice1
+    audioClip: {fileID: 8300000, guid: 4c30d350e28b5754da05fb98a1f915c2, type: 3}
+  - name: Player2HitVoice2
+    audioClip: {fileID: 8300000, guid: 94af58353dfdf544ea659dc2dc5d8d18, type: 3}
+  - name: Player2HitVoice3
+    audioClip: {fileID: 8300000, guid: a2b9b3d3cf55a9941886800f2d9cb978, type: 3}
+  - name: Player3HitVoice1
+    audioClip: {fileID: 8300000, guid: 33af261a86e7c5846878f175e4a0ffb5, type: 3}
+  - name: Player3HitVoice2
+    audioClip: {fileID: 8300000, guid: c3ecf6d5934e3b349ad17e85b72b1fc0, type: 3}
+  - name: Player3HitVoice3
+    audioClip: {fileID: 8300000, guid: 771c1141e118ca942ae612c68b9b247d, type: 3}
   musicSource: {fileID: 8481910894306063675}
   sfxSource: {fileID: 4365999109710256419}
 --- !u!114 &6567360885161747434

@@ -90,7 +90,10 @@ public class ChestManager : MonoBehaviour
         }
         else
         {
-            coins = Random.Range(minCoin, maxCoin + 1);
+            int minCoinAtLevel = minCoin + (LevelManager.instance.currentLevel.index - 1) * minCoin;
+            int maxCoinAtLevel = maxCoin + (LevelManager.instance.currentLevel.index - 1) * maxCoin;
+
+            coins = Random.Range(minCoinAtLevel, maxCoinAtLevel + 1);
         }
         if (minStar == maxStar)
         {
