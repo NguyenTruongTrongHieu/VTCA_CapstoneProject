@@ -59,13 +59,13 @@ public class Food : MonoBehaviour
         {
             multipleText.text = $"X{multipleScore}"; // Hiển thị số điểm nhân
         }
-        else if (foodType == FoodType.DebuffSpecial)
-        {
-            if (specialType == "DebuffTakeDam")
-            {
-                multipleText.text = "TD";
-            }
-        }
+        //else if (foodType == FoodType.DebuffSpecial)
+        //{
+        //    if (specialType == "DebuffTakeDam")
+        //    {
+        //        multipleText.text = "TD";
+        //    }
+        //}
     }
 
     private void OnEnable()
