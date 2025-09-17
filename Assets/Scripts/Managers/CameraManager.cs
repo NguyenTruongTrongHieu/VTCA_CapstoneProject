@@ -49,7 +49,7 @@ public class CameraManager : MonoBehaviour
                 yield return null;
             }
         }
-        Debug.Log("Set target for: " + target);
+        
         cineCam.Follow = target;
         yield return null;
     }

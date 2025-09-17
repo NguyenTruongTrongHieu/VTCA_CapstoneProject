@@ -1386,7 +1386,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             state.StartCoroutine(state.TakeHit(20f));
         }
 
-        if (center.y < 5 && gameBoard[center.x, center.y + 1] == "HavingState")
+        if (center.y < 7 && gameBoard[center.x, center.y + 1] == "HavingState")
         {
             State state = states2DArray[center.x, center.y + 1];
             state.StartCoroutine(state.TakeHit(20f));
