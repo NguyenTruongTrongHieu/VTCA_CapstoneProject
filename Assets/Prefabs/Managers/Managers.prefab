@@ -633,9 +633,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musics:
   - name: BackgroundMusic
-    audioClip: {fileID: 8300000, guid: 49f2a13c5d4978e4fb5e3dbf20b5570b, type: 3}
+    audioClip: {fileID: 8300000, guid: 5c59f992880c0cb4fa2e5d6c73efbe9a, type: 3}
   - name: BossMusic
     audioClip: {fileID: 8300000, guid: 124bea4ef476ec2498cc2cd9c8c7d79d, type: 3}
+  - name: BattleMusic
+    audioClip: {fileID: 8300000, guid: 1e095a1862b2917408f2d465391ed152, type: 3}
   sfx:
   - name: EnemyAttackNoWeapon
     audioClip: {fileID: 8300000, guid: 9815d172b36b13e46a6b3edab9be2378, type: 3}
