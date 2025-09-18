@@ -1285,7 +1285,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 //int randomIndex = UnityEngine.Random.Range(0, hasMatchedFoods.Count); // chọn ngẫu nhiên một ô thức ăn trong danh sách đã so khớp
 
                 //GameObject specialFood = Instantiate(specialFoodPrefab, specialPos, Quaternion.identity, foodParent); // tạo một ô thức ăn đặc biệt tại vị trí của ô thức ăn đã so khớp
-                GameObject specialFood = PoolManager.Instance.GetObject("Food Multiple", 
+                GameObject specialFood = PoolManager.Instance.GetObject("Food Multiple",
                     specialPos, Quaternion.identity, foodParent, specialFoodPrefab);
 
                 specialFood.transform.localScale = Vector3.zero; // đặt kích thước của ô thức ăn đặc biệt về 0
@@ -1296,6 +1296,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                 break; // thoát khỏi vòng lặp nếu đã tạo ô thức ăn đặc biệt
             }
+            //yield return null;
         }
 
 
