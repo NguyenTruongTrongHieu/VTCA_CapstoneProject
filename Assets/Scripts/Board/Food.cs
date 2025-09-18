@@ -472,6 +472,7 @@ public class Food : MonoBehaviour
                     if (deletedFood.specialType == "Multiple")
                     {
                         PoolManager.Instance.ReturnObject("Food Multiple", deletedFood.gameObject);
+                        //Destroy(deletedFood.gameObject);
                     }
                     break;
                 }
