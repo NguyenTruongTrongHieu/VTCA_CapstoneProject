@@ -106,8 +106,8 @@ public class Timer : MonoBehaviour
                 // Subtract the elapsed time from the saved remaining time
                 remainingTime -= (float)timeDifference.TotalSeconds;
 
-                Debug.Log("Time elapsed while away: " + timeDifference.TotalSeconds.ToString("F2") + " seconds.");
-                Debug.Log("New remaining time after accounting for offline time: " + remainingTime.ToString("F2"));
+                //Debug.Log("Time elapsed while away: " + timeDifference.TotalSeconds.ToString("F2") + " seconds.");
+                //Debug.Log("New remaining time after accounting for offline time: " + remainingTime.ToString("F2"));
             }
         }
     }
@@ -122,6 +122,6 @@ public class Timer : MonoBehaviour
         PlayerPrefs.SetString("ExitTimestamp", exitTimeTicks.ToString());
 
         PlayerPrefs.Save();
-        Debug.Log("Saved exit timestamp: " + exitTimeTicks);
+        //Debug.Log("Saved exit timestamp: " + exitTimeTicks);
     }
 }

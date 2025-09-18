@@ -55,6 +55,11 @@ public class Food : MonoBehaviour
 
     private void Start()
     {
+        
+    }
+
+    private void OnEnable()
+    {
         if (foodType == FoodType.Special)
         {
             multipleText.text = $"X{multipleScore}"; // Hiển thị số điểm nhân
@@ -66,10 +71,6 @@ public class Food : MonoBehaviour
         //        multipleText.text = "TD";
         //    }
         //}
-    }
-
-    private void OnEnable()
-    {
         transform.localScale = new Vector3(foodScale, foodScale, 1f);
         transform.localEulerAngles = Vector3.zero;
     }

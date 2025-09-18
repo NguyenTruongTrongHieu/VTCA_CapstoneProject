@@ -234,7 +234,7 @@ public class MissionsManager : MonoBehaviour
                 // Set the description based on the mission type
                 if (missions[i].missionType == MissionType.KillEnemy)
                 {
-                    missions[i].reward = 500 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 500 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 20; // Set a random target amount for the goal
                     missions[i].description = "Kill " + missions[i].goal.targetAmount + " Monsters";
                     missions[i].isCompleted = false;
@@ -243,7 +243,7 @@ public class MissionsManager : MonoBehaviour
                 }
                 else if (missions[i].missionType == MissionType.FruitMatching)
                 {
-                    missions[i].reward = 300 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 300 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 150; // Set a random target amount for the goal
                     missions[i].description = "Match " + missions[i].goal.targetAmount + " Fruits";
                     missions[i].isCompleted = false;
@@ -252,7 +252,7 @@ public class MissionsManager : MonoBehaviour
                 }
                 else if (missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
-                    missions[i].reward = 400 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 400 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.currentAmount = 0; // Initialize current amount to 1
                     missions[i].goal.targetAmount = 15; // Set a random target amount for the goal
                     missions[i].description = "Upgrade your Damage " + missions[i].goal.targetAmount + " times";
@@ -262,7 +262,7 @@ public class MissionsManager : MonoBehaviour
                 }
                 else if (missions[i].missionType == MissionType.UpgradeHealthStats)
                 {
-                    missions[i].reward = 400 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 400 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.currentAmount = 0; // Initialize current amount to 1
                     missions[i].goal.targetAmount = 15; // Set a random target amount for the goal
                     missions[i].description = "Upgrade your Health " + missions[i].goal.targetAmount + " times";
@@ -275,7 +275,7 @@ public class MissionsManager : MonoBehaviour
                     // Set the target amount based on the current level and available levels
                     missions[i].goal.currentAmount = currentLevel; // Initialize current amount to the current level
 
-                    missions[i].reward = 250 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 250 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = missions[i].goal.currentAmount + 1; // Set a random target amount for the goal
                     missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
@@ -304,7 +304,7 @@ public class MissionsManager : MonoBehaviour
                 }
                 else if (missions[i].missionType == MissionType.UsePowerUp)
                 {
-                    missions[i].reward = 300 + (LevelManager.instance.currentLevel.index - 1) * 500;
+                    missions[i].reward = 300 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 10; // Set a random target amount for the goal
                     missions[i].description = "Use Ultimate " + missions[i].goal.targetAmount + " times";
                     missions[i].isCompleted = false;
