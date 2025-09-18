@@ -256,7 +256,7 @@ public class PlayerUltimate : MonoBehaviour
         isUltimateValid = true; // Set ultimate as valid
         SetUltimateAnimPlayer();
 
-        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 0.15f); 
+        ultimateDamage = basicDamagePlayer + (basicDamagePlayer * 0.1f); 
         playerTransform.GetComponent<PlayerAttack>().playerStat.damage = ultimateDamage;
 
         totalRound = 1; // Set the total rounds for the ultimate ability

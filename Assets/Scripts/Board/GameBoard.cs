@@ -1288,6 +1288,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 GameObject specialFood = PoolManager.Instance.GetObject("Food Multiple",
                     specialPos, Quaternion.identity, foodParent, specialFoodPrefab);
 
+                yield return null;
                 specialFood.transform.localScale = Vector3.zero; // đặt kích thước của ô thức ăn đặc biệt về 0
                 Food food = specialFood.GetComponent<Food>();
                 food.SetMultipleScore(specialMutiplie[i]); // đặt số điểm nhân của ô thức ăn đặc biệt là 3
@@ -1296,7 +1297,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                 break; // thoát khỏi vòng lặp nếu đã tạo ô thức ăn đặc biệt
             }
-            //yield return null;
+            yield return null;
         }
 
 

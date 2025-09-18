@@ -152,7 +152,7 @@ MonoBehaviour:
   m_IsTrail: 0
   m_IgnoreCanvasScaler: 0
   m_AbsoluteMode: 0
-  m_Scale3D: {x: 100, y: 100, z: 100}
+  m_Scale3D: {x: 150, y: 150, z: 150}
   m_AnimatableProperties: []
   m_Particles:
   - {fileID: 6244638005469400576}
@@ -452,6 +452,7 @@ MonoBehaviour:
   yIndex: 0
   isFalling: 0
   isMatched: 0
+  isFlying: 0
   foodHighLightImage: {fileID: 7781294225545719425}
   foodImage: {fileID: 1050035193900255742}
   highlightVFX1: {fileID: 6019380294359981909}
@@ -559,7 +560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7710086954383210093, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: m_Intensity
-      value: 13.912825
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8366612028392416556, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: playOnAwake

@@ -167,7 +167,7 @@ public class SaveLoadManager : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("CurrentLevelIndex") || !isFileExist)//!PlayerPrefs.HasKey("CurrentLevelIndex") || !System.IO.File.Exists("OwnedCharaters")
         {
-            currentLevelIndex = 0;
+            currentLevelIndex = 1;
             currentBasicDamageLevel = 1;
             currentBasicHealthLevel = 1;
 

@@ -246,6 +246,15 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        GameObject specialFood = Instantiate(GameBoard.Instance.specialFoodPrefab, coinPanel.transform.position, Quaternion.identity, this.transform);
+        specialFood.transform.localScale = Vector3.zero; // đặt kích thước của ô thức ăn đặc biệt về 0
+        Food food = specialFood.GetComponent<Food>();
+        food.SetMultipleScore(3); // đặt số điểm nhân của ô thức ăn đặc biệt là 3
+        food.StartCoroutine(food.ReturnOriginalScale(0.1f));
+        Destroy(specialFood, 0.5f);
+
+
         //Missions 
         Debug.Log("How many Missions des: " + missionsDescriptionTexts.Length.ToString());
 
@@ -641,7 +650,7 @@ public class UIManager : MonoBehaviour
         else if (playerStat.id == 1)
         {
             ultiDescriptionText.text = "Ulti: Increase your damage for 1 turn. This bonus damage based on your basic damage.";
-            ultiStatText.text = $"Increased damage: +(0.15 x basic damage)";
+            ultiStatText.text = $"Increased damage: +(0.1 x basic damage)";
         }
         else if (playerStat.id == 2)
         {
