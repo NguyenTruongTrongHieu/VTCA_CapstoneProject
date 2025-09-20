@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +30,28 @@ public class AudioManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Hàm preload tất cả audio
+    public void PreloadAllAudio()
+    {
+        // Preload music
+        foreach (var music in musics)
+        {
+            if (music.audioClip != null)
+            {
+                music.audioClip.LoadAudioData(); // Ép Unity load vào RAM
+            }
+        }
+
+        // Preload sfx
+        foreach (var soundEffect in sfx)
+        {
+            if (soundEffect.audioClip != null)
+            {
+                soundEffect.audioClip.LoadAudioData();
+            }
+        }
     }
 
     public void PlayMusic(string name, bool isLoop)

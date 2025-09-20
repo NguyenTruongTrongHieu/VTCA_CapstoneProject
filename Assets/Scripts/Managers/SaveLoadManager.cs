@@ -150,6 +150,8 @@ public class SaveLoadManager : MonoBehaviour
             Timer.Instance.TimeSetup();
         }
 
+        AudioManager.instance.PreloadAllAudio();
+
         StartCoroutine(LoadingSceneAsync(true, 1f));
     }
 
