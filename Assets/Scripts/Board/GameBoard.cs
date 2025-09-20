@@ -125,8 +125,8 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InitializeBoard2();
-        InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
+        //InitializeBoard2();
+        //InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
     }
 
     private void Update()

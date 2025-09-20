@@ -254,6 +254,8 @@ public class UIManager : MonoBehaviour
         food.StartCoroutine(food.ReturnOriginalScale(0.1f));
         Destroy(specialFood, 0.5f);
 
+        GameBoard.Instance.InitializeBoard2();
+        GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
 
         //Missions 
         Debug.Log("How many Missions des: " + missionsDescriptionTexts.Length.ToString());
@@ -345,7 +347,7 @@ public class UIManager : MonoBehaviour
 
         //StartCoroutine(
         //CameraManager.instance.SetScreenPosComposition(1f, true, -0.25f));
-        CameraManager.instance.StopAllCoroutines();
+        //CameraManager.instance.StopAllCoroutines();
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
         CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0.7f));
 

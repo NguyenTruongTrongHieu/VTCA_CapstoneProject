@@ -207,6 +207,11 @@ public class PlayerIdle : NodeBehaviourTree
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.75f, 'X', 1));
                 playerSelf.PlayBossSFX();
             }
+            //else if (GameManager.instance.currentEnemyIndex == 0)
+            //{
+            //    CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(1f, 'Z', 0.7f));
+            //    CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.5f, 'X', 0.7f));
+            //}
         }
         
         playerSelf.animator.SetBool(playerSelf.isMovingHash, false);
