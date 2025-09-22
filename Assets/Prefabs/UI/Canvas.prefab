@@ -4877,7 +4877,7 @@ MonoBehaviour:
       - m_Target: {fileID: 6145687177885367788}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MissionsRewardClaiming
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10909,11 +10909,11 @@ MonoBehaviour:
       - m_Target: {fileID: 6145687177885367788}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MissionsRewardClaiming
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -12109,11 +12109,11 @@ MonoBehaviour:
       - m_Target: {fileID: 6145687177885367788}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MissionsRewardClaiming
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -24004,7 +24004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 7.5910034, y: -82.27478}
+  m_AnchoredPosition: {x: 7.5910645, y: -82.27478}
   m_SizeDelta: {x: -512.82, y: -726.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6745763638097475061

@@ -65,7 +65,9 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" &&( attackState != "Attacking" && attackState != "DoneAttack"))
+        if (GameManager.instance.currentGameState == GameState.Playing && GameManager.instance.currentTurn == "Enemy" 
+            &&( attackState != "Attacking" && attackState != "DoneAttack")
+            && transform == LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
         { 
             attackState = "Attacking";
             StartCoroutine(PlayAttackSequence(Random.Range(1, 4), false));//Random.Range(1, 4)
@@ -108,6 +110,11 @@ public class EnemyAttack : MonoBehaviour
 
     public IEnumerator DoneAttack(bool isPlayerDie)
     {
+        if (this.transform != LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
+        {
+            yield break ;
+        }
+
         if (enemyDebuffTurn > 0)
         { 
             enemyDebuffTurn--;
@@ -130,10 +137,8 @@ public class EnemyAttack : MonoBehaviour
             {
                 yield return null;
             }
-            if (this.transform == LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
-            {
-                yield return StartCoroutine(CameraManager.instance.ChangeTargetCamFromPlayerToEnemy());
-            }
+
+            yield return StartCoroutine(CameraManager.instance.ChangeTargetCamFromPlayerToEnemy());
             Victory();
         }
         else

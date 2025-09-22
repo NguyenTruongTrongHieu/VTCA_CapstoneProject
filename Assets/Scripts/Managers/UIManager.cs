@@ -647,7 +647,7 @@ public class UIManager : MonoBehaviour
         {
             ultiDescriptionText.text = "Ulti: Increase your lifesteal for 1 turn. Lifesteal can heal based on damage dealt. " +
                 "Throughout this turn, each attack restores a portion of lost health.";
-            ultiStatText.text = $"Lifesteal: +0.1";
+            ultiStatText.text = $"Lifesteal: +0.8";
         }
         else if (playerStat.id == 1)
         {
@@ -1741,6 +1741,11 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        UpdateMissionCompletedProgress();
+    }
+
+    public void UpdateMissionCompletedProgress()
+    {
         chestSlider.maxValue = MissionsManager._instance.missions.Length;
         chestSlider.value = MissionsManager._instance.missionCompletedCount;
         chestProgressText.text = $"{MissionsManager._instance.missionCompletedCount}/{MissionsManager._instance.missions.Length}";
@@ -1772,9 +1777,9 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void MissionsRewardClaiming()
+    public void MissionsRewardClaiming(int missionIndex)
     {
-        MissionsManager._instance.RewardClaiming();
+        MissionsManager._instance.RewardClaiming(missionIndex);
         IsMissionCompletedChecking();
         UpdateMissionsProgress();
     }
@@ -1801,6 +1806,8 @@ public class UIManager : MonoBehaviour
         if (MissionsManager._instance.ChestOpening() == true)
         {
             chestManager.OpenChest();
+            MissionsManager._instance.isOpendChest = true;
+            SaveLoadManager.instance.isOpenedChestAtMission = MissionsManager._instance.isOpendChest;
         }
     }
     #endregion
