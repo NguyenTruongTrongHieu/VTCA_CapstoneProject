@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Assets.SimpleLocalization.Scripts;
 
 [Serializable]
 public class CharacterButton
@@ -647,18 +648,24 @@ public class UIManager : MonoBehaviour
         {
             ultiDescriptionText.text = "Ulti: Increase your lifesteal for 1 turn. Lifesteal can heal based on damage dealt. " +
                 "Throughout this turn, each attack restores a portion of lost health.";
+            ultiDescriptionText.text = LocalizationManager.Localize("cha.ultdes0");
             ultiStatText.text = $"Lifesteal: +0.8";
+            ultiStatText.text = LocalizationManager.Localize("cha.ultstat0");
         }
         else if (playerStat.id == 1)
         {
             ultiDescriptionText.text = "Ulti: Increase your damage for 1 turn. This bonus damage based on your basic damage.";
+            ultiDescriptionText.text = LocalizationManager.Localize("cha.ultdes1");
             ultiStatText.text = $"Increased damage: +(0.1 x basic damage)";
+            ultiStatText.text = LocalizationManager.Localize("cha.ultstat1");
         }
         else if (playerStat.id == 2)
         {
             ultiDescriptionText.text = "Ulti: A special item randomly appears, increasing damage to enemies for 1 turn. " +
                 "Using it doesn’t end your turn.";
+            ultiDescriptionText.text = LocalizationManager.Localize("cha.ultdes2");
             ultiStatText.text = $"Damage taken: +10% for each connected fruit";
+            ultiStatText.text = LocalizationManager.Localize("cha.ultstat2");
         }
     }
 
@@ -1673,36 +1680,42 @@ public class UIManager : MonoBehaviour
                 if (MissionsManager._instance.missions[i].missionType == MissionType.KillEnemy)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.kill");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.FruitMatching)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.match");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.updam");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeHealthStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.uphth");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.ReachLevel)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.reachlvl");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UsePowerUp)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
+                missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.pwrup");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
                 Debug.Log("Ultimate Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
@@ -2035,6 +2048,15 @@ public class UIManager : MonoBehaviour
             StartCoroutine(CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
             isClaimCoin = false;
         }
+    }
+
+    #endregion
+
+    #region TRANSLATE
+
+    public void GetLanguage(string language)
+    {
+        LocalizationManager.Language = language;
     }
 
     #endregion

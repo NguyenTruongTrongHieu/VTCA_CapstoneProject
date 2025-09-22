@@ -12,15 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63817d93022759543b57e795c78efe11, type: 3}
   m_Name: LocalizationSettings
   m_EditorClassIdentifier: 
-  TableId: 1RvKY3VE_y5FPhEECCa5dv4F7REJ7rBtGzQg9Z_B_DE4
+  TableId: 1gv6s8WUENZOK0aFYaPLF7lIRx9heTl-DxaCGJFc8OFM
   Sheets:
-  - Name: Menu
+  - Name: Loading Scene
     Id: 0
+    TextAsset: {fileID: 4900000, guid: 695013bc9582b6c4baf6505042b1c115, type: 3}
+  - Name: Menu
+    Id: 1197514792
     TextAsset: {fileID: 4900000, guid: cf55c05861a4d264a855e6349bef560e, type: 3}
+  - Name: Missions
+    Id: 1011044047
+    TextAsset: {fileID: 4900000, guid: e586b2cd3988b014ea4030f3a8444ec5, type: 3}
+  - Name: Character
+    Id: 1772099059
+    TextAsset: {fileID: 4900000, guid: 6ecd518d60de5364fb3c7f607edd4a5e, type: 3}
+  - Name: Game Over
+    Id: 1569984932
+    TextAsset: {fileID: 4900000, guid: ae39196fbea8a0b469d5d0b1c7934086, type: 3}
   - Name: Settings
-    Id: 331980525
-    TextAsset: {fileID: 4900000, guid: 9e915f09744b99e4eb2d3ded7f443ddc, type: 3}
-  - Name: Tests
-    Id: 1674352817
-    TextAsset: {fileID: 4900000, guid: 78955087f9a816a49851f5f94193f224, type: 3}
+    Id: 84807491
+    TextAsset: {fileID: 4900000, guid: 16c3d5c17a422a445bad896968a3b8cd, type: 3}
   SaveFolder: {fileID: 102900000, guid: c392831e85f928548b8494fefd912562, type: 3}

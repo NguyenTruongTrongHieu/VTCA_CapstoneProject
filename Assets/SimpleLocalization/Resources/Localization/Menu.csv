@@ -1,6 +1,5 @@
-Key,English,German,Russian
-Menu.Example.Title,Menu,Menü,Меню
-Menu.Example.NewGame,New game,Neues Spiel,Новая игра
-Menu.Example.Continue,Continue,Fortsetzen,Продолжить
-Menu.Example.Settings,Settings,Einstellungen,Настройки
-Menu.Example.Review,Write a review,Eine Rezension schreiben,Написать отзыв
+Key,English,Vietnamese
+menu.lvl,Level,Cấp độ
+menu.damage,Damage,Sát thương
+menu.Health,Health,Sinh lực
+menu.tap,Tap To Play,Chạm Để Bắt Đầu
