@@ -239,7 +239,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].reward = 500 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 20; // Set a random target amount for the goal
-                    missions[i].description = "Kill " + missions[i].goal.targetAmount + " Monsters";
+                    missions[i].description = "Kill Monsters: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;
@@ -248,7 +248,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].reward = 300 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 150; // Set a random target amount for the goal
-                    missions[i].description = "Match " + missions[i].goal.targetAmount + " Fruits";
+                    missions[i].description = "Match Fruits: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;
@@ -258,7 +258,7 @@ public class MissionsManager : MonoBehaviour
                     missions[i].reward = 400 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.currentAmount = 0; // Initialize current amount to 1
                     missions[i].goal.targetAmount = 15; // Set a random target amount for the goal
-                    missions[i].description = "Upgrade your Damage " + missions[i].goal.targetAmount + " times";
+                    missions[i].description = "Upgrade your Damage: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;
@@ -268,7 +268,7 @@ public class MissionsManager : MonoBehaviour
                     missions[i].reward = 400 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.currentAmount = 0; // Initialize current amount to 1
                     missions[i].goal.targetAmount = 15; // Set a random target amount for the goal
-                    missions[i].description = "Upgrade your Health " + missions[i].goal.targetAmount + " times";
+                    missions[i].description = "Upgrade your Health: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;
@@ -280,7 +280,7 @@ public class MissionsManager : MonoBehaviour
 
                     missions[i].reward = 250 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = missions[i].goal.currentAmount + 1; // Set a random target amount for the goal
-                    missions[i].description = "Reach Level " + missions[i].goal.targetAmount;
+                    missions[i].description = "Reach Level: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;
@@ -309,7 +309,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].reward = 300 + Mathf.Max((LevelManager.instance.currentLevel.index - 1), 0) * 500;
                     missions[i].goal.targetAmount = 10; // Set a random target amount for the goal
-                    missions[i].description = "Use Ultimate " + missions[i].goal.targetAmount + " times";
+                    missions[i].description = "Use Ultimate: " + missions[i].goal.targetAmount;
                     missions[i].isCompleted = false;
                     missions[i].isActive = true;
                     missions[i].isClaimed = false;

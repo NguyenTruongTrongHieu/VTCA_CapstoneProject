@@ -1,0 +1,19 @@
+Key,English,Vietnamese
+cha.lvl,Level,Cấp độ
+cha.dmg,Damage,Sát thương
+cha.Hp,Health,Sinh lực
+cha.ult,Ulti,Tuyệt kỹ
+cha.ultdes0,"Increase your lifesteal for 1 turn. Lifesteal can heal based on damage dealt. Throughout this turn, each attack restores a portion of lost health","Có được khả năng hút máu trong một lượt. Hồi lại sinh lực dựa theo số lượng sát thương gây được. Trong lượt này, mỗi đòn tấn công sẽ hồi lại một phần sinh lực đã mất."
+cha.ultstat0,Lifesteal,Hút máu
+cha.ultdes1,Increase your damage for 1 turn. This bonus damage based on your basic damage.,Tăng sát thương của nhân vật trong một lượt. Phần sát thương gia tăng dựa theo sát thương cơ bản của nhân vật.
+cha.ultstat1,Increased damage,Sát thương gia tăng
+ cha.ultdes2,"A special item randomly appears, increasing damage to enemies for 1 turn. Using it doesn’t end your turn","Xuất hiện ngẫu nhiên một vật phẩm ngẫu nhiên trên bàn chơi, giúp tăng lượng sát thương gây lên quái vật trong một lượt. Dùng vật phẩm này không lam mất lượt chơi."
+cha.ultstat2,Damage takenDamage taken: +10% for each connected fruit,Sát thương nhận vào: +10% cho mỗi hoa quả được nối.
+cha.chartitle,Character,Nhân vật
+cha.skin,Skin,Trang phục
+cha.charrole0,Tank,Đỡ đòn
+cha.charrole1,Adc,Xạ thủ
+cha.charrole2,Mage,Pháo sư
+cha.own,Owned,Sở hữu
+cha.upgd,Upgrade,Nâng cấp
+cha.Buy,Buy,Mua
