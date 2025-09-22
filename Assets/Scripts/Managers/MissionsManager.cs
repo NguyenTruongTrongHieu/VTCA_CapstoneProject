@@ -21,6 +21,7 @@ public class MissionsManager : MonoBehaviour
     };   // The type of the mission, e.g., KillEnemy, FruitMatching, etc.
 
     public int missionCompletedCount; // Count of completed missions
+    public bool isOpendChest;
 
     //public List<MissionType> missionTypes;
 
@@ -63,7 +64,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].isComplete();
 
-                    missionCompletedCount++; // Increment the count of completed missions
+                    //missionCompletedCount++; // Increment the count of completed missions
 
                     // Update the UI or perform any other actions needed when the mission is completed
                     Debug.Log("Mission Completed: " + missions[i].description);
@@ -87,7 +88,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].isComplete();
 
-                    missionCompletedCount++; // Increment the count of completed missions
+                    //missionCompletedCount++; // Increment the count of completed missions
 
                     // Update the UI or perform any other actions needed when the mission is completed
                     Debug.Log("Mission Completed: " + missions[i].description);
@@ -114,7 +115,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].isComplete();
 
-                    missionCompletedCount++; // Increment the count of completed missions
+                    //missionCompletedCount++; // Increment the count of completed missions
 
                     // Update the UI or perform any other actions needed when the mission is completed
                     Debug.Log("Mission Completed: " + missions[i].description);
@@ -142,7 +143,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].isComplete();
 
-                    missionCompletedCount++; // Increment the count of completed missions
+                    //missionCompletedCount++; // Increment the count of completed missions
 
                     // Update the UI or perform any other actions needed when the mission is completed
                     Debug.Log("Mission Completed: " + missions[i].description);
@@ -168,7 +169,7 @@ public class MissionsManager : MonoBehaviour
                     {
                         missions[i].isComplete();
 
-                        missionCompletedCount++; // Increment the count of completed missions
+                        //missionCompletedCount++; // Increment the count of completed missions
 
                         // Update the UI or perform any other actions needed when the mission is completed
                         Debug.Log("Mission Completed: " + missions[i].description);
@@ -198,7 +199,7 @@ public class MissionsManager : MonoBehaviour
                 {
                     missions[i].isComplete();
 
-                    missionCompletedCount++; // Increment the count of completed missions
+                    //missionCompletedCount++; // Increment the count of completed missions
 
                     // Update the UI or perform any other actions needed when the mission is completed
                     Debug.Log("Mission Completed: " + missions[i].description);
@@ -210,6 +211,8 @@ public class MissionsManager : MonoBehaviour
     public void SetUpMissionsInfo()
     {
         missionCompletedCount = 0; // Reset the count of completed missions at the start
+        isOpendChest = false;
+        SaveLoadManager.instance.isOpenedChestAtMission = isOpendChest;
 
         var availableLevels = LevelManager.instance.levels.Length; // Assuming there are 10 levels available
         var currentLevel = LevelManager.instance.currentLevel.index; // Get the current level number
@@ -321,6 +324,13 @@ public class MissionsManager : MonoBehaviour
 
         Debug.Log("Chest Opening called. Current completed missions: " + missionCompletedCount);
 
+        if (isOpendChest)
+        { 
+            result = false;
+            return result;
+        }    
+
+
         if (missionCompletedCount == 3)
         {
             result = true;
@@ -328,27 +338,43 @@ public class MissionsManager : MonoBehaviour
         }
         else if (missionCompletedCount != 3)
         {
-           result = false;
+            result = false;
+            return result;
         }
 
+        // Additional check to ensure all missions are claimed
+        //foreach (var mission in missions)
+        //{ 
+        //    if(mission.isClaimed == false)
+        //     {
+        //        result = false;
+        //        return result;
+        //    }
+        //}
+
+        result = true;
         return result;
     } 
 
-    public void RewardClaiming()
+    public void RewardClaiming(int missionIndex)
     {
-        for (int i = 0; i < missions.Length; i++)
-        {
-            if (missions[i].isCompleted && !missions[i].isActive && !missions[i].isClaimed)
-            {
-                // Here you can implement the logic to give rewards to the player
-                // For example, you can give coins, gems, or any other rewards based on the mission type
-                Debug.Log("Reward Claimed for Mission: " + missions[i].description);
 
-                CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[i].transform.position, missions[i].reward, false, 0f)); // Add coins to the player's currency
-                missions[i].isClaimed = true; // Mark the mission as claimed
-                AudioManager.instance.PlaySFX("MissionClaim");
-            }
-        }
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[missionIndex].transform.position, missions[missionIndex].reward, false, 0f)); // Add coins to the player's currency
+        missions[missionIndex].isClaimed = true; // Mark the mission as claimed
+        missionCompletedCount++;
+        AudioManager.instance.PlaySFX("MissionClaim");
+        UIManager.instance.UpdateMissionCompletedProgress();
+
+        //for (int i = 0; i < missions.Length; i++)
+        //{
+        //    if (missions[i].isCompleted && !missions[i].isActive && !missions[i].isClaimed)
+        //    {
+        //        // Here you can implement the logic to give rewards to the player
+        //        // For example, you can give coins, gems, or any other rewards based on the mission type
+        //        Debug.Log("Reward Claimed for Mission: " + missions[i].description);
+
+        //    }
+        //}
     }
 
     public void TestChestOpening()

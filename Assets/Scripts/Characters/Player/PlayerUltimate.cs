@@ -212,7 +212,7 @@ public class PlayerUltimate : MonoBehaviour
         isUltimateValid = true; // Set ultimate as valid
         SetUltimateAnimPlayer();
 
-        lifeStealPercent = basicLifeStealPlayer + 0.1f;
+        lifeStealPercent = basicLifeStealPlayer + 0.8f;
         playerTransform.GetComponent<PlayerStat>().bonusStatAtCurrentLevel.lifeStealPercentBonus = lifeStealPercent; 
 
         totalRound = 1; // Set the total rounds for the ultimate ability

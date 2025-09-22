@@ -80,6 +80,7 @@ public class SaveLoadManager : MonoBehaviour
     public int currentStar;
 
     public Mission[] missionsToSave;
+    public bool isOpenedChestAtMission;
 
     public List<OwnedCharacter> ownedCharacters = new List<OwnedCharacter>();
 
@@ -102,7 +103,7 @@ public class SaveLoadManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
             isDataLoaded = LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
@@ -147,6 +148,7 @@ public class SaveLoadManager : MonoBehaviour
                 }
             }
             MissionsManager._instance.missionCompletedCount = missionsCompleted;
+            MissionsManager._instance.isOpendChest = isOpenedChestAtMission;
             Timer.Instance.TimeSetup();
         }
 
@@ -184,6 +186,9 @@ public class SaveLoadManager : MonoBehaviour
             {
                 new OwnedCharacter(0, 1, new List<string>{ "Luthor"}),
             };
+
+            //Set up missions
+            isOpenedChestAtMission = false;
         }
         else//if hasKey
         {
@@ -217,6 +222,7 @@ public class SaveLoadManager : MonoBehaviour
 
             string missionsJson = PlayerPrefs.GetString("Missions");
             missionsToSave = JsonConvert.DeserializeObject<Mission[]>(missionsJson);
+            isOpenedChestAtMission = PlayerPrefs.GetInt("IsOpenedChestAtMission") == 1;
 
 
             result = true;
@@ -245,6 +251,8 @@ public class SaveLoadManager : MonoBehaviour
         //Save missions
         string missionsJson = JsonConvert.SerializeObject(MissionsManager._instance.missions);
         PlayerPrefs.SetString("Missions", missionsJson);
+        //isOpenedChestAtMission = MissionsManager._instance.isOpendChest;
+        PlayerPrefs.SetInt("IsOpenedChestAtMission", isOpenedChestAtMission ? 1 : 0);
 
         //Save owned characters
         SaveDataWithFile("OwnedCharaters");

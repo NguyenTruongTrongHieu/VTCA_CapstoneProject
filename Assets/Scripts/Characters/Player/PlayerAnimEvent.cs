@@ -49,6 +49,10 @@ public class PlayerAnimEvent : MonoBehaviour
 
     public void TurnCurrentTurnToPlayer()
     {
+        if (GameManager.instance.currentGameState != GameState.Playing || CameraManager.instance.isPlayingCutScene)
+        {
+            return;
+        }
         GameManager.instance.currentTurn = "Player"; // Set the current turn to Player, indicating it's the player's turn
     }
 
