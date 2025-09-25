@@ -141,12 +141,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         {
             if (CheckIfNoFoodCanMatch())
             {
-                Debug.Log("No food can match, reset board.");
+                //Debug.Log("No food can match, reset board.");
                 ShuffleBoard();
             }
             else
             {
-                Debug.Log("There are still food can match, continue game.");
+                //Debug.Log("There are still food can match, continue game.");
             }
             ShuffleBoard();
         }
@@ -165,12 +165,12 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
                     if (CheckIfNoFoodCanMatch())
                     {
-                        Debug.Log("No food can match, reset board.");
+                        //Debug.Log("No food can match, reset board.");
                         ShuffleBoard();
                     }
                     else
                     {
-                        Debug.Log("There are still food can match, continue game.");
+                        //Debug.Log("There are still food can match, continue game.");
                     }
 
                     //Debug.Log("No more food to fall down.");
@@ -531,7 +531,7 @@ public class GameBoard : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
                 // Nếu ô hiện tại không có thức ăn, tìm ô phía trên để rơi xuống
                 if (x == 0)
                 {
-                    Debug.Log("Spawn food to fall down above position: " + x + ", " + y);
+                    //Debug.Log("Spawn food to fall down above position: " + x + ", " + y);
                     result = true; // có ô trống để rơi thức ăn
                     Food foodToMove = AddNewFoodAbove(x, y); // Thêm thức ăn mới vào ô trên cùng
                     Vector2 currentFoodPos = foodToMove.transform.position;

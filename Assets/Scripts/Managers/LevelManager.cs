@@ -37,7 +37,7 @@ public class LevelManager : MonoBehaviour
     { 
         currentLevel.enemiesAtLevel.Clear(); // Clear the current level's enemies list before spawning new ones
         Level level = levels[currentLevel.index]; // Get the current level from the levels array
-        Debug.Log("Spawning enemies for level: " + level.index + " - " + level.sceneName);
+        //Debug.Log("Spawning enemies for level: " + level.index + " - " + level.sceneName);
         for (int i = 0; i < level.enemiesAtLevel.Count; i++)
         { 
             var enemy = Instantiate(level.enemiesAtLevel[i], 

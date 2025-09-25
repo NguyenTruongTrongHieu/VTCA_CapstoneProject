@@ -322,7 +322,7 @@ public class MissionsManager : MonoBehaviour
     {
         bool result = false;
 
-        Debug.Log("Chest Opening called. Current completed missions: " + missionCompletedCount);
+        //Debug.Log("Chest Opening called. Current completed missions: " + missionCompletedCount);
 
         if (isOpendChest)
         { 

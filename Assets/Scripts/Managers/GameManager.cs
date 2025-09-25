@@ -159,12 +159,12 @@ public class GameManager : MonoBehaviour
     {
         int incrementDamage = 0;
 
-        if (currentDamageLevel < 15)
+        if (currentDamageLevel < 100)
         {
             incrementDamage = 2;
         }
 
-        else if (currentDamageLevel < 50)
+        else if (currentDamageLevel < 500)
         {
             incrementDamage = 3;
         }
@@ -185,15 +185,15 @@ public class GameManager : MonoBehaviour
             damCostToUpgrade = BASECOST_DAMAGE;
             return damCostToUpgrade;
         }
-        else if (currentDamageLevel < 10)
+        else if (currentDamageLevel < 100)
         {
             growthFactor = 1.15f;
         }
-        else if (currentDamageLevel < 30)
+        else if (currentDamageLevel < 500)
         {
             growthFactor = 1.3f; // Increase growth factor for levels 1-9
         }
-        else if (currentDamageLevel < 50)
+        else //if (currentDamageLevel < 500)
         {
             growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
         }
@@ -206,11 +206,11 @@ public class GameManager : MonoBehaviour
     {
         int incrementHealth = 0;
 
-        if (currentHealthLevel < 15)
+        if (currentHealthLevel < 100)
         {
             incrementHealth = 5;
         }
-        else if (currentHealthLevel < 50)
+        else if (currentHealthLevel < 500)
         {
             incrementHealth = 8;
         }
@@ -231,15 +231,15 @@ public class GameManager : MonoBehaviour
             healthCostToUpgrade = BASECOST_HEALTH;
             return healthCostToUpgrade;
         }
-        else if (currentHealthLevel < 10)
+        else if (currentHealthLevel < 100)
         {
             growthFactor = 1.15f;
         }
-        else if (currentHealthLevel < 30)
+        else if (currentHealthLevel < 500)
         {
             growthFactor = 1.3f; // Increase growth factor for levels 1-9
         }
-        else if (currentHealthLevel < 50)
+        else// if (currentHealthLevel < 50)
         {
             growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
         }
