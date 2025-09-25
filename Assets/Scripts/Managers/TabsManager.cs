@@ -15,6 +15,8 @@ public class TabsManager : MonoBehaviour
     public Sprite inActiveTabBG, activeTabBG; // Sprites for active and inactive tab backgrounds
     public Vector2 inActiveButtonSize, activeButtonSize; // Sizes for active and inactive buttons
 
+    private Coroutine timeSetCoroutine;
+
 
     public void SwitchToTabs(int TabID)
     {
@@ -34,9 +36,9 @@ public class TabsManager : MonoBehaviour
 
             if (currentTabID != 1)
             {
-                Timer.Instance.TimeSetup(); // Setup the timer when switching to the Missions tab
+                //Timer.Instance.TimeSetup(); // Setup the timer when switching to the Missions tab
 
-                UIManager.instance.StartCoroutine(UIManager.instance.ResetTimerSet()); // Start the timer reset coroutine
+                timeSetCoroutine = StartCoroutine(UIManager.instance.ResetTimerSet()); // Start the timer reset coroutine
 
                 AudioManager.instance.PlaySFX("Button");
             }
@@ -47,9 +49,9 @@ public class TabsManager : MonoBehaviour
 
             if (currentTabID == 1)
             {
-                UIManager.instance.StopCoroutine(UIManager.instance.ResetTimerSet()); // Stop any ongoing timer reset coroutine
+                StopCoroutine(timeSetCoroutine); // Stop any ongoing timer reset coroutine
 
-                Timer.Instance.SaveData(); // Save the timer data
+                //Timer.Instance.SaveData(); // Save the timer data
 
                 AudioManager.instance.PlaySFX("Button");
             }  

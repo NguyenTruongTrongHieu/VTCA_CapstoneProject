@@ -18,6 +18,9 @@ public class MultiLanguage : MonoBehaviour
             case SystemLanguage.Vietnamese:
                 LocalizationManager.Language = "Vietnamese";
                 break;
+            default:
+                LocalizationManager.Language = "English";
+                break;
         }
     }
 

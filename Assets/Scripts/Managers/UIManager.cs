@@ -259,7 +259,6 @@ public class UIManager : MonoBehaviour
         GameBoard.Instance.InitializeFood(LevelManager.instance.currentLevel.statesInBoard, LevelManager.instance.currentLevel.lockCellInBoard);
 
         //Missions 
-        Debug.Log("How many Missions des: " + missionsDescriptionTexts.Length.ToString());
 
         //Turn on music
         AudioManager.instance.PlayMusic("BackgroundMusic", true);
@@ -1762,6 +1761,8 @@ public class UIManager : MonoBehaviour
         chestSlider.maxValue = MissionsManager._instance.missions.Length;
         chestSlider.value = MissionsManager._instance.missionCompletedCount;
         chestProgressText.text = $"{MissionsManager._instance.missionCompletedCount}/{MissionsManager._instance.missions.Length}";
+
+        chestManager.gameObject.GetComponent<Image>().sprite = MissionsManager._instance.isOpendChest ? chestBoxOpenedSprite : chestBoxClosedSprite;
     }
 
     public void IsMissionCompletedChecking()
@@ -1806,8 +1807,8 @@ public class UIManager : MonoBehaviour
             {
                 Timer.Instance.ResetMissionTime();
                 MissionsManager._instance.ResetMission();
+                chestManager.gameObject.GetComponent<Image>().sprite = chestBoxClosedSprite;
                 SetUpMissionsDescription();
-                Debug.Log("Missions have been reset after timer reached zero.");
             }
             resetMissionTimer.text = Timer.Instance.GetFormattedTime();
             yield return null;
@@ -1820,6 +1821,7 @@ public class UIManager : MonoBehaviour
         {
             chestManager.OpenChest();
             MissionsManager._instance.isOpendChest = true;
+            chestManager.gameObject.GetComponent<Image>().sprite = chestBoxOpenedSprite;
             SaveLoadManager.instance.isOpenedChestAtMission = MissionsManager._instance.isOpendChest;
         }
     }

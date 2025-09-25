@@ -150,6 +150,12 @@ public class SaveLoadManager : MonoBehaviour
             MissionsManager._instance.missionCompletedCount = missionsCompleted;
             MissionsManager._instance.isOpendChest = isOpenedChestAtMission;
             Timer.Instance.TimeSetup();
+
+            if (Timer.Instance.GetRemainingTime() <= 0)
+            {
+                Timer.Instance.ResetMissionTime();
+                MissionsManager._instance.SetUpMissionsInfo();
+            }
         }
 
         AudioManager.instance.PreloadAllAudio();
