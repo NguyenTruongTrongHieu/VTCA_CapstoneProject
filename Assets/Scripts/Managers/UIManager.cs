@@ -1681,42 +1681,42 @@ public class UIManager : MonoBehaviour
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.kill");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Enemy Killed: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.FruitMatching)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.match");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Fruit Matched: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeDamageStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.updam");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Damage Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UpgradeHealthStats)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.uphth");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Health Upgraded: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.ReachLevel)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.reachlvl");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Level Reached: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 else if (MissionsManager._instance.missions[i].missionType == MissionType.UsePowerUp)
                 {
                     missionsDescriptionTexts[i].text = MissionsManager._instance.missions[i].description;
                 missionsDescriptionTexts[i].text = LocalizationManager.Localize("mission.pwrup");
                 rewardMissionsTexts[i].text = NumberFomatter.FormatIntToString(MissionsManager._instance.missions[i].reward, 2);
-                Debug.Log("Ultimate Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
+                //Debug.Log("Ultimate Used: " + MissionsManager._instance.missions[i].goal.currentAmount + "/" + MissionsManager._instance.missions[i].goal.targetAmount);
                 }
                 //rewardAmount[i].text = "Reward: " + missions[i].reward.ToString();
             //}

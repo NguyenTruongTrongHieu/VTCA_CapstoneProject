@@ -33,7 +33,7 @@ public class Timer : MonoBehaviour
             remainingTime = 0; // Ensure the time doesn't go negative
             //timerText.text = "00:00";
 
-            Debug.Log("Time's up!");
+            //Debug.Log("Time's up!");
         }
     }
 
