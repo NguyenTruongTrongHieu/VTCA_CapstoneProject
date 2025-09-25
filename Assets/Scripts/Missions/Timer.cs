@@ -6,6 +6,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private float remainingTime = 36000f; // Default starting time
 
 
+
     private void Awake()
     {
         // Check if an instance already exists
@@ -42,6 +43,10 @@ public class Timer : MonoBehaviour
         {
             TimeSetup();
         }
+        else
+        {
+            SaveData();
+        }
     }
 
     private void OnApplicationFocus(bool focus)
@@ -49,6 +54,10 @@ public class Timer : MonoBehaviour
         if (focus)
         {
             TimeSetup();
+        }
+        else
+        {
+            SaveData();
         }
     }
 
@@ -74,13 +83,10 @@ public class Timer : MonoBehaviour
     public void ResetMissionTime()
     {
         if (remainingTime > 0)
-        remainingTime = 1f; // Reset to default time
+            remainingTime = 1f; // Reset to default time
 
-        else if (remainingTime < 0)
-                        remainingTime = 0f; // Reset to default time
-
-        else
-            remainingTime = 36000f; // Reset to default time
+        else 
+            remainingTime = 36000f;  // Reset to default time
     }
 
     public void TimeSetup()
