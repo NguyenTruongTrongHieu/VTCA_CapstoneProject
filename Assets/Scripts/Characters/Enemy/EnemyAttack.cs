@@ -235,7 +235,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0f));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0f, UIManager.instance.inGamePanel.transform));
                     
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
@@ -310,7 +310,7 @@ public class EnemyAttack : MonoBehaviour
                 {
                     //Add coin and Play drop coin VFX
                     dropCoinNormalVFX.Play();
-                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0));
+                    CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, (int)Mathf.Max(1, dam * 0.05f), true, 0, UIManager.instance.inGamePanel.transform));
 
                     var playerAttack = other.GetComponentInParent<PlayerAttack>();
                     if (playerAttack != null)
@@ -368,15 +368,15 @@ public class EnemyAttack : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         dropCoinSpecialVFX.Play();
         AudioManager.instance.PlaySFX("DropCoinWhenEnemyDie");
-        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, enemyStat.coinReward, true, 0f));
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(transform.position, enemyStat.coinReward, true, 0f, UIManager.instance.inGamePanel.transform));
         if (enemyStat.crystalReward > 0)
         {
             dropCrystalVFX.Play();
-            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCrystals(transform.position + new Vector3(0, 0.25f, 0), enemyStat.crystalReward, true, 0.25f));
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCrystals(transform.position + new Vector3(0, 0.25f, 0), enemyStat.crystalReward, true, 0.25f, UIManager.instance.inGamePanel.transform));
         }
         if (enemyStat.starReward > 0)
         {
-            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddStars(transform.position + new Vector3(0, 0.5f, 0), enemyStat.starReward, true, 0.5f));
+            CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddStars(transform.position + new Vector3(0, 0.5f, 0), enemyStat.starReward, true, 0.5f, UIManager.instance.inGamePanel.transform));
             yield return new WaitForSeconds(0.2f);
             dropStarVFX.Play();
         }

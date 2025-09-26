@@ -359,7 +359,7 @@ public class MissionsManager : MonoBehaviour
     public void RewardClaiming(int missionIndex)
     {
 
-        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[missionIndex].transform.position, missions[missionIndex].reward, false, 0f)); // Add coins to the player's currency
+        CurrencyManager.instance.StartCoroutine(CurrencyManager.instance.AddCoins(UIManager.instance.missionsDescriptionTexts[missionIndex].transform.position, missions[missionIndex].reward, false, 0f, UIManager.instance.transform)); // Add coins to the player's currency
         missions[missionIndex].isClaimed = true; // Mark the mission as claimed
         missionCompletedCount++;
         AudioManager.instance.PlaySFX("MissionClaim");

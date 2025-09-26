@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
             {
                 continue;
             }
-            Debug.Log("Destroying enemy: " + enemy.name);
+            //Debug.Log("Destroying enemy: " + enemy.name);
             Destroy(enemy); // Destroy the enemy GameObject
         }
     }
