@@ -619,6 +619,7 @@ MonoBehaviour:
     missionType: 0
   missionTypes: 000000000100000002000000030000000400000005000000
   missionCompletedCount: 11
+  isOpendChest: 0
 --- !u!114 &6961765797263187303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,6 +807,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1053080788932248729}
   - component: {fileID: 8971112179131288959}
+  - component: {fileID: 8207938385312638556}
   m_Layer: 0
   m_Name: LocalizationManager
   m_TagString: Untagged
@@ -845,7 +847,31 @@ MonoBehaviour:
   - Name: LoadingScene
     Id: 0
     TextAsset: {fileID: 0}
-  - Name: LoadingScene
-    Id: 0
+  - Name: Menu
+    Id: 1197514792
+    TextAsset: {fileID: 0}
+  - Name: Missions
+    Id: 1011044047
+    TextAsset: {fileID: 0}
+  - Name: Character
+    Id: 1772099059
+    TextAsset: {fileID: 0}
+  - Name: Game Over
+    Id: 1569984932
+    TextAsset: {fileID: 0}
+  - Name: Settings
+    Id: 84807491
     TextAsset: {fileID: 0}
   SaveFolder: {fileID: 102900000, guid: c392831e85f928548b8494fefd912562, type: 3}
+--- !u!114 &8207938385312638556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848765908526706878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4acf922782877c845b2a30bb16b803d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
