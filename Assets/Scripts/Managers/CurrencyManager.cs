@@ -36,7 +36,7 @@ public class CurrencyManager : MonoBehaviour
         UIManager.instance.UpdateCoinText();
     }
 
-    public IEnumerator AddCoins(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
+    public IEnumerator AddCoins(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd, Transform parent)
     {
         if (waitTimeBeforeAdd > 0f)
         { 
@@ -44,7 +44,7 @@ public class CurrencyManager : MonoBehaviour
         }
 
         //Play anim spawn coins
-        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "coin", amount, needChangeTransformFromWordToScreen));
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "coin", amount, needChangeTransformFromWordToScreen, parent));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("coin", 0.1f));
         AudioManager.instance.PlaySFX("AddCurrency");
 
@@ -65,7 +65,7 @@ public class CurrencyManager : MonoBehaviour
 
     #region UPDATE CRYSTAL
 
-    public IEnumerator AddCrystals(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
+    public IEnumerator AddCrystals(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd, Transform parent)
     {
         if (waitTimeBeforeAdd > 0f)
         {
@@ -73,7 +73,7 @@ public class CurrencyManager : MonoBehaviour
         }
 
         //Play anim spawn crystals
-        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "crystal", amount, needChangeTransformFromWordToScreen));
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "crystal", amount, needChangeTransformFromWordToScreen, parent));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("crystal", 0.1f));
         AudioManager.instance.PlaySFX("AddCurrency");
 
@@ -99,7 +99,7 @@ public class CurrencyManager : MonoBehaviour
 
     #region UPDATE STAR
 
-    public IEnumerator AddStars(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd)
+    public IEnumerator AddStars(Vector3 startPos, int amount, bool needChangeTransformFromWordToScreen, float waitTimeBeforeAdd, Transform parent)
     {
         if (waitTimeBeforeAdd > 0f)
         {
@@ -107,7 +107,7 @@ public class CurrencyManager : MonoBehaviour
         }
 
         //Play anim spawn stars
-        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "star", amount, needChangeTransformFromWordToScreen));
+        yield return UIManager.instance.StartCoroutine(UIManager.instance.SpawnCurrencyPrefabAndMoveToPanel(startPos, "star", amount, needChangeTransformFromWordToScreen, parent));
         StartCoroutine(UIManager.instance.CurrencyPanelZoomInAndZoomOut("star", 0.1f));
         AudioManager.instance.PlaySFX("AddCurrency");
 

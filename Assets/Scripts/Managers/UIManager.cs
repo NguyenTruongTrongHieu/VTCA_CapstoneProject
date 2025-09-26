@@ -448,7 +448,7 @@ public class UIManager : MonoBehaviour
         targetObject.localScale = targetScale; // Set the final scale
     }
 
-    public IEnumerator SpawnCurrencyPrefabAndMoveToPanel(Vector3 startTransform, string currency, int coinAmount, bool needChangeTransformFromWordToScreen)
+    public IEnumerator SpawnCurrencyPrefabAndMoveToPanel(Vector3 startTransform, string currency, int coinAmount, bool needChangeTransformFromWordToScreen, Transform parent)
     {
         string text = NumberFomatter.FormatIntToString(coinAmount, 2);
         Vector3 startPos;
@@ -465,17 +465,17 @@ public class UIManager : MonoBehaviour
         if (currency == "coin")
         {
             //coinTextObject = Instantiate(coinTextPrefab, startPos, Quaternion.identity, transform);
-            coinTextObject = PoolManager.Instance.GetObject("CoinText", startPos, Quaternion.identity, transform, coinTextPrefab);
+            coinTextObject = PoolManager.Instance.GetObject("CoinText", startPos, Quaternion.identity, parent, coinTextPrefab);
         }
         else if (currency == "star")
         {
             //coinTextObject = Instantiate(starTextPrefab, startPos, Quaternion.identity, transform);
-            coinTextObject = PoolManager.Instance.GetObject("StarText", startPos, Quaternion.identity, transform, starTextPrefab);
+            coinTextObject = PoolManager.Instance.GetObject("StarText", startPos, Quaternion.identity, parent, starTextPrefab);
         }
         else
         {
             //coinTextObject = Instantiate(crystalTextPrefab, startPos, Quaternion.identity, transform);
-            coinTextObject = PoolManager.Instance.GetObject("CrystalText", startPos, Quaternion.identity, transform, crystalTextPrefab);
+            coinTextObject = PoolManager.Instance.GetObject("CrystalText", startPos, Quaternion.identity, parent, crystalTextPrefab);
         }
         AudioManager.instance.PlaySFX("DropCoinWhenEnemyNotDie");
 
@@ -980,7 +980,7 @@ public class UIManager : MonoBehaviour
         Vector3 startPos = Camera.main.WorldToScreenPoint(startTransform.position);
 
         //GameObject damageTextObject = Instantiate(damageText, startPos, Quaternion.identity, transform);
-        GameObject damageTextObject = PoolManager.Instance.GetObject("DamageText", startPos, Quaternion.identity, transform, damageText);
+        GameObject damageTextObject = PoolManager.Instance.GetObject("DamageText", startPos, Quaternion.identity, inGamePanel.transform, damageText);
 
         Text damText = damageTextObject.GetComponent<Text>();
         RectTransform rectTransformDamText = damageTextObject.GetComponent<RectTransform>();
@@ -1626,7 +1626,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             yield return StartCoroutine(CountCoin(LevelManager.instance.currentLevel.rewardCoin, 1f) );
             yield return new WaitForSeconds(0.3f);
-            StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform.position, LevelManager.instance.currentLevel.rewardCoin, false, 0f));
+            StartCoroutine(CurrencyManager.instance.AddCoins(rewardCoinText.transform.position, LevelManager.instance.currentLevel.rewardCoin, false, 0f, gameOverPanel.transform));
 
             //Save new level
             LevelManager.instance.SetNextLevel();
@@ -1867,24 +1867,24 @@ public class UIManager : MonoBehaviour
         GameObject itemRewardPrefab = null;
         if (itemRewardsInChestBox != null && itemRewardsInChestBox.Count > 0 && pressCount < itemRewardsInChestBox.Count)
         {
-            itemRewardPrefab = Instantiate(itemBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(itemBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, openChestBoxPanel.transform);
             itemRewardPrefab.GetComponent<UIRewardInChestBox>().SetUI(itemRewardsInChestBox[pressCount].itemLevel, itemRewardsInChestBox[pressCount].itemType);
         }
         else if (crystalsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count)
         {
-            itemRewardPrefab = Instantiate(crystalBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(crystalBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, openChestBoxPanel.transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(crystalsInChestBox, 2)}"; // Set the text for crystal amount
             isClaimCrystal = true; // Set the flag to indicate that crystals are being claimed
         }
         else if (starsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 1)
         {
-            itemRewardPrefab = Instantiate(starBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(starBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, openChestBoxPanel.transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(starsInChestBox, 2)}"; // Set the text for star amount
             isClaimStar = true;
         }
         else if (coinsInChestBox > 0 && pressCount == itemRewardsInChestBox.Count + 2)
         {
-            itemRewardPrefab = Instantiate(coinBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, transform);
+            itemRewardPrefab = Instantiate(coinBonusPrefab, chestBoxImage.transform.position, Quaternion.identity, openChestBoxPanel.transform);
             itemRewardPrefab.transform.GetChild(1).GetComponent<Text>().text = $"{NumberFomatter.FormatIntToString(coinsInChestBox, 2)}"; // Set the text for coin amount
             isClaimCoin = true;
         }

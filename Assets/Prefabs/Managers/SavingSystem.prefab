@@ -139,7 +139,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!114 &2741570007694910579
 MonoBehaviour:
@@ -551,6 +551,10 @@ MonoBehaviour:
   currentCoin: 0
   currentCrystal: 0
   currentStar: 0
+  missionsToSave: []
+  isOpenedChestAtMission: 0
+  isSFXOn: 1
+  isMusicOn: 1
   loadingPanel: {fileID: 5168941925963877134}
   loadingSlider: {fileID: 8489292458943752498}
   backGroundImage: {fileID: 685079915269258930}
