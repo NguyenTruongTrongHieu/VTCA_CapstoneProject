@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 37b3590482e25084b914f9d3996e8064
+guid: 65269334d41b95948aa7045510a7d53a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Source Sans Pro
+  - Acari Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
