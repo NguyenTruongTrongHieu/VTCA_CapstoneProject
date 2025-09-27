@@ -1520,9 +1520,9 @@ public class UIManager : MonoBehaviour
         }
 
         //Set upgrade info
-        upgradeDamStatText.text = $"Damage: {currentPercentDamBonus}";
+        upgradeDamStatText.text = $"{currentPercentDamBonus}";
         upgradeDamStatAtNewLevelText.text = $"{newPercentDamBonus}";
-        upgradeHealthStatText.text = $"Health: {currentPercentHealthBonus}";
+        upgradeHealthStatText.text = $"{currentPercentHealthBonus}";
         upgradeHealthStatAtNewLevelText.text = $"{newPercentHealthBonus}";
 
         //Set cost and button cost
