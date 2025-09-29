@@ -82,6 +82,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        //rootNode.Evaluate();
+        //animator.SetBool(isMovingHash, false);
+    }
+
+    private void FixedUpdate()
+    {
         rootNode.Evaluate();
     }
 
@@ -136,7 +142,8 @@ public class PlayerMoveToTarget : NodeBehaviourTree
 
     public override NodeState Evaluate()
     {
-        playerSelf.animator.SetBool(playerSelf.isMovingHash, true);
+        if (!playerSelf.animator.GetBool(playerSelf.isMovingHash))
+            playerSelf.animator.SetBool(playerSelf.isMovingHash, true); 
 
         //Rotate towards target
         //if ()
@@ -151,20 +158,25 @@ public class PlayerMoveToTarget : NodeBehaviourTree
         //}
 
         Vector3 direction = target.position - playerSelf.transform.position;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        float dot = Vector3.Dot(playerSelf.transform.forward, direction.normalized);
-        if (dot <= 0.99f)
+        if (direction.sqrMagnitude > 0.0001f)
         {
-            playerSelf.transform.rotation = Quaternion.RotateTowards(playerSelf.transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            float dot = Vector3.Dot(playerSelf.transform.forward, direction.normalized);
+            if (dot <= 0.99f)
+            {
+                playerSelf.transform.rotation = Quaternion.RotateTowards(playerSelf.transform.rotation, lookRotation, rotationSpeed * Time.fixedDeltaTime);
+            }
         }
 
         //Move player towards target
         //Vector3 direction = (target.position - playerSelf.transform.position).normalized;
         if (Vector3.Distance(playerSelf.transform.position, target.position) > stopDistance)
         {
+            if (!playerSelf.rb.isKinematic)
+                playerSelf.rb.isKinematic = true; // Disable physics interactions for smooth movement
+
+            playerSelf.transform.position = Vector3.MoveTowards(playerSelf.transform.position, target.position, playerSelf.speed * Time.fixedDeltaTime);
             //playerSelf.rb.MovePosition(playerSelf.transform.position + direction * playerSelf.speed * Time.deltaTime);
-            playerSelf.rb.isKinematic = true; // Disable physics interactions for smooth movement
-            playerSelf.transform.position = Vector3.MoveTowards(playerSelf.transform.position, target.position, playerSelf.speed * Time.deltaTime);
 
             state = NodeState.running;
         }
