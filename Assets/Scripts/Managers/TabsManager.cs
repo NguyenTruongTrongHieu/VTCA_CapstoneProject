@@ -74,7 +74,7 @@ public class TabsManager : MonoBehaviour
             CameraManager.instance.StopAllCoroutines();
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(50f, 0.3f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', -1.25f));
-            CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', -1f));
+            CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3f, 'Y', -1f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 1.25f));
             CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 1f));
 
@@ -101,7 +101,7 @@ public class TabsManager : MonoBehaviour
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetTargetForCam(PlayerUltimate.instance.playerTransform, 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetVerticalFOV(35f, 0.3f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'X', 0f));
-                CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3.5f, 'Y', 0f));
+                CameraManager.instance.StartCoroutine(CameraManager.instance.SetHardLookAt(3f, 'Y', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'X', 0f));
                 CameraManager.instance.StartCoroutine(CameraManager.instance.SetFollowOffset(0.3f, 'Y', 2f));
 

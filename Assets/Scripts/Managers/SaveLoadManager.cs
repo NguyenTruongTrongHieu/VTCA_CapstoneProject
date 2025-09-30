@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using Assets.SimpleLocalization.Scripts;
 
 
 public class OwnedCharacter
@@ -103,7 +104,7 @@ public class SaveLoadManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
             isDataLoaded = LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
@@ -327,7 +328,16 @@ public class SaveLoadManager : MonoBehaviour
     public IEnumerator LoadingSceneAsync(bool isSetActiveLoadingPanel, float waitingTime)
     {
         backGroundImage.sprite = backGround[Random.Range(0, backGround.Length)];
-        loadingText.text = "Loading...";
+
+        if (LocalizationManager.Language == "Vietnamese")
+        {
+            loadingText.text = "Đang tải..."; 
+        }
+        else
+        {
+            loadingText.text = "Loading...";
+        }
+
         loadingSlider.value = 0f; // Reset the slider value to 0
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(LevelManager.instance.currentLevel.sceneName);
         if (isSetActiveLoadingPanel)
@@ -361,7 +371,14 @@ public class SaveLoadManager : MonoBehaviour
 
     public IEnumerator WaitingLoadingScene(float waitingTime)
     {
-        loadingText.text = "Let's go!";
+        if (LocalizationManager.Language == "Vietnamese")
+        {
+            loadingText.text = "Đi nào!";
+        }
+        else
+        {
+            loadingText.text = "Let's go!";
+        }
         float elapsedTime = 0f;
         while (elapsedTime < waitingTime)
         {
@@ -385,6 +402,8 @@ public class SaveLoadManager : MonoBehaviour
 
     public IEnumerator MoveUpLoadingPanel()
     {
+        loadingText.text = "";
+
         yield return StartCoroutine(UIManager.instance.SlidePanel(loadingPanel.GetComponent<RectTransform>(), loadingPanel.GetComponent<RectTransform>().offsetMin,
             loadingPanel.GetComponent<RectTransform>().offsetMax, originalOffsetMinLoadingPanel, 
             originalOffsetMaxLoadingPanel, 0.5f));
