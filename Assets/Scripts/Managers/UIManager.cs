@@ -366,11 +366,21 @@ public class UIManager : MonoBehaviour
         {
             if (LevelManager.instance.currentLevel.index == 0)
             {
-                currentLevelDisplay.text = $"Tutorial";
+                if (LocalizationManager.Language == "Vietnamese")
+                {
+                    currentLevelDisplay.text = $"Hướng dẫn";
+                }
+                else
+                    currentLevelDisplay.text = $"Tutorial";
             }
             else
             {
-                currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
+                if (LocalizationManager.Language == "Vietnamese")
+                {
+                    currentLevelDisplay.text = $"Cấp {LevelManager.instance.currentLevel.index}";
+                }
+                else
+                    currentLevelDisplay.text = $"Level {LevelManager.instance.currentLevel.index}";
             }
 
             if (LevelManager.instance.currentLevel.havingBoss)
@@ -938,7 +948,14 @@ public class UIManager : MonoBehaviour
 
     public void SetUITextForUpgradeDamButton()
     {
-        damageLevelText.text = $"Damage\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
+        if (LocalizationManager.Language == "Vietnamese")
+        {
+            damageLevelText.text = $"Công\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
+        }    
+        else
+        {
+            damageLevelText.text = $"Damage\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentDamageLevel, 0)}";
+        }
         basicDamageText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicDamage, 2)}";
         costToUpgradeDamText.text = $"{NumberFomatter.FormatIntToString(GameManager.instance.damCostToUpgrade, 1)}";//Đưa hàm tính giá tiền vào đây
     }
@@ -966,7 +983,14 @@ public class UIManager : MonoBehaviour
 
     public void SetUITextForUpgradeHealthButton()
     {
-        healthLevelText.text = $"Health\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
+        if (LocalizationManager.Language == "Vietnamese")
+        {
+            healthLevelText.text = $"Máu\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
+        }
+        else
+        {
+            healthLevelText.text = $"Health\nLV.{NumberFomatter.FormatIntToString(GameManager.instance.currentHealthLevel, 0)}";
+        } 
         basicHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.basicHealth, 2)}";
         costToUpgradeHealthText.text = $"{NumberFomatter.FormatFloatToString(GameManager.instance.healthCostToUpgrade, 2)}";//Đưa hàm tính giá tiền vào đây
     }
@@ -1415,12 +1439,26 @@ public class UIManager : MonoBehaviour
 
         if (playerStat.isNormalSkin)
         {
-            titleBuyCharacterText.text = "You want to buy this character?";
+            if (LocalizationManager.Language == "Vietnamese")
+            {
+                titleBuyCharacterText.text = "Bạn muốn mua nhân vật này không?";
+            }
+            else
+            {
+                titleBuyCharacterText.text = "You want to buy this character?";
+            }
             titleBuyCharacterText.color = Color.white;
         }
         else
         {
-            titleBuyCharacterText.text = "You want to buy this skin?";
+            if (LocalizationManager.Language == "Vietnamese")
+            {
+                titleBuyCharacterText.text = "Bạn muốn mua trang phục này không?";
+            }
+            else
+            {
+                titleBuyCharacterText.text = "You want to buy this skin?";
+            }
             titleBuyCharacterText.color = Color.white;
         }
 
@@ -1489,7 +1527,12 @@ public class UIManager : MonoBehaviour
         var nextBonusStat = playerStat.bonusStatsLevel[SaveLoadManager.instance.currentLevelOfCurrentPlayer];// Get the next bonus stat based on the current level
 
         //Set title for upgrade character panel
-        titleUpgradeCharacterText.text = $"Upgrade {playerStat.name}";
+        if (LocalizationManager.Language == "Vietnamese")
+        {
+            titleUpgradeCharacterText.text = $"Nâng cấp {playerStat.name}";
+        }
+        else
+            titleUpgradeCharacterText.text = $"Upgrade {playerStat.name}";
 
         //Change color for dam text
         string currentPercentDamBonus;
@@ -1554,15 +1597,30 @@ public class UIManager : MonoBehaviour
     {
         if (currency == "coin")
         {
-            warningNotEnoughCostText.text = "You don't have enough coins to buy this character!";
+            if (LocalizationManager.Language == "Vietnamese")
+            {
+                warningNotEnoughCostText.text = "Bạn không có đủ xu để thực hiện hành động này!";
+            }
+            else
+                warningNotEnoughCostText.text = "You don't have enough coins to do this action!";
         }
         else if (currency == "star")
         {
-            warningNotEnoughCostText.text = "You don't have enough stars to buy this character!";
+            if (LocalizationManager.Language == "Vietnamese")
+            {
+                warningNotEnoughCostText.text = "Bạn không có đủ sao để thực hiện hành động này!";
+            }
+            else
+                warningNotEnoughCostText.text = "You don't have enough stars to do this action!";
         }
         else
         {
-            warningNotEnoughCostText.text = "You don't have enough crystals to buy this character!";
+            if (LocalizationManager.Language == "Vietnamese")
+            {
+                warningNotEnoughCostText.text = "Bạn không có đủ đá quý để thực hiện hành động này!";
+            }
+            else
+                warningNotEnoughCostText.text = "You don't have enough crystals to do this action!";
         }
         quitBuyCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the buy character panel
         quitUpgradeCharacterPanelButton.gameObject.SetActive(false); // Hide the quit button in the upgrade character panel
@@ -2059,6 +2117,12 @@ public class UIManager : MonoBehaviour
     public void GetLanguage(string language)
     {
         LocalizationManager.Language = language;
+        DisplayCurrentLevel();
+        if (GameBoard.Instance.GetTutorial() == false)
+        {
+            SetUITextForUpgradeDamButton();
+            SetUITextForUpgradeHealthButton();
+        }
     }
 
     #endregion

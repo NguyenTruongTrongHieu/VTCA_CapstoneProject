@@ -29,6 +29,9 @@ MonoBehaviour:
   - Name: Game Over
     Id: 1569984932
     TextAsset: {fileID: 4900000, guid: ae39196fbea8a0b469d5d0b1c7934086, type: 3}
+  - Name: InGame
+    Id: 1497272400
+    TextAsset: {fileID: 4900000, guid: 80105dbde22893140b1407fa9158963f, type: 3}
   - Name: Settings
     Id: 84807491
     TextAsset: {fileID: 4900000, guid: 16c3d5c17a422a445bad896968a3b8cd, type: 3}
