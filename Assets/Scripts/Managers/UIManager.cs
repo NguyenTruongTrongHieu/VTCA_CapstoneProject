@@ -329,6 +329,18 @@ public class UIManager : MonoBehaviour
         {
             sfxToggle.isOn = false;
         }
+
+        if (PlayerPrefs.HasKey("language"))
+        {
+            if (PlayerPrefs.GetString("language") == "Vietnamese")
+            {
+                LocalizationManager.Language = "Vietnamese";
+            }
+            else
+            {
+                LocalizationManager.Language = "English";
+            }
+        }
     }
 
     // Update is called once per frame
@@ -2123,6 +2135,17 @@ public class UIManager : MonoBehaviour
             SetUITextForUpgradeDamButton();
             SetUITextForUpgradeHealthButton();
         }
+
+        if (language == "Vietnamese")
+        { 
+            PlayerPrefs.SetString("language", "Vietnamese");
+        }
+        else
+        {
+            PlayerPrefs.SetString("language", "English");
+        }
+
+        AudioManager.instance.PlaySFX("Button");
     }
 
     #endregion
