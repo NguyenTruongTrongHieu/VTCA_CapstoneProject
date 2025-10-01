@@ -38,7 +38,7 @@ public class Mission
             MissionsManager._instance.missionTypes.RemoveAt(randomIndex); // Remove the selected type to avoid duplicates in the same mission
 
             //Debug.Log("Selected Mission Type: " + missionType.ToString());
-            Debug.Log("Mission Types count " + MissionsManager._instance.missionTypes.Count);
+            //Debug.Log("Mission Types count " + MissionsManager._instance.missionTypes.Count);
         }
         else
         {

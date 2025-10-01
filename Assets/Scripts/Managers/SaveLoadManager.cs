@@ -185,9 +185,9 @@ public class SaveLoadManager : MonoBehaviour
             currentPlayerName = "Luthor";
             currentLevelOfCurrentPlayer = 1;
 
-            currentCoin = 12000000;
+            currentCoin = 0;
             currentCrystal = 0;
-            currentStar = 10000;
+            currentStar = 0;
 
             ownedCharacters = new List<OwnedCharacter>
             {
