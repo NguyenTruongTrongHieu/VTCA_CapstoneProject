@@ -347,22 +347,22 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.080271
+      - time: 0.17201842
+        functionName: TurnOnHitVFX
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.1725787
         functionName: TurnOnWeaponColider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.13390078
+      - time: 0.34455168
         functionName: TurnOffWeaponColider
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.08444444
-        functionName: TurnOnHitVFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
