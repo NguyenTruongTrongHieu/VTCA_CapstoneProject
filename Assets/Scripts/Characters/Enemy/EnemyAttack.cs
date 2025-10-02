@@ -154,7 +154,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (this.transform != LevelManager.instance.currentLevel.enemiesAtLevel[GameManager.instance.currentEnemyIndex].transform)
         {
-            Debug.Log("Not current enemy, return");
+            //Debug.Log("Not current enemy, return");
             return;
         }
 
@@ -191,7 +191,7 @@ public class EnemyAttack : MonoBehaviour
         float duration = 0.5f; // Duration of the rotation
         float elapsedTime = 0f;
         Quaternion targetRotation = Quaternion.Euler(targetRot);
-        Debug.Log("Rotate to target: " + targetRotation.eulerAngles);
+        //Debug.Log("Rotate to target: " + targetRotation.eulerAngles);
 
         Quaternion initialRotation = transform.rotation;
 

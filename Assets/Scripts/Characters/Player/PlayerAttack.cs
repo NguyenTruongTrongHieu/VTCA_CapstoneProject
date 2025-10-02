@@ -281,7 +281,7 @@ public class PlayerAttack : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("Player is hit but not dead");
+                            //Debug.Log("Player is hit but not dead");
                         }
                     }
                 }

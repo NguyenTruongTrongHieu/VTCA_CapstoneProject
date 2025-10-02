@@ -52,7 +52,7 @@ public class HPSlider : MonoBehaviour
         float changeValue = currentValue - currentHP;
         if (changeValue <= 0)
         {
-            Debug.LogError("Minus value error");
+            Debug.LogError("Minus value error. Current value: " + currentValue + " Current HP: " + currentHP);
             return;
         }
 

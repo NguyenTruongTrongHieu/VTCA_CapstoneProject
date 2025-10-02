@@ -244,9 +244,9 @@ MonoBehaviour:
   - healthPercentBonus: 0.05
     damagePercentBonus: -0.05
     lifeStealPercentBonus: 0
-    coinCost: 1
-    starCost: 0
-    crystalCost: 0
+    coinCost: 0
+    starCost: 50
+    crystalCost: 10
   - healthPercentBonus: 0.06
     damagePercentBonus: -0.04
     lifeStealPercentBonus: 0
