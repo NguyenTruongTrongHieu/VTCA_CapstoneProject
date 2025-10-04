@@ -82,11 +82,12 @@ public class Timer : MonoBehaviour
 
     public void ResetMissionTime()
     {
-        if (remainingTime > 0)
-            remainingTime = 1f; // Reset to default time
+        remainingTime = 36000f;  // Reset to default time
+        //if (remainingTime > 0)
+        //    remainingTime = 1f; // Reset to default time
 
-        else 
-            remainingTime = 36000f;  // Reset to default time
+        //else 
+        //    remainingTime = 36000f;  // Reset to default time
     }
 
     public void TimeSetup()
