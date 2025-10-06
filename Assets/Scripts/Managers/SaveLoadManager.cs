@@ -104,7 +104,7 @@ public class SaveLoadManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            //PlayerPrefs.DeleteAll();
+           // PlayerPrefs.DeleteAll();
             isDataLoaded = LoadDataWithPlayerPref();
             DontDestroyOnLoad(gameObject);
         }
@@ -185,9 +185,9 @@ public class SaveLoadManager : MonoBehaviour
             currentPlayerName = "Luthor";
             currentLevelOfCurrentPlayer = 1;
 
-            currentCoin = 0;//2000000000
+            currentCoin = 2000000000;//2000000000
             currentCrystal = 0;
-            currentStar = 0;//10000
+            currentStar = 10000;//10000
 
             ownedCharacters = new List<OwnedCharacter>
             {

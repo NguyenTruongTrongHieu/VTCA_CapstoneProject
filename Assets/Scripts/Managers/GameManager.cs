@@ -161,16 +161,16 @@ public class GameManager : MonoBehaviour
 
         if (currentDamageLevel < 100)
         {
-            incrementDamage = 2;
+            incrementDamage = 10;
         }
 
         else if (currentDamageLevel < 500)
         {
-            incrementDamage = 3;
+            incrementDamage = 15;
         }
         else
         {
-            incrementDamage = 5;
+            incrementDamage = 30;
         }
 
         basicDamage = BASEVALUE_DAMAGE + ((currentDamageLevel - 1) * incrementDamage);//Đem qua làm công thức tăng reward coin khi nhận thưởng
@@ -191,11 +191,11 @@ public class GameManager : MonoBehaviour
         }
         else if (currentDamageLevel < 500)
         {
-            growthFactor = 1.3f; // Increase growth factor for levels 1-9
+            growthFactor = 1.2f; // Increase growth factor for levels 1-9
         }
         else //if (currentDamageLevel < 500)
         {
-            growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
+            growthFactor = 1.25f; // Decrease growth factor for levels 10 and above
         }
 
         damCostToUpgrade = (int)(BASECOST_DAMAGE * Mathf.Pow(growthFactor, currentDamageLevel - 0));
@@ -208,15 +208,15 @@ public class GameManager : MonoBehaviour
 
         if (currentHealthLevel < 100)
         {
-            incrementHealth = 5;
+            incrementHealth = 15;
         }
         else if (currentHealthLevel < 500)
         {
-            incrementHealth = 8;
+            incrementHealth = 20;
         }
         else
         { 
-            incrementHealth = 10;
+            incrementHealth = 45;
         }
 
         basicHealth = BASEVALUE_HEALTH + ((currentHealthLevel - 1) * incrementHealth);
@@ -237,11 +237,11 @@ public class GameManager : MonoBehaviour
         }
         else if (currentHealthLevel < 500)
         {
-            growthFactor = 1.3f; // Increase growth factor for levels 1-9
+            growthFactor = 1.2f; // Increase growth factor for levels 1-9
         }
         else// if (currentHealthLevel < 50)
         {
-            growthFactor = 1.5f; // Decrease growth factor for levels 10 and above
+            growthFactor = 1.25f; // Decrease growth factor for levels 10 and above
         }
 
         healthCostToUpgrade = (int)(BASECOST_HEALTH * Mathf.Pow(growthFactor, currentHealthLevel - 0));
