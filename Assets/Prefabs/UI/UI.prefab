@@ -19607,7 +19607,7 @@ PrefabInstance:
     - target: {fileID: 6145687177885367788, guid: 96d2fd3ea8b42e245b496f7eff9a25aa, type: 3}
       propertyPath: characterButtons.Array.data[2].buyText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7014692650337026543}
     - target: {fileID: 6145687177885367788, guid: 96d2fd3ea8b42e245b496f7eff9a25aa, type: 3}
       propertyPath: 'missionsDescriptionTexts.Array.data[0]'
       value: 
