@@ -36,9 +36,9 @@ Your character will attack automatically, and the number of hits depends on the 
 
 # Technology Stack
 
-Unity
+- Unity
 
-C#
+- C#
 
 # Download
 
