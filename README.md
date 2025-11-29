@@ -19,15 +19,15 @@ https://www.youtube.com/watch?v=ytjuQUVe1gI
 
 # Key Features
 
-Action-packed matching gameplay: connect identical fruits to unleash skills, build combos, and defeat enemies.
+- Action-packed matching gameplay: connect identical fruits to unleash skills, build combos, and defeat enemies.
 
-Diverse heroes: knights, mages, archers, and legendary warriors from different worlds.
+- Diverse heroes: knights, mages, archers, and legendary warriors from different worlds.
 
-Unique abilities: each character has their own fighting style, offering fresh and exciting combat experiences.
+- Unique abilities: each character has their own fighting style, offering fresh and exciting combat experiences.
 
-Vivid graphics & stunning visual effects that immerse you in dynamic battles.
+- Vivid graphics & stunning visual effects that immerse you in dynamic battles.
 
-Endless challenges: encounter monsters, epic bosses, and a wide variety of levels.
+- Endless challenges: encounter monsters, epic bosses, and a wide variety of levels.
 
 # How to Play
 
